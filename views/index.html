@@ -1,8 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
-<ul>
-  <li><a href="">Matches</a></li>
-  <li><a href="">Players</a></li>
-  <li><a href="">Skills</a></li>
-</ul>
+<div class="panel">
+  <a class="panel-block" href="/matches">
+    <span class="panel-icon">
+        <i class="fas fa-book" aria-hidden="true"></i>
+    </span>
+    Matches
+  </a>
+  <a class="panel-block" href="/players">
+    <span class="panel-icon">
+        <i class="fas fa-book" aria-hidden="true"></i>
+    </span>
+    Players
+  </a>
+  <a class="panel-block" href="/skills">
+    <span class="panel-icon">
+        <i class="fas fa-book" aria-hidden="true"></i>
+    </span>
+    Skills
+  </a>
+</div>
 {% endblock %}

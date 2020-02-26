@@ -1,12 +1,14 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css">
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    Players
-  </body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+List of players
+<table class="table is-fullwidth">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Nationality</th>
+      <th>Points</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+{% endblock %}
