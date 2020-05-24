@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const playerSchema = new Schema({
 	firstname: { type: String, required: true },
 	lastname: { type: String, required: true },
-i}, {
+}, {
 	timestamps: true,
 });
 
