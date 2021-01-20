@@ -9,3 +9,9 @@ Functionality
 4. Voting "man of the match", runner-up, 3rd place.
 6. Track of goals for match. 
 7. Voting for player' skills. 
+
+Structure of the project
+========================
+1. server/api: Express
+2. web: nextjs
+3. mobile: Flutter
