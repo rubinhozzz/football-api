@@ -1,16 +1,15 @@
 var express = require('express');
 var router = express.Router();
-let Player = require('../models/player.model');
+const playerController = require('../controllers/player.controller');
 
-/* GET users listing. */
-router.get('/', (req, res) => {
-	Player.find()
-		.then(players => res.json(players))
-		.catch(err => res.status(400).json('Error ' + err));
-});
-/*
-router.get('/add', function(req, res, next) {
-    res.send('respond with a resource create player');
-});*/
+router.get('/players/', playerController.getAll);
+
+router.post('players/', playerController.create);
+
+router.put('players/:id', playerController.update);
+
+router.get('/players/:id', playerController.get);
+
+router.delete('players/delete/:id', playerController.delete);
 
 module.exports = router;
