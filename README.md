@@ -13,5 +13,5 @@ Functionality
 Structure of the project
 ========================
 1. server/api: Express
-2. web: nextjs
+2. web: CRA (Since i'm learning React, I will start with CRA, after projected is completed, I will make a project using webpack)
 3. mobile: Flutter
