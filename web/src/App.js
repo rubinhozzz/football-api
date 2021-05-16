@@ -1,12 +1,31 @@
-import logo from './logo.svg';
+import React from 'react';
+import 'bulma/css/bulma.min.css';
 import './App.css';
-import Menu from './components/Menu.js'
+import Nav from './components/Menu.js';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import Players from './components/Players.js';
+import Matches from './components/Matches.js';
 
 function App() {
 	return (
-		<div className="">
-		<Menu />
+		<Router>
+		<div className="container is-fluid is-family-primary is-size-4">
+			<section>
+				<Nav />
+			</section>
+			<section id="div_content">
+			<Switch>
+				<Route path="/players" component={Players}></Route>
+				<Route path="/matches" component={Matches}></Route>
+			</Switch>		
+			</section>
+			<footer className="footer">
+				<div class="content has-text-centered">
+					<p>Aves @2021</p>
+				</div>
+			</footer>
 		</div>
+		</Router>
 	);
 }
 
