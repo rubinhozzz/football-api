@@ -1,8 +1,9 @@
 import React from 'react'
+import { Button } from 'react-bulma-components';
 
 function Matches() {
 	return (
-		<div>matches</div>
+		<Button color="primary">Generate match</Button>
 	)
 }
 

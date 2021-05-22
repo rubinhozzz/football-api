@@ -5,12 +5,15 @@ import { Link } from 'react-router-dom'
 function Nav() {
 	return (
 		<nav className="level">
+			<div className="level-left">
+				<div className="level-item"></div>
+			</div>
 			<div className="level-right">
-				<Link to="/players">
-					<p className="level-item">Players</p>
+				<Link to="/players" className="level-item">
+					<p>Players</p>
 				</Link>
-				<Link to="/matches">
-					<p className="level-item">Matches</p>
+				<Link to="/matches" className="level-item">
+					<p>Matches</p>
 				</Link>
 			</div>
 		</nav>

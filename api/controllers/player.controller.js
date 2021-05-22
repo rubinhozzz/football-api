@@ -1,5 +1,3 @@
-const playerModel = require('../models/player.model')
-
 exports.getAll = (req, res) => {
 	res.send('not implemented')
 }

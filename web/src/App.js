@@ -9,10 +9,8 @@ import Matches from './components/Matches.js';
 function App() {
 	return (
 		<Router>
-		<div className="container is-fluid is-family-primary is-size-4">
-			<section>
-				<Nav />
-			</section>
+		<div className="container is-fluid is-family-code is-size-5">
+			<Nav />
 			<section id="div_content">
 			<Switch>
 				<Route path="/players" component={Players}></Route>
