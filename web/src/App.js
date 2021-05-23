@@ -18,7 +18,7 @@ function App() {
 			</Switch>		
 			</section>
 			<footer className="footer">
-				<div class="content has-text-centered">
+				<div className="content has-text-centered">
 					<p>Aves @2021</p>
 				</div>
 			</footer>

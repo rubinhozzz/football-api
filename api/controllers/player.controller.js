@@ -1,5 +1,8 @@
-exports.getAll = (req, res) => {
-	res.send('not implemented')
+const playerModel = require('../models/player.model');
+
+exports.getAll = async (req, res) => {
+	const result = await playerModel.getPlayers();
+	res.json(result)
 }
 
 exports.create = (req, res) => {

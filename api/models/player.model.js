@@ -1,15 +1,15 @@
 const Pool = require('pg').Pool
 const pool = new Pool({
-	user: 'my_user',
+	user: 'rubinhozzz',
 	host: 'localhost',
 	database: 'aves',
-	password: 'root',
+	password: 'geheim',
 	port: 5432,
 });
 
 const getPlayers = () => {
 	return new Promise(function(resolve, reject) {
-		pool.query('SELECT * FROM players ORDER BY id ASC', (error, results) => {
+		pool.query('SELECT * FROM player ORDER BY id ASC', (error, results) => {
 		if (error) {
 			reject(error)
 		}
@@ -43,5 +43,5 @@ const deleteMerchant = () => {
 }*/
 
 module.exports = {
-  getMerchants,
+	getPlayers,
 }
