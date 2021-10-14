@@ -4,11 +4,13 @@ class MatchController {
 
 	getAll(req, res) {
 		Match.find({}, function(err, matches) {
-			let matchMap = {};
+
+			/*let matchMap = {};
 			matches.forEach(function(match) {
 				matchMap[match._id] = match;
 			});
-			res.send(matchMap);  
+			res.send(matchMap);  */
+			res.send(matches);
 		});
 	}
 }

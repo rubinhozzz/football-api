@@ -4,7 +4,9 @@ import './App.css';
 import Nav from './components/Menu.js';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Players from './components/Players.js';
+import NewPlayer from './components/NewPlayer.js';
 import Matches from './components/Matches.js';
+import NewMatch from './components/NewMatch.js';
 
 function App() {
 	return (
@@ -13,8 +15,11 @@ function App() {
 			<Nav />
 			<section id="div_content">
 			<Switch>
+				<Route path="/players/add" component={NewPlayer}></Route>
 				<Route path="/players" component={Players}></Route>
+				<Route path="/matches/add" component={NewMatch}></Route>
 				<Route path="/matches" component={Matches}></Route>
+				<Route path="/" component={Matches}></Route>
 			</Switch>		
 			</section>
 			<footer className="footer">
@@ -28,3 +33,4 @@ function App() {
 }
 
 export default App;
+
