@@ -1,22 +1,16 @@
-const playerModel = require('../models/player.model');
+const Player = require('../models/player.model');
 
-exports.getAll = async (req, res) => {
-	const result = await playerModel.getPlayers();
-	res.json(result)
+class PlayerController {
+
+	getAll(req, res) {
+		Player.find({}, function(err, players) {
+			let playerMap = {};
+			players.forEach(function(player) {
+				playerMap[player._id] = player;
+			});
+			res.send(playerMap);  
+		});
+	}
 }
 
-exports.create = (req, res) => {
-	res.send('not implemented')
-}
-
-exports.update = (req, res) => {
-	res.send('not implemented')
-}
-
-exports.get = (req, res) => {
-	res.send('not implemented')
-}
-
-exports.delete = (req, res) => {
-	res.send('not implemented')
-}
+module.exports = PlayerController;

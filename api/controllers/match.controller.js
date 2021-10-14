@@ -1,22 +1,16 @@
-const matchModel = require('../models/match.model');
+const Match = require('../models/match.model');
 
-exports.getAll = async (req, res) => {
-	const result = await matchModel.getMatches();
-	res.json(result)
+class MatchController {
+
+	getAll(req, res) {
+		Match.find({}, function(err, matches) {
+			let matchMap = {};
+			matches.forEach(function(match) {
+				matchMap[match._id] = match;
+			});
+			res.send(matchMap);  
+		});
+	}
 }
 
-exports.create = (req, res) => {
-	res.send('not implemented')
-}
-
-exports.update = (req, res) => {
-	res.send('not implemented')
-}
-
-exports.get = (req, res) => {
-	res.send('not implemented')
-}
-
-exports.delete = (req, res) => {
-	res.send('not implemented')
-}
+module.exports = MatchController;
