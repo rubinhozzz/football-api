@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import ReactDOM from "react-dom";
-import { Link } from 'react-router-dom'
-import { Box, Table, Button, Field, Control, Select } from 'react-bulma-components';
+import { Link, Button } from 'react-router-dom';
+import axios from 'axios';
 
 class Players extends Component {
 	constructor() {
@@ -9,17 +8,31 @@ class Players extends Component {
 		this.state = { data: [] };
 	}
 
-	async componentDidMount() {
-		const response = await fetch('http://localhost:8000/players/');
-		const json = await response.json();
-		this.setState({data: json})
+	componentDidMount = async () => {
+		try {
+			console.log(axios.defaults.baseURL)
+			const response = await axios.get('http://localhost:8000/players');
+			this.setState({data: response.data})	
+		} catch (error) {
+			alert(error)
+		}
 	}
-	
+
+	handleDeleteClick = async (event) => {
+		try {
+			const id = event.target.getAttribute('data-id');
+			alert(id);
+			const response = await axios.delete(`/players/delete/${id}`);
+		} catch (error) {
+			alert(error)
+		}
+	}
+
 	render() {
 		return (
-		<Box>
-		<Link to="/players" className="level-item">New player</Link>
-		<Table className="table" width="100%">
+		<div>
+		<Link to="/players/add">New player</Link>
+		<table className="table" width="100%">
 			<thead>
 				<tr>
 					<th>Firstname</th>
@@ -34,14 +47,14 @@ class Players extends Component {
 						<td>{el.firstname}</td>
 						<td>{el.lastname}</td>
 						<td>
-							<Button color="info">Edit</Button>&nbsp;<Button color="danger">Remove</Button>
+							<Link to={`/players/update/${el._id}`}>Edit</Link>&nbsp;<Link to="" data-id={el._id} onClick={this.handleDeleteClick}>Remove</Link>
 						</td>
 					</tr>
 				)
 			}
 			</tbody>
-		</Table>
-		</Box>
+		</table>
+		</div>
 		)
 	}
 }

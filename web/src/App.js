@@ -5,6 +5,7 @@ import Nav from './components/Menu.js';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Players from './components/Players.js';
 import NewPlayer from './components/NewPlayer.js';
+import UpdatePlayer from './components/UpdatePlayer.js';
 import Matches from './components/Matches.js';
 import NewMatch from './components/NewMatch.js';
 
@@ -16,6 +17,7 @@ function App() {
 			<section id="div_content">
 			<Switch>
 				<Route path="/players/add" component={NewPlayer}></Route>
+				<Route path="/players/update/:id" component={UpdatePlayer}></Route>
 				<Route path="/players" component={Players}></Route>
 				<Route path="/matches/add" component={NewMatch}></Route>
 				<Route path="/matches" component={Matches}></Route>
