@@ -5,11 +5,11 @@ import PlayerForm from './PlayerForm';
 function NewPlayer(props) {
 
 	async function handleSubmit(firstname, lastname) {
-		const response = await axios.post('http://localhost:8000/players/add', {firstname: firstname, lastname: lastname});
+		const response = await axios.post('players/add', {firstname: firstname, lastname: lastname});
 	}
 
 	return (
-		<PlayerForm buttonLabel="Create" handleSubmit={handleSubmit} data={{firstname: '', lastname: ''}} />
+		<PlayerForm buttonLabel="Create" handleSubmit={handleSubmit}/>
 	)
 }
 

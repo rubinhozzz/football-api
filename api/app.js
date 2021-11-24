@@ -18,8 +18,10 @@ app.use(cors());
 app.use(express.json());
 const playersRouter = require('./routes/players');
 const matchesRouter = require('./routes/matches');
+const locationsRouter = require('./routes/locations');
 app.use('/players', playersRouter);
 app.use('/matches', matchesRouter);
+app.use('/locations', locationsRouter);
 app.listen(port, () => console.log('hey!'))
 
 module.exports = app;

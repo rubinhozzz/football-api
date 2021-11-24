@@ -12,12 +12,18 @@ function PlayerSelect(props) {
 		fetchPlayers();
 	});
 
+	function handleChange(event) {
+		event.preventDefault();
+		if ('onChange' in props)
+			props.onChange(props.id, event.target.value);
+	}
+
 	return (
 		<div>
 		<div className="select">
-			<select>{
+			<select onChange={handleChange}>{
 				players.map(player => 
-					<option>{player.firstname}</option>
+					<option value={player._id}>{player.firstname} {player.lastname}</option>
 				)
 			}</select>
 		</div>

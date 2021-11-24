@@ -4,29 +4,18 @@ import PlayerForm from './PlayerForm';
 
 function UpdatePlayer(props) {
 	const [id, setId] = useState(props.match.params.id);
-	const [firstname1, setFirstname] = useState('');
-	const [lastname1, setLastname] = useState('');
 
-	useEffect(() => {
-		async function fetchData() {
-			const response = await axios.get(`players/${id}`);
-			console.log('Getting data for first time!');
-			setFirstname(response.data.firstname);
-			setLastname(response.data.lastname);
-		}
-		fetchData();
-	});
-
-	function handleSubmit(firstname, lastname) {
+	async function handleSubmit(firstname, lastname) {
 		const data = {
 			firstname,
 			lastname
 		}
-		alert('SUBMIT UPDATE!!!');
+		const response = await axios.put(`players/${id}`, {firstname: firstname, lastname: lastname});
+		console.log(response);
 	}
 
 	return (
-		<PlayerForm data={{firstname: firstname1, lastname: lastname1}} buttonLabel="Update" onSubmit={handleSubmit}/>
+		<PlayerForm dataId={id} buttonLabel="Update" handleSubmit={handleSubmit}/>
 	)
 }
 

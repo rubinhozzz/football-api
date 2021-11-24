@@ -11,7 +11,7 @@ class Matches extends Component {
 
 	async componentDidMount() {
 		const response = await axios.get('matches');
-		const json = await response.json();
+		const json = response.data;
 		this.setState({ data: json });
 	}
 	

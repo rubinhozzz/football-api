@@ -16,7 +16,7 @@ function Players(props) {
 			}
 		}
 		getPlayers();
-	});
+	}, []);
 
 	async function handleDeleteClick(event) {
 		try {
