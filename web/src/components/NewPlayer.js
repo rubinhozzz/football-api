@@ -1,23 +1,16 @@
 import React, { Component } from 'react';
-import { Form, Button } from 'react-bulma-components';
 import axios from 'axios';
 import PlayerForm from './PlayerForm';
-const { Input, Field, Label } = Form;
 
-class NewPlayer extends Component {
-	constructor(props) {
-		super(props);
-	}
+function NewPlayer(props) {
 
-	handleSubmit = async(firstname, lastname) => {
+	async function handleSubmit(firstname, lastname) {
 		const response = await axios.post('http://localhost:8000/players/add', {firstname: firstname, lastname: lastname});
 	}
 
-	render() {
-		return (
-			<PlayerForm buttonLabel="Create" handleSubmit={this.handleSubmit} data=""/>
-		)
-	}
+	return (
+		<PlayerForm buttonLabel="Create" handleSubmit={handleSubmit} data={{firstname: '', lastname: ''}} />
+	)
 }
 
 export default NewPlayer;

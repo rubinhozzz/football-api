@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Axios from 'axios';
+import axios from 'axios';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -17,8 +17,10 @@ ReactDOM.render(
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
 
-const axios = Axios.create({
-	baseURL: 'http://localhost:8000',
-});
+//const axios = Axios.create({
+//	baseURL: 'http://localhost:8000',
+//});
 
-export default axios;
+axios.defaults.baseURL = 'http://localhost:8000';
+
+//export default axios;

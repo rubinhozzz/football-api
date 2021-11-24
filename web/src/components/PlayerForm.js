@@ -1,6 +1,40 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import axios from 'axios';
 
+function PlayerForm(props) {
+	console.log(props.data)
+	//const [firstname, setFirstname] = useState((props.data != null) ? props.data.firstname : '');
+	//const [lastname, setLastname] = useState((props.data != null) ? props.data.lastname : '');
+	const [firstname, setFirstname] = useState('');
+	const [lastname, setLastname] = useState('');
+
+	function handleSubmit(event) {
+		event.preventDefault();
+		props.handleSubmit(firstname, lastname);
+	}
+
+	useEffect(() => {
+		//setFirstname(props.data.firstname);
+		//setLastname(props.data.lastname);
+
+	});
+
+	return (
+		<form onSubmit={handleSubmit} method="post">
+			<div>
+				<label>Firstname</label>
+				<input type="text" className="input" placeholder="Firstname" name="firstname" value={firstname} onChange={e => setFirstname(e.target.value)}/>
+			</div>
+			<div>
+				<label>Lastname</label>
+				<input type="text" className="input" placeholder="Lastname" name="lastname" value={lastname} onChange={e => setLastname(e.target.value)}/>
+			</div>
+			<button className="button is-primary" type="submit">{props.buttonLabel}</button>
+		</form>
+	) 
+}
+
+/*
 class PlayerForm extends Component {
 	constructor(props) {
 		super(props);
@@ -40,6 +74,6 @@ class PlayerForm extends Component {
 			</form>
 		)
 	}
-}
+}*/
 
 export default PlayerForm;

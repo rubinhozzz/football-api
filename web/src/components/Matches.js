@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { Box, Table, Button, Field, Control, Select, Columns } from 'react-bulma-components';
+import axios from 'axios';
 
 class Matches extends Component {
 	constructor() {
@@ -9,7 +10,7 @@ class Matches extends Component {
 	}
 
 	async componentDidMount() {
-		const response = await fetch('http://localhost:8000/matches/');
+		const response = await axios.get('matches');
 		const json = await response.json();
 		this.setState({ data: json });
 	}
@@ -19,6 +20,8 @@ class Matches extends Component {
 		<div>
 		<Button to="/matches/add" color="success" renderAs={Link}>New match</Button>
 		<div>
+			Location: XXX
+			Date:XXX
 			<Columns>
 				<Columns.Column>Team 1</Columns.Column>
 				<Columns.Column>Player 1</Columns.Column>
@@ -41,6 +44,8 @@ class Matches extends Component {
 
 
 		<div>
+			Location: XXX
+			Date:XXX
 			<Columns>
 				<Columns.Column>Team 1</Columns.Column>
 				<Columns.Column>Player 1</Columns.Column>

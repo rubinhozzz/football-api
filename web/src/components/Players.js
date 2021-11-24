@@ -1,35 +1,33 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { Link, Button } from 'react-router-dom';
 import axios from 'axios';
 
-class Players extends Component {
-	constructor() {
-		super();
-		this.state = { data: [] };
-	}
-
-	componentDidMount = async () => {
-		try {
-			console.log(axios.defaults.baseURL)
-			const response = await axios.get('http://localhost:8000/players');
-			this.setState({data: response.data})	
-		} catch (error) {
-			alert(error)
+function Players(props) {
+	const [players, setPlayers] = useState([]);
+	
+	useEffect(() => {
+		async function getPlayers(){
+			try {
+				console.log(axios.defaults.baseURL)
+				const response = await axios.get('players');
+				setPlayers(response.data);
+			} catch (error) {
+				alert(error)
+			}
 		}
-	}
+		getPlayers();
+	});
 
-	handleDeleteClick = async (event) => {
+	async function handleDeleteClick(event) {
 		try {
 			const id = event.target.getAttribute('data-id');
-			alert(id);
-			const response = await axios.delete(`/players/delete/${id}`);
+			const response = await axios.delete(`players/delete/${id}`);
 		} catch (error) {
 			alert(error)
 		}
 	}
 
-	render() {
-		return (
+	return (
 		<div>
 		<Link to="/players/add">New player</Link>
 		<table className="table" width="100%">
@@ -42,12 +40,12 @@ class Players extends Component {
 			</thead>
 			<tbody>
 			{
-				this.state.data.map(el => 
+				players.map(el => 
 					<tr key={el._id}>
 						<td>{el.firstname}</td>
 						<td>{el.lastname}</td>
 						<td>
-							<Link to={`/players/update/${el._id}`}>Edit</Link>&nbsp;<Link to="" data-id={el._id} onClick={this.handleDeleteClick}>Remove</Link>
+							<Link to={`/players/update/${el._id}`}>Edit</Link>&nbsp;<Link to="" data-id={el._id} onClick={handleDeleteClick}>Remove</Link>
 						</td>
 					</tr>
 				)
@@ -56,7 +54,6 @@ class Players extends Component {
 		</table>
 		</div>
 		)
-	}
 }
 
 export default Players;
