@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component, Fragment, useEffect, useState } from 'react';
 import axios from 'axios';
 
 function PlayerSelect(props) {
@@ -21,9 +21,11 @@ function PlayerSelect(props) {
 	return (
 		<div>
 		<div className="select">
-			<select onChange={handleChange}>{
+			<select onChange={handleChange}>
+				<option value="0">---</option>
+				{
 				players.map(player => 
-					<option value={player._id}>{player.firstname} {player.lastname}</option>
+					<option value={player._id} key={player._id}>{player.firstname} {player.lastname}</option>
 				)
 			}</select>
 		</div>

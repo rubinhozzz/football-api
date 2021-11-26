@@ -1,12 +1,17 @@
 import React, { Component, useEffect, useState } from 'react';
 import { Columns, Button } from 'react-bulma-components';
 import PlayerSelect from './PlayerSelect';
+import Team from './Team';
 import axios from 'axios';
 
 function NewMatch(props) {
+	const [location, setLocation] = useState(0);
+	const [date, setDate] = useState('2021-11-25');
 	const [locations, setLocations] = useState([]);
-	const [teamA, setTeamA] = useState([]);
-	const [teamB, setTeamB] = useState([]);
+	const [teamA, setTeamA] = useState([0,0,0,0,0]);
+	const [teamB, setTeamB] = useState([0,0,0,0,0]);
+	const [teamAName, setTeamAName] = useState(['']);
+	const [teamBName, setTeamBName] = useState(['']);
 
 	useEffect(() => {
 		async function fetchLocations() {
@@ -14,21 +19,41 @@ function NewMatch(props) {
 			setLocations(response.data);
 		}
 		fetchLocations();
+		console.log(1);
 	}, []);
 
 	async function handleSubmit(event) {
 		event.preventDefault();
-		const response = await axios.post('matches/add', {
-			location: '',
-			date: '',
-			teamA: [],
-			teamB: []
+		console.log(teamA);
+		console.log(teamB);
+		const response = await axios.post('matches', {
+			location: location,
+			date: date,
+			teamA: teamA,
+			teamB: teamB
 		});
 	}
 
-	function handlePlayerChange(id, value) {
-		alert(id);
-		alert(value);
+	function handlePlayerChange(teamId, ddId, value) {
+		//alert(teamId);
+		//alert(ddId);
+		//alert(value);
+		
+		let team = teamA; 
+		if (teamId == 'B')
+			team = teamB;
+		team[ddId[1]] = value;
+		if (teamId == 'A')
+			setTeamA(team);
+		else
+			setTeamB(team);
+	}
+
+	function handleNameChange(teamId, name) {
+		if (teamId == 'A')
+			setTeamAName(name);
+		else
+			setTeamBName(name);
 	}
 
 	return (
@@ -38,10 +63,11 @@ function NewMatch(props) {
 				<div className="label">Location:</div>
 				<div className="control">
 				<div className="select">
-					<select>
+					<select onChange={e=> setLocation(e.target.value)}>
+					<option value="0">---</option>
 					{
 						locations.map(location => 
-							<option>{location.name}</option>
+							<option value={location._id} key={location._id}>{location.name}</option>
 						)
 					}
 					</select>
@@ -51,33 +77,21 @@ function NewMatch(props) {
 			<div className="field">
 				<div className="label">Date / time :</div>
 				<div className="control">
-					<input type="date" className="input"/>	
+					<input type="date" className="input" value="" onChange={(e) => setDate(e.target.value)}/>	
 				</div>
 			</div>
-			<Columns>
-				<Columns.Column>
-					<div className="control">
-						<input type="text" className="input" placeholder="Team 1"/>
-					</div>
-					<PlayerSelect id="A1" onChange={handlePlayerChange}/>
-					<PlayerSelect id="A2" onChange={handlePlayerChange}/>
-					<PlayerSelect id="A3" onChange={handlePlayerChange}/>
-					<PlayerSelect id="A4" onChange={handlePlayerChange}/>
-					<PlayerSelect id="A5" onChange={handlePlayerChange}/>
-					<PlayerSelect id="A6" onChange={handlePlayerChange}/>
-				</Columns.Column>
-				<Columns.Column>
-					<div className="control">
-						<input type="text" className="input" placeholder="Team 2"/>		
-					</div>
-					<PlayerSelect id="B1" onChange={handlePlayerChange}/>
-					<PlayerSelect id="B2" onChange={handlePlayerChange}/>
-					<PlayerSelect id="B3" onChange={handlePlayerChange}/>
-					<PlayerSelect id="B4" onChange={handlePlayerChange}/>
-					<PlayerSelect id="B5" onChange={handlePlayerChange}/>
-					<PlayerSelect id="B6" onChange={handlePlayerChange}/>
-				</Columns.Column>
-			</Columns>
+			<div className="columns">
+				<div className="column">
+					<Team id="A" 
+						onNameChange={handleNameChange}
+						onPlayerChange={handlePlayerChange}/>
+				</div>
+				<div className="column">
+					<Team id="B" 
+						onNameChange={handleNameChange}
+						onPlayerChange={handlePlayerChange}/>
+				</div>
+			</div>
 			<button className="button is-primary" type="submit">Create</button>
 		</form>
 		</div>

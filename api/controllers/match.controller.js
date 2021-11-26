@@ -13,6 +13,17 @@ class MatchController {
 			res.send(matches);
 		});
 	}
+
+	async create(req, res) {
+		console.log(req.body);
+		/*const player = new Player({
+			firstname: req.body.firstname,
+			lastname: req.body.lastname
+		});
+		
+		await player.save()*/
+		//res.send(player);
+	}
 }
 
 module.exports = MatchController;
