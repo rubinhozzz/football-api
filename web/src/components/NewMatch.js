@@ -1,6 +1,4 @@
-import React, { Component, useEffect, useState } from 'react';
-import { Columns, Button } from 'react-bulma-components';
-import PlayerSelect from './PlayerSelect';
+import React, { useEffect, useState } from 'react';
 import Team from './Team';
 import axios from 'axios';
 
@@ -35,10 +33,6 @@ function NewMatch(props) {
 	}
 
 	function handlePlayerChange(teamId, ddId, value) {
-		//alert(teamId);
-		//alert(ddId);
-		//alert(value);
-		
 		let team = teamA; 
 		if (teamId == 'B')
 			team = teamB;
