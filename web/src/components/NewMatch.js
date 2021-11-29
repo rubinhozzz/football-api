@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Team from './Team';
 import axios from 'axios';
+import moment from 'moment';
 
 function NewMatch(props) {
 	const [location, setLocation] = useState(0);
-	const [date, setDate] = useState('2021-11-25');
+	const [datetime, setDatetime] = useState(moment(Date.now()).format("YYYY-MM-DDTkk:mm"));
 	const [locations, setLocations] = useState([]);
 	const [teamA, setTeamA] = useState([0,0,0,0,0]);
 	const [teamB, setTeamB] = useState([0,0,0,0,0]);
@@ -18,6 +19,7 @@ function NewMatch(props) {
 		}
 		fetchLocations();
 		console.log(1);
+		console.log(Date.now().toString());
 	}, []);
 
 	async function handleSubmit(event) {
@@ -26,7 +28,7 @@ function NewMatch(props) {
 		console.log(teamB);
 		const response = await axios.post('matches', {
 			location: location,
-			date: date,
+			datetime: datetime,
 			teamA: teamA,
 			teamB: teamB
 		});
@@ -71,7 +73,7 @@ function NewMatch(props) {
 			<div className="field">
 				<div className="label">Date / time :</div>
 				<div className="control">
-					<input type="date" className="input" value="" onChange={(e) => setDate(e.target.value)}/>	
+					<input type="datetime-local" className="input" value={datetime} onChange={(e) => setDatetime(e.target.value)}/>	
 				</div>
 			</div>
 			<div className="columns">
