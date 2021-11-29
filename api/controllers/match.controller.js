@@ -15,14 +15,23 @@ class MatchController {
 	}
 
 	async create(req, res) {
-		console.log(req.body);
-		/*const player = new Player({
-			firstname: req.body.firstname,
-			lastname: req.body.lastname
-		});
+		console.log(req.body.teamA);
+		//let teamA = req.body.teamA
+		try {
+			const match = new Match({
+				location: req.body.location,
+				datetime: req.body.datetime,
+				teamAName: req.body.teamAName,
+				teamBname: req.body.teamBName,
+				teamA: req.body.teamA,
+				teamB: req.body.teamB
+			});
+			await match.save()
+			res.send(match);	
+		} catch (error) {
+			console.log(error);
+		}
 		
-		await player.save()*/
-		//res.send(player);
 	}
 }
 

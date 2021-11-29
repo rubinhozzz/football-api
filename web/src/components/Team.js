@@ -34,10 +34,11 @@ function Team(props) {
 			<PlayerSelect key={id} id={id} onChange={handlePlayerChange}/>
 		)
 	}
+	const placeholderName = `Team ${props.id}`;
 	return (
 		<Fragment>
 			<div className="control">
-				<input type="text" onChange={handleNameChange} className="input" placeholder="Team 1"/>
+				<input type="text" onChange={handleNameChange} className="input" placeholder={placeholderName}/>
 			</div>
 			{/*<button className="button" onClick={addPlayer}>+</button><br/>*/}
 			{dds}

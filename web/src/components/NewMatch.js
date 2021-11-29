@@ -18,19 +18,24 @@ function NewMatch(props) {
 			setLocations(response.data);
 		}
 		fetchLocations();
-		console.log(1);
-		console.log(Date.now().toString());
 	}, []);
 
 	async function handleSubmit(event) {
 		event.preventDefault();
 		console.log(teamA);
 		console.log(teamB);
+		console.log(teamAName);
+		console.log(teamBName);
+		console.log(location);
+		console.log(datetime);
+		
 		const response = await axios.post('matches', {
 			location: location,
 			datetime: datetime,
+			teamAName: teamAName,
 			teamA: teamA,
-			teamB: teamB
+			teamB: teamB,
+			teamBName: teamBName,
 		});
 	}
 
