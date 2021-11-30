@@ -1,73 +1,59 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
-import { Box, Table, Button, Field, Control, Select, Columns } from 'react-bulma-components';
+import { Button, Columns } from 'react-bulma-components';
 import axios from 'axios';
 
-class Matches extends Component {
-	constructor() {
-		super();
-		this.state = { data: [] };
-	}
+function Matches(props) {
+	const [matches, setMatches] = useState([]);
 
-	async componentDidMount() {
-		const response = await axios.get('matches');
-		const json = response.data;
-		this.setState({ data: json });
-	}
+	useEffect(() => {
+		async function fetchMaches() {
+			const response = await axios.get('matches');
+			console.log(response.data);
+			setMatches(response.data);
+		}
+		fetchMaches();
+	}, []);
 	
-	render() {
-		return (
+	return (
 		<div>
-		<Button to="/matches/add" color="success" renderAs={Link}>New match</Button>
-		<div>
-			Location: XXX
-			Date:XXX
-			<Columns>
-				<Columns.Column>Team 1</Columns.Column>
-				<Columns.Column>Player 1</Columns.Column>
-				<Columns.Column>Player 2</Columns.Column>
-				<Columns.Column>Player 3</Columns.Column>
-				<Columns.Column>Player 4</Columns.Column>
-				<Columns.Column>Player 5</Columns.Column>
-				<Columns.Column>Player 6</Columns.Column>
-			</Columns>
-			<Columns>
-				<Columns.Column>Team 2</Columns.Column>
-				<Columns.Column>Player 1</Columns.Column>
-				<Columns.Column>Player 2</Columns.Column>
-				<Columns.Column>Player 3</Columns.Column>
-				<Columns.Column>Player 4</Columns.Column>
-				<Columns.Column>Player 5</Columns.Column>
-				<Columns.Column>Player 6</Columns.Column>
-			</Columns>
+			<Button to="/matches/add" color="success" renderAs={Link}>New match</Button>
+				{
+					matches.map(match =>
+						<div key={match._id}>
+							Location: {match.location.name}<br/>
+							Date:{match.datetime}
+							<div className="columns" style={{border:"3px"}}>
+								<div className="column" style={{border:"32px"}}>{match.teamAName}</div>
+									{match.teamA.map((player) => (
+										<div className="column">{player.firstname}</div>
+									))}
+								
+							</div>
+							<div className="columns">
+								<div className="column">{match.teamBName}</div>
+									{match.teamB.map((player) => (
+										<div className="column">{player.firstname}</div>
+									))}
+								
+							</div>
+							<div>
+								<div>Pichichi</div>
+									{match.pichichi.map((player) => (
+										<div className="column">{player.firstname}</div>
+									))}
+							</div>
+							<div>
+								<div>MVP</div>
+									{match.mvp.map((player) => (
+										<div className="column">{player.firstname}</div>
+									))}
+							</div>
+					</div>
+					)
+				}
 		</div>
-
-
-		<div>
-			Location: XXX
-			Date:XXX
-			<Columns>
-				<Columns.Column>Team 1</Columns.Column>
-				<Columns.Column>Player 1</Columns.Column>
-				<Columns.Column>Player 2</Columns.Column>
-				<Columns.Column>Player 3</Columns.Column>
-				<Columns.Column>Player 4</Columns.Column>
-				<Columns.Column>Player 5</Columns.Column>
-				<Columns.Column>Player 6</Columns.Column>
-			</Columns>
-			<Columns>
-				<Columns.Column>Team 2</Columns.Column>
-				<Columns.Column>Player 1</Columns.Column>
-				<Columns.Column>Player 2</Columns.Column>
-				<Columns.Column>Player 3</Columns.Column>
-				<Columns.Column>Player 4</Columns.Column>
-				<Columns.Column>Player 5</Columns.Column>
-				<Columns.Column>Player 6</Columns.Column>
-			</Columns>
-		</div>
-		</div>
-		)
-	}
+	)
 }
 
 export default Matches
