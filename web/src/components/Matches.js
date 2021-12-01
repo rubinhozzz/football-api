@@ -50,30 +50,51 @@ function Matches(props) {
 	return (
 		<div>
 			<fieldset><legend>Search by:</legend>
-				Location<select onChange={(e) => setLocation(e.target.value)}>
-					<option value="0">---</option>
-					{
-						locations.map(location => (
-							<option key={location._id} value={location._id}>{location.name}</option>	
-						))
-					}
-				</select>
-				Pichichi<select onChange={(e) => setPichichi(e.target.value)}>
-					<option value="0">---</option>
-					{
-						players.map(player => (
-							<option key={player._id} value={player._id}>{player.firstname}</option>	
-						))
-					}
-				</select>
-				MVP<select onChange={(e) => setMVP(e.target.value)}>
-					<option value="0">---</option>
-					{
-						players.map(player => (
-							<option key={player._id} value={player._id}>{player.firstname}</option>	
-						))
-					}
-				</select>
+				<div className="field is-horizontal">
+					<label className="label">Location:</label>
+					<div className="control">
+						<div className="select">
+						<select onChange={(e) => setLocation(e.target.value)}>
+							<option value="0">---</option>
+							{
+								locations.map(location => (
+									<option key={location._id} value={location._id}>{location.name}</option>	
+								))
+							}
+						</select>
+						</div>
+					</div>
+				</div>
+				<div className="field is-horizontal">
+					<label className="label">Pichichi:</label>
+					<div className="control">
+						<div className="select">
+						<select onChange={(e) => setPichichi(e.target.value)}>
+							<option value="0">---</option>
+							{
+								players.map(player => (
+									<option key={player._id} value={player._id}>{player.firstname}</option>	
+								))
+							}
+						</select>
+						</div>
+					</div>
+				</div>
+				<div className="field is-horizontal">
+					<label className="label">MVP:</label>
+					<div className="control">
+						<div className="select">
+						<select onChange={(e) => setMVP(e.target.value)}>
+						<option value="0">---</option>
+						{
+							players.map(player => (
+								<option key={player._id} value={player._id}>{player.firstname}</option>	
+							))
+						}
+						</select>
+						</div>
+					</div>
+				</div>
 				<button className="button is-primary" onClick={handleSearch}>Search</button>
 			</fieldset>
 			<Button to="/matches/add" color="success" renderAs={Link}>New match</Button>
