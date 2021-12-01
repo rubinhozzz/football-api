@@ -21,12 +21,19 @@ function PlayerSelect(props) {
 		if ('onChange' in props)
 			props.onChange(props.id, event.target.value);
 	}
-
+	let multiple = false;
+	let className = 'select';
+	if (props.multiple) {
+		multiple = true;
+		className = 'select is-multiple';
+	}
 	return (
 		<div>
-		<div className="select">
-			<select onChange={handleChange}>
+		<div className={className}>
+			<select onChange={handleChange} multiple={multiple}>
+				{!multiple &&
 				<option value="0">---</option>
+				}		
 				{
 				players.map(player => 
 					<option value={player._id} key={player._id}>{player.firstname} {player.lastname}</option>

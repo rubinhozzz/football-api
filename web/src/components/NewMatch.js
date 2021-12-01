@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Team from './Team';
+import PlayerSelect from './PlayerSelect';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -85,6 +86,18 @@ function NewMatch(props) {
 					<Team id="B" 
 						onNameChange={handleNameChange}
 						onPlayerChange={handlePlayerChange}/>
+				</div>
+			</div>
+			<div className="field">
+				<div className="label">Pichichi:</div>
+				<div className="control">
+					<PlayerSelect multiple/>	
+				</div>
+			</div>
+			<div className="field">
+				<div className="label">MVP:</div>
+				<div className="control">
+					<PlayerSelect />	
 				</div>
 			</div>
 			<button className="button is-primary" type="submit">Create</button>
