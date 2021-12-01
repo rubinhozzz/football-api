@@ -10,7 +10,7 @@ class MatchController {
 		if (req.query.mvp != '0')
 			params['mvp'] = req.query.mvp
 		if (req.query.pichichi != '0')
-			params['pichichi'] = req.query.pichichi
+			params['pichichi'] = {$in: [req.query.pichichi]}
 		console.log(params)
 		Match.find(params)
 			.populate('location')

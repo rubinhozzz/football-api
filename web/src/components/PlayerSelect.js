@@ -5,12 +5,16 @@ function PlayerSelect(props) {
 	const [players, setPlayers] = useState([]);
 
 	useEffect(() => {
+		console.log('use effect');
 		async function fetchPlayers() {
 			const response = await axios.get('players');
 			setPlayers(response.data);
 		}
 		fetchPlayers();
-	});
+		return () => {
+			console.log('cleanup')
+		}
+	}, []);
 
 	function handleChange(event) {
 		event.preventDefault();

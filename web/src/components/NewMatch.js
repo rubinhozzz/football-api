@@ -18,6 +18,7 @@ function NewMatch(props) {
 			setLocations(response.data);
 		}
 		fetchLocations();
+
 	}, []);
 
 	async function handleSubmit(event) {
