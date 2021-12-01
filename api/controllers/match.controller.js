@@ -3,7 +3,16 @@ const Match = require('../models/match.model');
 class MatchController {
 
 	getAll(req, res) {
-		Match.find({})
+		console.log(req.query)
+		let params = {}
+		if (req.query.location != '0')
+			params['location'] = req.query.location
+		if (req.query.mvp != '0')
+			params['mvp'] = req.query.mvp
+		if (req.query.pichichi != '0')
+			params['pichichi'] = req.query.pichichi
+		console.log(params)
+		Match.find(params)
 			.populate('location')
 			.populate('teamA')
 			.populate('teamB')
@@ -13,7 +22,6 @@ class MatchController {
 	}
 
 	async create(req, res) {
-		console.log(req.body.teamA);
 		try {
 			const match = new Match({
 				location: req.body.location,

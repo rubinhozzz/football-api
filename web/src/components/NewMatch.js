@@ -22,13 +22,6 @@ function NewMatch(props) {
 
 	async function handleSubmit(event) {
 		event.preventDefault();
-		console.log(teamA);
-		console.log(teamB);
-		console.log(teamAName);
-		console.log(teamBName);
-		console.log(location);
-		console.log(datetime);
-		
 		const response = await axios.post('matches', {
 			location: location,
 			datetime: datetime,

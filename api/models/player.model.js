@@ -2,7 +2,9 @@ const mongoose = require('mongoose');
 
 const playerSchema = mongoose.Schema({
 	firstname: String,
-	lastname: String
+	lastname: String,
+	photoUrl: String,
+	countryCode: String
 });
 
 const Player = mongoose.model('Player', playerSchema);

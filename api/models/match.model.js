@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-//const location = require('./location.model');
 
 const matchSchema = mongoose.Schema({
 	location: {type: mongoose.Types.ObjectId, ref: 'Location'},
@@ -8,10 +7,10 @@ const matchSchema = mongoose.Schema({
 	teamBName: String,
 	teamA: [{type: mongoose.Types.ObjectId, ref: 'Player'}],
 	teamB: [{type: mongoose.Types.ObjectId, ref: 'Player'}],
-	teamAScore: Number,
-	teamBScore: Number,
+	teamAScore: {type: Number, default: 0},
+	teamBScore: {type: Number, default: 0},
 	pichichi: [{type: mongoose.Types.ObjectId, ref: 'Player'}],
-	mvp: [{type: mongoose.Types.ObjectId, ref: 'Player'}],
+	mvp: {type: mongoose.Types.ObjectId, ref: 'Player'},
 });
 
 const Match = mongoose.model('Match', matchSchema);

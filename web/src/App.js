@@ -45,7 +45,7 @@ function App() {
 				</div>
 				</div>
 		</nav>
-		<div className="container is-fluid is-family-code is-size-5">
+		<div className="container is-fluid is-family-code">
 			<section id="div_content">
 			<Switch>
 				<Route path="/players/add" component={NewPlayer}></Route>
@@ -56,12 +56,13 @@ function App() {
 				<Route path="/" component={Matches}></Route>
 			</Switch>		
 			</section>
-			<footer className="footer">
+			
+		</div>
+		<footer className="footer">
 				<div className="content has-text-centered">
 					<p>Aves @2021</p>
 				</div>
 			</footer>
-		</div>
 		</Router>
 	);
 }
