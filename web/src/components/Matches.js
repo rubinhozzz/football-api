@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 import { Button } from 'react-bulma-components';
 import axios from 'axios';
+import moment from 'moment';
 
 function Matches(props) {
 	const [matches, setMatches] = useState([]);
@@ -96,29 +97,31 @@ function Matches(props) {
 					</div>
 				</div>
 				<button className="button is-primary" onClick={handleSearch}>Search</button>
-			</fieldset>
-			<Button to="/matches/add" color="success" renderAs={Link}>New match</Button>
-				{
-					matches.map(match =>
+				<Button to="/matches/add" color="success" renderAs={Link}>New match</Button>
+			</fieldset>{matches.map((match) => {
+						const datetime = moment(new Date(match.datetime)).format('YYYY-MM-DD HH:mm:ss');
+						return ( 
 						<div key={match._id} className="columns" style={styles}>
 							<div className="column">
 								{match.location.name}<br/>
-								{match.datetime}
+								{datetime}
 							</div>
 							<div className="column">
 								<b>{match.teamAName}</b>
 								<ul>
-								{match.teamA.map((player) => (
-									<li key={player._id}>{player.firstname}</li>
-								))}
+								{match.teamA.map((player) => {
+									const id = `teamA_${player._id}`;
+									<li key={id}>{player.firstname}</li>
+								})}
 								</ul>
 							</div>
 							<div className="column">
 								<b>{match.teamBName}</b>
 								<ul>
-								{match.teamB.map((player) => (
-									<li key={player._id}>{player.firstname}</li>
-								))}
+								{match.teamB.map((player) => {
+									const id = `teamB_${player._id}`;
+									<li key={id}>{player.firstname}</li>
+								})}
 								</ul>
 							</div>
 							<div className="column">
@@ -134,8 +137,8 @@ function Matches(props) {
 								<img src="https://resources.premierleague.com/premierleague/photos/players/110x140/p176297.png"/>
 								{match.mvp}
 							</div>
-					</div>
-					)
+						</div>)
+				})
 				}
 		</div>
 	)
