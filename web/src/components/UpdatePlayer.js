@@ -6,12 +6,18 @@ function UpdatePlayer(props) {
 	const [id, setId] = useState(props.match.params.id);
 
 	async function handleSubmit(firstname, lastname, file) {
+		let headers = {};
 		const formData = new FormData();
 		formData.append('firstname', firstname);
 		formData.append('lastname', lastname);
-		formData.append('file', file);
-		const response = await axios.put(`players/${id}`, {firstname: firstname, lastname: lastname});
-		console.log(response);
+		if (file) {
+			headers = {"Content-Type": "multipart/form-data"};
+			formData.append('file', file);
+		}
+		const response = await axios.put(`players/${id}`, 
+			formData,
+			{headers}
+		);
 	}
 
 	return (

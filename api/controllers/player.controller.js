@@ -25,7 +25,11 @@ class PlayerController {
 	update = async(req, res) => {
 		let player = await Player.findOneAndUpdate({_id: req.params.id}, {
 			firstname: req.body.firstname,
-			lastname: req.body.lastname
+			lastname: req.body.lastname,
+			profilePhoto: {
+				data: fs.readFileSync(req.files.file.file),
+				contentType: req.files.file.mimetype
+			}
 		}, { new: true });
 	}
 

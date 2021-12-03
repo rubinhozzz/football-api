@@ -5,6 +5,7 @@ function PlayerForm(props) {
 	const [firstname, setFirstname] = useState('');
 	const [lastname, setLastname] = useState('');
 	const [file, setFile] = useState(null);
+	const [imgSrc, setImgSrc] = useState('https://image.shutterstock.com/image-vector/prohibition-sign-no-photography-600w-209270626.jpg');
 
 	function handleFile(event) {
 		setFile(event.target.files[0])
@@ -23,16 +24,14 @@ function PlayerForm(props) {
 			const response = await axios.get(`players/${props.dataId}`);
 			setFirstname(response.data.firstname);
 			setLastname(response.data.lastname);
-			let  buff = Buffer.from(response.data.profilePhoto.data.data);
-			setFile(buff.toString('base64'));
-			console.log(response.data);
+			if (response.data.profilePhoto) {
+				let buff = Buffer.from(response.data.profilePhoto.data.data);
+				setImgSrc('data:image/png;base64, ' + buff.toString('base64'));
+			}
 		}
 		fetchData();
 	}, []);
-
-	const img = `data:image/png;base64, ${file}`;
 	//console.log(img);
-
 	return (
 		<div>
 		<form onSubmit={handleSubmit} method="post">
@@ -61,7 +60,8 @@ function PlayerForm(props) {
 				<button className="button is-primary" type="submit">{props.buttonLabel}</button>
 			</div>
 		</form>
-		<img src={img}/>
+		<img src={imgSrc} className="image is-128x128"/>
+		
 		</div>
 	) 
 }
