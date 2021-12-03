@@ -4,10 +4,16 @@ import axios from 'axios';
 function PlayerForm(props) {
 	const [firstname, setFirstname] = useState('');
 	const [lastname, setLastname] = useState('');
+	const [file, setFile] = useState(null);
+
+	function handleFile(event) {
+		setFile(event.target.files[0])
+	}
 
 	function handleSubmit(event) {
 		event.preventDefault();
-		props.handleSubmit(firstname, lastname);
+		console.log(file);
+		props.handleSubmit(firstname, lastname, file);
 	}
 
 	useEffect(() => {
@@ -23,15 +29,30 @@ function PlayerForm(props) {
 
 	return (
 		<form onSubmit={handleSubmit} method="post">
-			<div>
-				<label>Firstname</label>
+			<div className="field">
+				<label className="label">Firstname</label>
 				<input type="text" className="input" placeholder="Firstname" name="firstname" value={firstname} onChange={e => setFirstname(e.target.value)}/>
 			</div>
-			<div>
-				<label>Lastname</label>
+			<div className="field">
+				<label className="label">Lastname</label>
 				<input type="text" className="input" placeholder="Lastname" name="lastname" value={lastname} onChange={e => setLastname(e.target.value)}/>
 			</div>
-			<button className="button is-primary" type="submit">{props.buttonLabel}</button>
+			<div className="field file is-boxed">
+				<label className="file-label">
+					<input className="file-input" type="file" name="file" onChange={handleFile}/>
+					<span className="file-cta">
+						<span className="file-icon">
+						<i className="fas fa-upload"></i>
+						</span>
+						<span className="file-label">
+						Choose a photo profile...
+						</span>
+					</span>
+				</label>
+			</div>
+			<div className="field">
+				<button className="button is-primary" type="submit">{props.buttonLabel}</button>
+			</div>
 		</form>
 	) 
 }

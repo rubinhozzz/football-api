@@ -9,13 +9,15 @@ class PlayerController {
 	}
 
 	async create(req, res) {
-		console.log('CREATE!!!!');
+		console.log('CREATE1!!!!');
+		console.log(req.body);
+		console.log(req.file);
 		const player = new Player({
 			firstname: req.body.firstname,
 			lastname: req.body.lastname
 		});
-		await player.save()
-		res.send(player);
+		//await player.save()
+		//res.send(player);
 	}
 
 	update = async(req, res) => {
