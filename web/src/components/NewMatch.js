@@ -10,8 +10,12 @@ function NewMatch(props) {
 	const [locations, setLocations] = useState([]);
 	const [teamA, setTeamA] = useState([0,0,0,0,0]);
 	const [teamB, setTeamB] = useState([0,0,0,0,0]);
-	const [teamAName, setTeamAName] = useState(['']);
-	const [teamBName, setTeamBName] = useState(['']);
+	const [teamAName, setTeamAName] = useState('');
+	const [teamBName, setTeamBName] = useState('');
+	const [teamAScore, setTeamAScore] = useState(0);
+	const [teamBScore, setTeamBScore] = useState(0);
+	const [pichichi, setPichichi] = useState(0);
+	const [mvp, setMVP] = useState([]);
 
 	useEffect(() => {
 		async function fetchLocations() {
@@ -19,7 +23,6 @@ function NewMatch(props) {
 			setLocations(response.data);
 		}
 		fetchLocations();
-
 	}, []);
 
 	async function handleSubmit(event) {
@@ -29,8 +32,12 @@ function NewMatch(props) {
 			datetime: datetime,
 			teamAName: teamAName,
 			teamA: teamA,
+			teamAScore: teamAScore,
 			teamB: teamB,
 			teamBName: teamBName,
+			teamBScore: teamBScore,
+			pichichi: pichichi,
+			mvp: mvp
 		});
 	}
 

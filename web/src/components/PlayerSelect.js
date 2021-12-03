@@ -1,18 +1,20 @@
 import React, { Component, Fragment, useEffect, useState } from 'react';
 import axios from 'axios';
+import { App, PlayersContext } from '../App';
 
 function PlayerSelect(props) {
-	const [players, setPlayers] = useState([]);
+	//const [players, setPlayers] = useState([]);
+	const [players, setPlayers] = React.useContext(PlayersContext);
 
 	useEffect(() => {
 		console.log('use effect');
-		async function fetchPlayers() {
+		/*async function fetchPlayers() {
 			const response = await axios.get('players');
 			setPlayers(response.data);
 		}
-		fetchPlayers();
+		fetchPlayers();*/
 		return () => {
-			console.log('cleanup')
+			setPlayers([]);
 		}
 	}, []);
 
