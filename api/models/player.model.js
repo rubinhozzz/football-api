@@ -3,8 +3,11 @@ const mongoose = require('mongoose');
 const playerSchema = mongoose.Schema({
 	firstname: String,
 	lastname: String,
-	photoUrl: String,
-	countryCode: String
+	profilePhoto: {
+		data: Buffer,
+		contentType: String
+	},
+
 });
 
 const Player = mongoose.model('Player', playerSchema);

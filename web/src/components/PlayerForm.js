@@ -23,11 +23,18 @@ function PlayerForm(props) {
 			const response = await axios.get(`players/${props.dataId}`);
 			setFirstname(response.data.firstname);
 			setLastname(response.data.lastname);
+			let  buff = Buffer.from(response.data.profilePhoto.data.data);
+			setFile(buff.toString('base64'));
+			console.log(response.data);
 		}
 		fetchData();
 	}, []);
 
+	const img = `data:image/png;base64, ${file}`;
+	//console.log(img);
+
 	return (
+		<div>
 		<form onSubmit={handleSubmit} method="post">
 			<div className="field">
 				<label className="label">Firstname</label>
@@ -54,6 +61,8 @@ function PlayerForm(props) {
 				<button className="button is-primary" type="submit">{props.buttonLabel}</button>
 			</div>
 		</form>
+		<img src={img}/>
+		</div>
 	) 
 }
 

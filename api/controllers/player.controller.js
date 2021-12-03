@@ -1,4 +1,5 @@
 const Player = require('../models/player.model');
+var fs = require('fs');
 
 class PlayerController {
 
@@ -9,15 +10,16 @@ class PlayerController {
 	}
 
 	async create(req, res) {
-		console.log('CREATE1!!!!');
-		console.log(req.body);
-		console.log(req.file);
 		const player = new Player({
 			firstname: req.body.firstname,
-			lastname: req.body.lastname
+			lastname: req.body.lastname,
+			profilePhoto: {
+				data: fs.readFileSync(req.files.file.file),
+				contentType: req.files.file.mimetype
+			}
 		});
-		//await player.save()
-		//res.send(player);
+		await player.save()
+		res.send(player);
 	}
 
 	update = async(req, res) => {
@@ -29,7 +31,6 @@ class PlayerController {
 
 	get = async(req, res) => {
 		let player = await Player.findById(req.params.id).exec();
-		console.log(player);
 		res.send(player);
 	}
 
