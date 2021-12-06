@@ -96,19 +96,34 @@ function NewMatch(props) {
 				</div>
 			</div>
 			<div className="field">
-				<div className="label">Pichichi:</div>
+				<div className="label">Score A</div>
+				<div className="control">
+					<input type="text"/>	
+				</div>
+			</div>
+			<div className="field">
+				<div className="label">Score B</div>
+				<div className="control">
+					<input type="text"/>	
+				</div>
+			</div>
+			<div className="field">
+				<div className="label">Pichichi</div>
 				<div className="control">
 					<PlayerSelect multiple/>	
 				</div>
 			</div>
 			<div className="field">
-				<div className="label">MVP:</div>
+				<div className="label">MVP</div>
 				<div className="control">
 					<PlayerSelect />	
 				</div>
 			</div>
+			
 			<button className="button is-primary" type="submit">Create</button>
 		</form>
+
+		
 		</div>
 	)
 }

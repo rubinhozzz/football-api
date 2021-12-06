@@ -9,19 +9,18 @@ import Matches from './components/Matches.js';
 import NewMatch from './components/NewMatch.js';
 import axios from 'axios';
 
-async function fetchPlayers() {
-	const response = await axios.get('players');
-	return response.data;
-}
-
-const PlayersContext = React.createContext(fetchPlayers());
+const PlayersContext = React.createContext(null);
 
 function App() {
 	const [players, setPlayers] = useState([]);
 
 	useEffect(() => {
 		console.log('use effect');
-		setPlayers(fetchPlayers());
+		async function fetchPlayers() {
+			const response = await axios.get('players');
+			setPlayers(response.data);
+		}
+		fetchPlayers();
 		return () => {}
 	}, []);
 
@@ -60,11 +59,12 @@ function App() {
 		</nav>
 		<div className="container is-fluid is-family-code">
 			<section id="div_content">
-			<PlayersContext.Provider  value={[players, setPlayers]}>
+			<PlayersContext.Provider value={players}>
 			<Switch>
 				<Route path="/players/add" component={NewPlayer}></Route>
 				<Route path="/players/update/:id" component={UpdatePlayer}></Route>
 				<Route path="/players" component={Players}></Route>
+				<Route path="/matches/:id" component={NewMatch}></Route>
 				<Route path="/matches/add" component={NewMatch}></Route>
 				<Route path="/matches" component={Matches}></Route>
 				<Route path="/" component={Matches}></Route>

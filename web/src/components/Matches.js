@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Button } from 'react-bulma-components';
 import axios from 'axios';
 import moment from 'moment';
@@ -12,6 +12,7 @@ function Matches(props) {
 	const [location, setLocation] = useState(0);
 	const [pichichi, setPichichi] = useState(0);
 	const [mvp, setMVP] = useState(0);
+	let history = useHistory();
 
 	useEffect(() => {
 		async function fetchMaches() {
@@ -44,15 +45,20 @@ function Matches(props) {
 		setMatches(response.data);
 	}
 
+	async function handleMatchClick(event){
+		console.log(event.target);
+		history.push(`/matches/${event.target.getAttribute('match-id')}`);
+	}
+
 	const styles = {
 		border: '1px solid black', 
 	};
 	
 	return (
 		<div>
-			<fieldset><legend>Search by:</legend>
-				<div className="field is-horizontal">
-					<label className="label">Location:</label>
+			<div className="field is-horizontal">
+			<div className="field-body">
+				<div className="field is-narrow">
 					<div className="control">
 						<div className="select">
 						<select onChange={(e) => setLocation(e.target.value)}>
@@ -66,8 +72,7 @@ function Matches(props) {
 						</div>
 					</div>
 				</div>
-				<div className="field is-horizontal">
-					<label className="label">Pichichi:</label>
+				<div className="field is-narrow">
 					<div className="control">
 						<div className="select">
 						<select onChange={(e) => setPichichi(e.target.value)}>
@@ -81,8 +86,7 @@ function Matches(props) {
 						</div>
 					</div>
 				</div>
-				<div className="field is-horizontal">
-					<label className="label">MVP:</label>
+				<div className="field is-narrow">
 					<div className="control">
 						<div className="select">
 						<select onChange={(e) => setMVP(e.target.value)}>
@@ -96,17 +100,24 @@ function Matches(props) {
 						</div>
 					</div>
 				</div>
-				<button className="button is-primary" onClick={handleSearch}>Search</button>
-				<Button to="/matches/add" color="success" renderAs={Link}>New match</Button>
-			</fieldset>{matches.map((match) => {
+				<div className="field is-narrow">
+					<button className="button is-primary" onClick={handleSearch}>Search</button>
+				</div>
+				<div className="field is-narrow">
+					<Button to="/matches/add" color="success" renderAs={Link}>New match</Button>
+				</div>
+				</div>
+			</div>
+			<br/>
+			{matches.map((match) => {
 						const datetime = moment(new Date(match.datetime)).format('YYYY-MM-DD HH:mm:ss');
 						return ( 
-						<div key={match._id} className="columns" style={styles}>
-							<div className="column">
+						<div key={match._id} className="columns" style={styles} onClick={handleMatchClick}>
+							<div className="column" match-id={match._id} >
 								{match.location.name}<br/>
 								{datetime}
 							</div>
-							<div className="column">
+							<div className="column" match-id={match._id}>
 								<b>{match.teamAName}</b>
 								<ul>
 								{match.teamA.map((player) => {
@@ -115,7 +126,7 @@ function Matches(props) {
 								})}
 								</ul>
 							</div>
-							<div className="column">
+							<div className="column" match-id={match._id}>
 								<b>{match.teamBName}</b>
 								<ul>
 								{match.teamB.map((player) => {
@@ -124,7 +135,7 @@ function Matches(props) {
 								})}
 								</ul>
 							</div>
-							<div className="column">
+							<div className="column" match-id={match._id}>
 								<div>Pichichi</div>
 								<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjCjgVv-4Cl9Z-XQT3uCV_KKtjPzSNG-q2XA&usqp=CAU"/>
 								
@@ -132,7 +143,7 @@ function Matches(props) {
 									<div className="column">{player.firstname}</div>
 								))}
 							</div>
-							<div className="column">
+							<div className="column" match-id={match._id}>
 								<div>MVP</div>
 								<img src="https://resources.premierleague.com/premierleague/photos/players/110x140/p176297.png"/>
 								{match.mvp}
