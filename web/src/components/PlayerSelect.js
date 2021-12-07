@@ -1,38 +1,49 @@
 import React, { Component, Fragment, useEffect, useState } from 'react';
-import axios from 'axios';
-import { App, PlayersContext } from '../App';
+import { PlayersContext } from '../App';
+
+function getSelectValues(select) {
+	var result = [];
+	var options = select && select.options;
+	var opt;
+
+	for (var i=0, iLen=options.length; i<iLen; i++) {
+		opt = options[i];
+		if (opt.selected) {
+			result.push(opt.value);
+		}
+	}
+	return result;
+}
 
 function PlayerSelect(props) {
-	//const [players, setPlayers] = useState([]);
 	const players = React.useContext(PlayersContext);
+	const [selected, setSelected] = useState([]);
 
 	useEffect(() => {
-		/*console.log('use effect');
-		async function fetchPlayers() {
-			const response = await axios.get('players');
-			setPlayers(response.data);
-		}
-		fetchPlayers();
-		return () => {
-			setPlayers([]);
-		}*/
-	}, []);
+		setSelected(props.value);
+	}, [props.value]);
 
 	function handleChange(event) {
 		event.preventDefault();
 		if ('onChange' in props)
-			props.onChange(props.id, event.target.value);
+			if (props.multiple)
+				props.onChange(getSelectValues(event.target));
+			else
+				props.onChange(event.target.value);
 	}
 	let multiple = false;
 	let className = 'select';
+
 	if (props.multiple) {
 		multiple = true;
 		className = 'select is-multiple';
 	}
+	//console.log(multiple, selected);
+
 	return (
 		<div>
 		<div className={className}>
-			<select onChange={handleChange} multiple={multiple}>
+			<select onChange={handleChange} multiple={multiple} value={selected}>
 				{!multiple &&
 				<option value="0">---</option>
 				}		

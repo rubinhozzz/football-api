@@ -11,7 +11,6 @@ class MatchController {
 			params['mvp'] = req.query.mvp
 		if (req.query.pichichi != '0')
 			params['pichichi'] = {$in: [req.query.pichichi]}
-		console.log(params)
 		Match.find(params)
 			.populate('location')
 			.populate('teamA')
@@ -19,6 +18,15 @@ class MatchController {
 			.exec(function(err, matches) {
 				res.send(matches);
 		});
+	}
+
+	async get(req, res) {
+		try {
+			let match = await Match.findById(req.params.id).exec();
+			res.send(match);	
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	async create(req, res) {
@@ -37,6 +45,22 @@ class MatchController {
 			console.log(error);
 		}
 		
+	}
+
+	async update(req, res) {
+		console.log(1111);
+		try {
+			console.log(req);
+			let match = await Match.findOneAndUpdate({_id: req.params.id}, {
+				teamAScore: req.body.teamAScore,
+				teamBScore: req.body.teamBScore,
+				pichichi: req.body.pichichi,
+				mvp: req.body.mvp,
+			}, { new: true });
+			res.send(match);	
+		} catch (error) {
+			console.log(error);
+		}
 	}
 }
 

@@ -13,7 +13,6 @@ function PlayerForm(props) {
 
 	function handleSubmit(event) {
 		event.preventDefault();
-		console.log(file);
 		props.handleSubmit(firstname, lastname, file);
 	}
 

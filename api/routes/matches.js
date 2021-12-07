@@ -5,8 +5,8 @@ var matchController = new MatchController();
 
 router.get('/', matchController.getAll);
 router.post('/', matchController.create);
-/*router.put('/:id', matchController.update);
+router.put('/:id', matchController.update);
 router.get('/:id', matchController.get);
-router.delete('/delete/:id', matchController.delete);*/
+//router.delete('/delete/:id', matchController.delete);*/
 
 module.exports = router;

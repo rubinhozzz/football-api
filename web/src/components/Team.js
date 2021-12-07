@@ -1,10 +1,15 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import PlayerSelect from './PlayerSelect';
 
 function Team(props) {
 	const [numberOfPlayers, setNumberOfPlayers] = useState(6);
 	const [players, setPlayers] = useState([]);
 	const [name, setName] = useState('');
+
+	useEffect(() => {
+		setName(props.data.name);
+		setPlayers(props.data.players);
+	}, [props.data]);
 
 	function handlePlayerChange(id, value) {
 		let p = players;
@@ -30,19 +35,22 @@ function Team(props) {
 	let dds = []
 	for (let i = 0; i < numberOfPlayers; ++i) {
 		const id = `${props.id}${i}`;
+		let value = '0';
+		if (players)
+			value = players[i];
 		dds.push(
-			<PlayerSelect key={id} id={id} onChange={handlePlayerChange}/>
+			<PlayerSelect key={id} id={id} onChange={handlePlayerChange} value={value}/>
 		)
 	}
 	const placeholderName = `Team ${props.id}`;
 	return (
-		<Fragment>
+		<>
 			<div className="control">
-				<input type="text" onChange={handleNameChange} className="input" placeholder={placeholderName}/>
+				<input type="text" value={name} onChange={handleNameChange} className="input" placeholder={placeholderName}/>
 			</div>
 			{/*<button className="button" onClick={addPlayer}>+</button><br/>*/}
 			{dds}
-		</Fragment>
+		</>
 	)
 }
 

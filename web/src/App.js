@@ -6,7 +6,7 @@ import Players from './components/Players.js';
 import NewPlayer from './components/NewPlayer.js';
 import UpdatePlayer from './components/UpdatePlayer.js';
 import Matches from './components/Matches.js';
-import NewMatch from './components/NewMatch.js';
+import Match from './components/Match.js';
 import axios from 'axios';
 
 const PlayersContext = React.createContext(null);
@@ -64,8 +64,8 @@ function App() {
 				<Route path="/players/add" component={NewPlayer}></Route>
 				<Route path="/players/update/:id" component={UpdatePlayer}></Route>
 				<Route path="/players" component={Players}></Route>
-				<Route path="/matches/:id" component={NewMatch}></Route>
-				<Route path="/matches/add" component={NewMatch}></Route>
+				<Route path="/matches/add" component={Match}></Route>
+				<Route path="/matches/:id" component={Match}></Route>
 				<Route path="/matches" component={Matches}></Route>
 				<Route path="/" component={Matches}></Route>
 			</Switch>
