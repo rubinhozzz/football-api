@@ -5,7 +5,7 @@ const bb = require('express-busboy');
 const app = express();
 const port = 8000;
 
-bb.extend(app, {upload:true});
+//bb.extend(app, {upload:true});
 
 mongoose.connect("mongodb://localhost:27017/aves", {
 	useNewUrlParser: "true",

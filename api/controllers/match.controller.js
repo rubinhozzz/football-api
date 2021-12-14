@@ -3,7 +3,6 @@ const Match = require('../models/match.model');
 class MatchController {
 
 	getAll(req, res) {
-		console.log(req.query)
 		let params = {}
 		if (req.query.location != '0')
 			params['location'] = req.query.location
@@ -49,7 +48,7 @@ class MatchController {
 
 	async update(req, res) {
 		try {
-			console.log(req);
+			console.log(req.body);
 			let match = await Match.findOneAndUpdate({_id: req.params.id}, {
 				teamAScore: req.body.teamAScore,
 				teamBScore: req.body.teamBScore,

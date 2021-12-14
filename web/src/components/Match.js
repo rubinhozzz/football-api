@@ -36,6 +36,7 @@ function Match(props) {
 			setTeamAScore(match.teamAScore);
 			setTeamBScore(match.teamBScore);
 			setPichichi(match.pichichi);
+			setMVP(match.mvp);
 		}
 		if (props.match.params.id)
 			fetchMatch(props.match.params.id);
@@ -46,7 +47,6 @@ function Match(props) {
 		if (props.match.params.id) {
 			console.log(pichichi);
 			console.log(mvp);
-
 			const response = await axios.put(`matches/${props.match.params.id}`, {
 				//location: location,
 				//datetime: datetime,
