@@ -75,6 +75,10 @@ function Match(props) {
 		}
 	}
 
+	async function handleDeleteMatch(event) {
+		const response = await axios.delete(`matches/${props.match.params.id}`);
+	}
+
 	function handlePlayerChange(teamId, ddId, value) {
 		let team = teamA; 
 		if (teamId == 'B')
@@ -100,6 +104,7 @@ function Match(props) {
 	function handleMVP(value) {
 		setMVP(value);
 	}
+
 	return (
 		<div>
 		<form onSubmit={handleSubmit}>
@@ -162,8 +167,16 @@ function Match(props) {
 					<PlayerSelect value={mvp} onChange={handleMVP}/>	
 				</div>
 			</div>
-			
-			<button className="button is-primary" type="submit">Create</button>
+			<div className="field is-grouped">
+				<div className="control">
+					<button className="button is-primary" type="submit">Create</button>
+				</div>
+				{(props.match.params.id) ?
+					<div className="control">
+						<button className="button is-danger" type="button" onClick={handleDeleteMatch}>Delete</button>
+					</div>
+					: ''}
+			</div>
 		</form>
 
 		

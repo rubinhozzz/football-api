@@ -48,7 +48,6 @@ class MatchController {
 	}
 
 	async update(req, res) {
-		console.log(1111);
 		try {
 			console.log(req);
 			let match = await Match.findOneAndUpdate({_id: req.params.id}, {
@@ -61,6 +60,13 @@ class MatchController {
 		} catch (error) {
 			console.log(error);
 		}
+	}
+
+	delete(req, res) {
+		Match.deleteOne({ _id: req.params.id }, function (err) {
+			if (err) return handleError(err);
+			// deleted at most one player document
+		});
 	}
 }
 
