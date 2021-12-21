@@ -12,6 +12,7 @@ function Team(props) {
 	}, [props.data]);
 
 	function handlePlayerChange(id, value) {
+		console.log(id);
 		let p = players;
 		p.push(value)
 		setPlayers(p);

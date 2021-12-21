@@ -38,10 +38,16 @@ function PlayerSelect(props) {
 		multiple = true;
 		className = 'select is-multiple';
 	}
-	//console.log(multiple, selected);
+	console.log(multiple, selected);
+	/*if (typeof selected == 'undefined') {
+		if (!multiple)
+			selected = 0;
+		else
+			selected = [];
+	}*/
 
 	return (
-		<div>
+		<>
 		<div className={className}>
 			<select onChange={handleChange} multiple={multiple} value={selected}>
 				{!multiple &&
@@ -53,7 +59,7 @@ function PlayerSelect(props) {
 				)
 			}</select>
 		</div>
-		</div>
+		</>
 	)
 }
 

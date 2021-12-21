@@ -10,13 +10,14 @@ class PlayerController {
 	}
 
 	async create(req, res) {
+		console.log(req.body);
 		const player = new Player({
 			firstname: req.body.firstname,
 			lastname: req.body.lastname,
-			profilePhoto: {
+			/*profilePhoto: {
 				data: fs.readFileSync(req.files.file.file),
 				contentType: req.files.file.mimetype
-			}
+			}*/
 		});
 		await player.save()
 		res.send(player);
@@ -26,10 +27,10 @@ class PlayerController {
 		let player = await Player.findOneAndUpdate({_id: req.params.id}, {
 			firstname: req.body.firstname,
 			lastname: req.body.lastname,
-			profilePhoto: {
+			/*profilePhoto: {
 				data: fs.readFileSync(req.files.file.file),
 				contentType: req.files.file.mimetype
-			}
+			}*/
 		}, { new: true });
 	}
 
