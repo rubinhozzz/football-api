@@ -7,15 +7,14 @@ function Team(props) {
 	const [name, setName] = useState('');
 
 	useEffect(() => {
-		setName(props.data.name);
-		setPlayers(props.data.players);
+		if (props.data.name)
+			setName(props.data.name);
+		if (props.data.players)
+			setPlayers(props.data.players);
 	}, [props.data]);
 
 	function handlePlayerChange(id, value) {
-		console.log(id);
-		let p = players;
-		p.push(value)
-		setPlayers(p);
+		setPlayers([...players, value]);
 		props.onPlayerChange(props.id, id, value);
 	}
 

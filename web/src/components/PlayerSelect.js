@@ -20,7 +20,10 @@ function PlayerSelect(props) {
 	const [selected, setSelected] = useState([]);
 
 	useEffect(() => {
-		setSelected(props.value);
+		if (!props.multiple)
+			setSelected([props.value]);
+		else
+			setSelected(props.value);
 	}, [props.value]);
 
 	function handleChange(event) {
@@ -33,23 +36,18 @@ function PlayerSelect(props) {
 	}
 	let multiple = false;
 	let className = 'select';
-
+	let value = '0';
 	if (props.multiple) {
 		multiple = true;
 		className = 'select is-multiple';
-	}
-	console.log(multiple, selected);
-	/*if (typeof selected == 'undefined') {
-		if (!multiple)
-			selected = 0;
-		else
-			selected = [];
-	}*/
+		value = selected;
+	} else 
+		value = selected[0];
 
 	return (
 		<>
 		<div className={className}>
-			<select onChange={handleChange} multiple={multiple} value={selected}>
+			<select onChange={handleChange} multiple={multiple} value={value}>
 				{!multiple &&
 				<option value="0">---</option>
 				}		
