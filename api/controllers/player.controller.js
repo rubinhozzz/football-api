@@ -10,8 +10,6 @@ class PlayerController {
 	}
 
 	async create(req, res) {
-		console.log(req.body);
-		console.log(req.files);
 		const player = new Player({
 			firstname: req.body.firstname,
 			lastname: req.body.lastname,

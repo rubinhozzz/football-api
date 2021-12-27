@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Buffer } from 'buffer';
+import { useForm } from "react-hook-form";
 
 function PlayerForm(props) {
+	const { register, handleSubmit, watch, formState: { errors } } = useForm();
 	const [firstname, setFirstname] = useState('');
 	const [lastname, setLastname] = useState('');
 	const [file, setFile] = useState(null);
@@ -12,9 +14,9 @@ function PlayerForm(props) {
 		setFile(event.target.files[0])
 	}
 
-	function handleSubmit(event) {
-		event.preventDefault();
-		props.handleSubmit(firstname, lastname, file);
+	function onSubmit(data) {
+		console.log(data);
+		props.handleSubmit(data.firstname, data.lastname, data.file);
 	}
 
 	useEffect(() => {
@@ -31,21 +33,25 @@ function PlayerForm(props) {
 		}
 		fetchData();
 	}, []);
-	//console.log(img);
 	return (
 		<div>
-		<form onSubmit={handleSubmit} method="post">
+		<form onSubmit={handleSubmit(onSubmit)} method="post">
 			<div className="field">
 				<label className="label">Firstname</label>
-				<input type="text" className="input" placeholder="Firstname" name="firstname" value={firstname} onChange={e => setFirstname(e.target.value)}/>
+				<input type="text" className="input" placeholder="Firstname" defaultValue={firstname} name="firstname" {...register('firstname', { required: true })}/>
+				{errors.firstname?.type === 'required' && (
+					<p className="help is-danger">* Firstname is required</p>)}
 			</div>
 			<div className="field">
 				<label className="label">Lastname</label>
-				<input type="text" className="input" placeholder="Lastname" name="lastname" value={lastname} onChange={e => setLastname(e.target.value)}/>
+				<input type="text" className="input" placeholder="Lastname" defaultValue={lastname} name="lastname" {...register('lastname', { required: true })}/>
+				{errors.lastname?.type === 'required' && (
+					<p className="help is-danger">* Lastname is required</p>
+					)}
 			</div>
 			<div className="field file is-boxed">
 				<label className="file-label">
-					<input className="file-input" type="file" name="file" onChange={handleFile}/>
+					<input className="file-input" type="file" name="file" {...register('file')}/>
 					<span className="file-cta">
 						<span className="file-icon">
 						<i className="fas fa-upload"></i>
