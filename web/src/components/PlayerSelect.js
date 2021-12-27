@@ -1,4 +1,4 @@
-import React, { Component, Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PlayersContext } from '../App';
 
 function getSelectValues(select) {
@@ -30,9 +30,9 @@ function PlayerSelect(props) {
 		event.preventDefault();
 		if ('onChange' in props)
 			if (props.multiple)
-				props.onChange(getSelectValues(event.target));
+				props.onChange(props.id, getSelectValues(event.target));
 			else
-				props.onChange(event.target.value);
+				props.onChange(props.id, event.target.value);
 	}
 	let multiple = false;
 	let className = 'select';
@@ -45,7 +45,7 @@ function PlayerSelect(props) {
 		value = selected[0];
 
 	return (
-		<>
+		<div>
 		<div className={className}>
 			<select onChange={handleChange} multiple={multiple} value={value}>
 				{!multiple &&
@@ -57,7 +57,7 @@ function PlayerSelect(props) {
 				)
 			}</select>
 		</div>
-		</>
+		</div>
 	)
 }
 

@@ -45,8 +45,6 @@ function Match(props) {
 	async function handleSubmit(event) {
 		event.preventDefault();
 		if (props.match.params.id) {
-			console.log(pichichi);
-			console.log(mvp);
 			const response = await axios.put(`matches/${props.match.params.id}`, {
 				//location: location,
 				//datetime: datetime,
@@ -83,6 +81,7 @@ function Match(props) {
 		let team = teamA; 
 		if (teamId == 'B')
 			team = teamB;
+
 		team[ddId[1]] = value;
 		if (teamId == 'A')
 			setTeamA(team);

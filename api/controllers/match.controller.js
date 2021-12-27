@@ -30,6 +30,7 @@ class MatchController {
 
 	async create(req, res) {
 		try {
+			console.log(req.body);
 			const match = new Match({
 				location: req.body.location,
 				datetime: req.body.datetime,

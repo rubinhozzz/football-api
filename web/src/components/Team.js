@@ -13,9 +13,9 @@ function Team(props) {
 			setPlayers(props.data.players);
 	}, [props.data]);
 
-	function handlePlayerChange(id, value) {
+	function handlePlayerChange(ddId, value) {
 		setPlayers([...players, value]);
-		props.onPlayerChange(props.id, id, value);
+		props.onPlayerChange(props.id, ddId, value);
 	}
 
 	function addPlayer(event) {
