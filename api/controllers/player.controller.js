@@ -11,13 +11,14 @@ class PlayerController {
 
 	async create(req, res) {
 		console.log(req.body);
+		console.log(req.files);
 		const player = new Player({
 			firstname: req.body.firstname,
 			lastname: req.body.lastname,
-			/*profilePhoto: {
-				data: fs.readFileSync(req.files.file.file),
+			profilePhoto: {
+				data: req.files.file.data,
 				contentType: req.files.file.mimetype
-			}*/
+			}
 		});
 		await player.save()
 		res.send(player);

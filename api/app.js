@@ -1,11 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const bb = require('express-busboy');
+const fileUpload = require('express-fileupload');
 const app = express();
 const port = 8000;
-
-//bb.extend(app, {upload:true});
 
 mongoose.connect("mongodb://localhost:27017/aves", {
 	useNewUrlParser: "true",
@@ -17,6 +15,9 @@ mongoose.connection.on("connected", (err, res) => {
 	console.log("mongoose is connected");
 })
 
+app.use(fileUpload({
+	createParentPath: true
+}));
 app.use(cors());
 app.use(express.json());
 const playersRouter = require('./routes/players');

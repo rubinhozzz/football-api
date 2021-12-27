@@ -1,5 +1,6 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Buffer } from 'buffer';
 
 function PlayerForm(props) {
 	const [firstname, setFirstname] = useState('');

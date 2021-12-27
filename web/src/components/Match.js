@@ -29,7 +29,6 @@ function Match(props) {
 		async function fetchMatch(id) {
 			const response = await axios.get(`matches/${id}`);
 			const match = response.data;
-			console.log(match);
 			setLocation(match.location);
 			setTeamAData({name: response.data.teamAName, players: response.data.teamA});
 			setTeamBData({name: response.data.teamBName, players: response.data.teamB});

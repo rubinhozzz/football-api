@@ -48,7 +48,8 @@ function Matches(props) {
 
 	async function handleMatchClick(event){
 		console.log(event.target);
-		history.push(`/matches/${event.target.getAttribute('match-id')}`);
+		const matchId = event.target.getAttribute('match-id');
+		history.push(`/matches/${matchId}`);
 	}
 
 	const styles = {
@@ -122,8 +123,8 @@ function Matches(props) {
 								<b>{match.teamAName}</b>
 								
 								<ul>
-								{match.teamA.map(player => {
-									const id = `teamA_${player._id}`;
+								{match.teamA.map((player, index) => {
+									const id = `teamA_${index}_${player._id}`;
 									return (<li key={id}>{player.firstname}</li>)
 								})}
 								</ul>
@@ -131,8 +132,8 @@ function Matches(props) {
 							<div className="column" match-id={match._id}>
 								<b>{match.teamBName}</b>
 								<ul>
-								{match.teamB.map((player) => {
-									const id = `teamB_${player._id}`;
+								{match.teamB.map((player, index) => {
+									const id = `teamB_${index}_${player._id}`;
 									return (<li key={id}>{player.firstname}</li>)
 								})}
 								</ul>
