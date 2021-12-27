@@ -15,14 +15,15 @@ function Matches(props) {
 	let history = useHistory();
 
 	useEffect(() => {
-		async function fetchMaches() {
+		async function fetchMatches() {
 			const response = await axios.get('matches', {
 				params: {	location: '0',
 							pichichi: '0',
 							mvp: '0'}});
+			console.log(response.data);
 			setMatches(response.data);
 		}
-		fetchMaches();
+		fetchMatches();
 
 		async function fetchLocations() {
 			const response = await axios.get('locations');
@@ -119,10 +120,11 @@ function Matches(props) {
 							</div>
 							<div className="column" match-id={match._id}>
 								<b>{match.teamAName}</b>
+								
 								<ul>
-								{match.teamA.map((player) => {
+								{match.teamA.map(player => {
 									const id = `teamA_${player._id}`;
-									<li key={id}>{player.firstname}</li>
+									return (<li key={id}>{player.firstname}</li>)
 								})}
 								</ul>
 							</div>
@@ -131,7 +133,7 @@ function Matches(props) {
 								<ul>
 								{match.teamB.map((player) => {
 									const id = `teamB_${player._id}`;
-									<li key={id}>{player.firstname}</li>
+									return (<li key={id}>{player.firstname}</li>)
 								})}
 								</ul>
 							</div>
