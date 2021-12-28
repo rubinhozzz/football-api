@@ -112,7 +112,7 @@ function Matches(props) {
 			</div>
 			<br/>
 			{
-			matches.length == 0 ? '---' : 
+			matches.length == 0 ? 'No matches found.' : 
 			matches.map((match) => {
 					const datetime = moment(new Date(match.datetime)).format('YYYY-MM-DD HH:mm:ss');
 					return ( 
