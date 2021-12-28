@@ -46,11 +46,7 @@ function Matches(props) {
 	}
 
 	async function handleMatchClick(event) {
-		function findAncestor(el, cls) {
-			while ((el = el.parentElement) && !el.classList.contains(cls));
-			return el;
-		}
-		const el = findAncestor(event.target, 'columns')
+		const el = event.target.closest('.columns');
 		if (!el)
 			return
 		const matchId = el.getAttribute('match-id');
@@ -117,46 +113,46 @@ function Matches(props) {
 			</div>
 			<br/>
 			{matches.map((match) => {
-						const datetime = moment(new Date(match.datetime)).format('YYYY-MM-DD HH:mm:ss');
-						return ( 
-						<div key={match._id} className="columns" style={styles} onClick={handleMatchClick} match-id={match._id}>
-							<div className="column" match-id={match._id} >
-								{match.location.name}<br/>
-								{datetime}
-							</div>
-							<div className="column" match-id={match._id}>
-								<b>{match.teamAName}</b>
-								
-								<ul>
-								{match.teamA.map((player, index) => {
-									const id = `teamA_${index}_${player._id}`;
-									return (<li key={id}>{player.firstname}</li>)
-								})}
-								</ul>
-							</div>
-							<div className="column" match-id={match._id}>
-								<b>{match.teamBName}</b>
-								<ul>
-								{match.teamB.map((player, index) => {
-									const id = `teamB_${index}_${player._id}`;
-									return (<li key={id}>{player.firstname}</li>)
-								})}
-								</ul>
-							</div>
-							<div className="column" match-id={match._id}>
-								<div>Pichichi</div>
-								<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjCjgVv-4Cl9Z-XQT3uCV_KKtjPzSNG-q2XA&usqp=CAU"/>
-								
-								{match.pichichi.map((player) => (
-									<div className="column">{player.firstname}</div>
-								))}
-							</div>
-							<div className="column" match-id={match._id}>
-								<div>MVP</div>
-								<img src="https://resources.premierleague.com/premierleague/photos/players/110x140/p176297.png"/>
-								{match.mvp}
-							</div>
-						</div>)
+					const datetime = moment(new Date(match.datetime)).format('YYYY-MM-DD HH:mm:ss');
+					return ( 
+					<div key={match._id} className="columns" style={styles} onClick={handleMatchClick} match-id={match._id}>
+						<div className="column" match-id={match._id} >
+							{match.location.name}<br/>
+							{datetime}
+						</div>
+						<div className="column" match-id={match._id}>
+							<b>{match.teamAName}</b>
+							
+							<ul>
+							{match.teamA.map((player, index) => {
+								const id = `teamA_${index}_${player._id}`;
+								return (<li key={id}>{player.firstname}</li>)
+							})}
+							</ul>
+						</div>
+						<div className="column" match-id={match._id}>
+							<b>{match.teamBName}</b>
+							<ul>
+							{match.teamB.map((player, index) => {
+								const id = `teamB_${index}_${player._id}`;
+								return (<li key={id}>{player.firstname}</li>)
+							})}
+							</ul>
+						</div>
+						<div className="column" match-id={match._id}>
+							<div>Pichichi</div>
+							<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjCjgVv-4Cl9Z-XQT3uCV_KKtjPzSNG-q2XA&usqp=CAU"/>
+							
+							{match.pichichi.map((player) => (
+								<div className="column">{player.firstname}</div>
+							))}
+						</div>
+						<div className="column" match-id={match._id}>
+							<div>MVP</div>
+							<img src="https://resources.premierleague.com/premierleague/photos/players/110x140/p176297.png"/>
+							{match.mvp}
+						</div>
+					</div>)
 				})
 				}
 		</div>
