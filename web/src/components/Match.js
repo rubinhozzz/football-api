@@ -3,8 +3,10 @@ import Team from './Team';
 import PlayerSelect from './PlayerSelect';
 import axios from 'axios';
 import moment from 'moment';
+import { useForm } from "react-hook-form";
 
 function Match(props) {
+	const { register, handleSubmit, watch, formState: { errors } } = useForm();
 	const [teamAData, setTeamAData] = useState({});
 	const [teamBData, setTeamBData] = useState({});
 	const [location, setLocation] = useState(0);
@@ -41,8 +43,8 @@ function Match(props) {
 			fetchMatch(props.match.params.id);
 	}, []);
 
-	async function handleSubmit(event) {
-		event.preventDefault();
+	async function onSubmit(data) {
+		console.log(data);
 		if (props.match.params.id) {
 			const response = await axios.put(`matches/${props.match.params.id}`, {
 				//location: location,
@@ -105,26 +107,28 @@ function Match(props) {
 
 	return (
 		<div>
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit(onSubmit)}>
 			<div className="field">
-				<div className="label">Location:</div>
+				<div className="label">Location</div>
 				<div className="control">
 				<div className="select">
-					<select onChange={e=> setLocation(e.target.value)} value={location}>
-					<option value="0">---</option>
-					{
-						locations.map(location => 
-							<option value={location._id} key={location._id}>{location.name}</option>
-						)
-					}
+					<select defaultValue={location} {...register('location', {required: true})}>
+						<option value="">---</option>
+						{
+							locations.map(location => 
+								<option value={location._id} key={location._id}>{location.name}</option>
+							)
+						}
 					</select>
 				</div>
+				{errors.location?.type === 'required' && (
+					<p className="help is-danger">* Location is required</p>)}
 				</div>
 			</div>
 			<div className="field">
-				<div className="label">Date / time :</div>
+				<div className="label">Date / time</div>
 				<div className="control">
-					<input type="datetime-local" className="input" value={datetime} onChange={(e) => setDatetime(e.target.value)}/>	
+					<input type="datetime-local" className="input" defaultValue={datetime} {...register('datetime')}/>	
 				</div>
 			</div>
 			<div className="columns">

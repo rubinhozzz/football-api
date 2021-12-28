@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom'
-import { Button } from 'react-bulma-components';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -46,9 +45,15 @@ function Matches(props) {
 		setMatches(response.data);
 	}
 
-	async function handleMatchClick(event){
-		console.log(event.target);
-		const matchId = event.target.getAttribute('match-id');
+	async function handleMatchClick(event) {
+		function findAncestor(el, cls) {
+			while ((el = el.parentElement) && !el.classList.contains(cls));
+			return el;
+		}
+		const el = findAncestor(event.target, 'columns')
+		if (!el)
+			return
+		const matchId = el.getAttribute('match-id');
 		history.push(`/matches/${matchId}`);
 	}
 
@@ -106,7 +111,7 @@ function Matches(props) {
 					<button className="button is-primary" onClick={handleSearch}>Search</button>
 				</div>
 				<div className="field is-narrow">
-					<Button to="/matches/add" color="success" renderAs={Link}>New match</Button>
+					<Link to="/matches/add"><button className="button">New match</button></Link>
 				</div>
 				</div>
 			</div>
@@ -114,7 +119,7 @@ function Matches(props) {
 			{matches.map((match) => {
 						const datetime = moment(new Date(match.datetime)).format('YYYY-MM-DD HH:mm:ss');
 						return ( 
-						<div key={match._id} className="columns" style={styles} onClick={handleMatchClick}>
+						<div key={match._id} className="columns" style={styles} onClick={handleMatchClick} match-id={match._id}>
 							<div className="column" match-id={match._id} >
 								{match.location.name}<br/>
 								{datetime}
