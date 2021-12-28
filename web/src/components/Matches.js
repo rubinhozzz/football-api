@@ -19,7 +19,6 @@ function Matches(props) {
 				params: {	location: '0',
 							pichichi: '0',
 							mvp: '0'}});
-			console.log(response.data);
 			setMatches(response.data);
 		}
 		fetchMatches();
@@ -112,7 +111,9 @@ function Matches(props) {
 				</div>
 			</div>
 			<br/>
-			{matches.map((match) => {
+			{
+			matches.length == 0 ? '---' : 
+			matches.map((match) => {
 					const datetime = moment(new Date(match.datetime)).format('YYYY-MM-DD HH:mm:ss');
 					return ( 
 					<div key={match._id} className="columns" style={styles} onClick={handleMatchClick} match-id={match._id}>
@@ -120,9 +121,8 @@ function Matches(props) {
 							{match.location.name}<br/>
 							{datetime}
 						</div>
-						<div className="column" match-id={match._id}>
-							<b>{match.teamAName}</b>
-							
+						<div className="column">
+							<b>{match.teamAName}</b> ({match.teamAScore})
 							<ul>
 							{match.teamA.map((player, index) => {
 								const id = `teamA_${index}_${player._id}`;
@@ -130,8 +130,8 @@ function Matches(props) {
 							})}
 							</ul>
 						</div>
-						<div className="column" match-id={match._id}>
-							<b>{match.teamBName}</b>
+						<div className="column">
+							<b>{match.teamBName}</b> ({match.teamBScore})
 							<ul>
 							{match.teamB.map((player, index) => {
 								const id = `teamB_${index}_${player._id}`;
@@ -139,18 +139,18 @@ function Matches(props) {
 							})}
 							</ul>
 						</div>
-						<div className="column" match-id={match._id}>
+						<div className="column">
 							<div>Pichichi</div>
-							<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjCjgVv-4Cl9Z-XQT3uCV_KKtjPzSNG-q2XA&usqp=CAU"/>
-							
-							{match.pichichi.map((player) => (
+							{
+							match.pichichi.length ? 
+							match.pichichi.map((player) => (
 								<div className="column">{player.firstname}</div>
-							))}
+							)) : '---'
+							}
 						</div>
-						<div className="column" match-id={match._id}>
+						<div className="column">
 							<div>MVP</div>
-							<img src="https://resources.premierleague.com/premierleague/photos/players/110x140/p176297.png"/>
-							{match.mvp}
+							{match.mvp ? match.mvp : '----'}
 						</div>
 					</div>)
 				})
