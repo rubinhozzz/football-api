@@ -26,10 +26,10 @@ class PlayerController {
 		let player = await Player.findOneAndUpdate({_id: req.params.id}, {
 			firstname: req.body.firstname,
 			lastname: req.body.lastname,
-			/*profilePhoto: {
-				data: fs.readFileSync(req.files.file.file),
+			profilePhoto: {
+				data: req.files.file.data,
 				contentType: req.files.file.mimetype
-			}*/
+			}
 		}, { new: true });
 	}
 
@@ -38,9 +38,11 @@ class PlayerController {
 		res.send(player);
 	}
 
-	delete(req, res) {
+	delete(req, res, next) {
+		console.log(req.params.id);
 		Player.deleteOne({ _id: req.params.id }, function (err) {
-			if (err) return handleError(err);
+			console.log(err);
+			//if (err) return handleError(err);
 			// deleted at most one player document
 		});
 	}

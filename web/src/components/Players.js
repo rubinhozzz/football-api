@@ -20,9 +20,13 @@ function Players(props) {
 
 	async function handleDeleteClick(event) {
 		try {
-			const id = event.target.getAttribute('data-id');
-			const response = await axios.delete(`players/delete/${id}`);
+			const ok = window.confirm('Do you want to remove this player?');
+			if (!ok)
+				return
+			const id = event.target.closest('tr').getAttribute('data-id');
+			const response = await axios.delete(`players/delete/${id}`);	
 		} catch (error) {
+			console.error(error);
 			alert(error)
 		}
 	}
@@ -30,7 +34,7 @@ function Players(props) {
 	return (
 		<div>
 		<Link to="/players/add">New player</Link>
-		<table className="table" width="100%">
+		<table className="table is-narrow" width="100%">
 			<thead>
 				<tr>
 					<th>Firstname</th>
@@ -41,11 +45,11 @@ function Players(props) {
 			<tbody>
 			{
 				players.map(el => 
-					<tr key={el._id}>
+					<tr key={el._id} data-id={el._id}>
 						<td>{el.firstname}</td>
 						<td>{el.lastname}</td>
 						<td>
-							<Link to={`/players/update/${el._id}`}>Edit</Link>&nbsp;<Link to="" data-id={el._id} onClick={handleDeleteClick}>Remove</Link>
+							<Link to={`/players/update/${el._id}`}><button className='button is-small is-info is-outlined'>Edit</button></Link>&nbsp;<Link to="" data-id={el._id} onClick={handleDeleteClick}><button className='button is-small is-danger is-outlined'>Remove</button></Link>
 						</td>
 					</tr>
 				)
@@ -53,7 +57,7 @@ function Players(props) {
 			</tbody>
 		</table>
 		</div>
-		)
+	)
 }
 
 export default Players;
