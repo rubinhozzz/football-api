@@ -23,17 +23,18 @@ function Players(props) {
 			const ok = window.confirm('Do you want to remove this player?');
 			if (!ok)
 				return
-			const id = event.target.closest('tr').getAttribute('data-id');
-			const response = await axios.delete(`players/delete/${id}`);	
+			const el = event.target.closest('tr');
+			const response = await axios.delete(`players/delete/${el.getAttribute('data-id')}`);	
+			// remove player from
 		} catch (error) {
 			console.error(error);
-			alert(error)
+			alert(error);
 		}
 	}
 
 	return (
 		<div>
-		<Link to="/players/add">New player</Link>
+		<Link to="/players/add"><button className='button '>New player</button></Link>
 		<table className="table is-narrow" width="100%">
 			<thead>
 				<tr>
@@ -49,7 +50,7 @@ function Players(props) {
 						<td>{el.firstname}</td>
 						<td>{el.lastname}</td>
 						<td>
-							<Link to={`/players/update/${el._id}`}><button className='button is-small is-info is-outlined'>Edit</button></Link>&nbsp;<Link to="" data-id={el._id} onClick={handleDeleteClick}><button className='button is-small is-danger is-outlined'>Remove</button></Link>
+							<Link to={`/players/update/${el._id}`}><button className='button is-small is-info is-outlined'>Edit</button></Link>&nbsp;<button className='button is-small is-danger is-outlined' onClick={handleDeleteClick}>Remove</button>
 						</td>
 					</tr>
 				)

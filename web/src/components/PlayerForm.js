@@ -4,18 +4,10 @@ import { Buffer } from 'buffer';
 import { useForm } from "react-hook-form";
 
 function PlayerForm(props) {
-	const { register, handleSubmit, watch, formState: { errors } } = useForm();
-	const [firstname, setFirstname] = useState('');
-	const [lastname, setLastname] = useState('');
-	const [file, setFile] = useState(null);
+	const { register, handleSubmit, watch, formState: { errors }, setValue } = useForm();
 	const [imgSrc, setImgSrc] = useState('https://image.shutterstock.com/image-vector/prohibition-sign-no-photography-600w-209270626.jpg');
 
-	function handleFile(event) {
-		setFile(event.target.files[0])
-	}
-
 	function onSubmit(data) {
-		console.log(data);
 		props.handleSubmit(data.firstname, data.lastname, data.file);
 	}
 
@@ -24,8 +16,8 @@ function PlayerForm(props) {
 			return 
 		async function fetchData() {
 			const response = await axios.get(`players/${props.dataId}`);
-			setFirstname(response.data.firstname);
-			setLastname(response.data.lastname);
+			setValue('firstname', response.data.firstname);
+			setValue('lastname', response.data.lastname);
 			if (response.data.profilePhoto) {
 				let buff = Buffer.from(response.data.profilePhoto.data.data);
 				setImgSrc('data:image/png;base64, ' + buff.toString('base64'));
@@ -33,18 +25,19 @@ function PlayerForm(props) {
 		}
 		fetchData();
 	}, []);
+
 	return (
 		<div>
 		<form onSubmit={handleSubmit(onSubmit)} method="post">
 			<div className="field">
 				<label className="label">Firstname</label>
-				<input type="text" className="input" placeholder="Firstname" defaultValue={firstname} name="firstname" {...register('firstname', { required: true })}/>
+				<input type="text" className="input" placeholder="Firstname" name="firstname" {...register('firstname', { required: true })}/>
 				{errors.firstname?.type === 'required' && (
 					<p className="help is-danger">* Firstname is required</p>)}
 			</div>
 			<div className="field">
 				<label className="label">Lastname</label>
-				<input type="text" className="input" placeholder="Lastname" defaultValue={lastname} name="lastname" {...register('lastname', { required: true })}/>
+				<input type="text" className="input" placeholder="Lastname" name="lastname" {...register('lastname', { required: true })}/>
 				{errors.lastname?.type === 'required' && (
 					<p className="help is-danger">* Lastname is required</p>
 					)}

@@ -1,5 +1,4 @@
 const Player = require('../models/player.model');
-var fs = require('fs');
 
 class PlayerController {
 
@@ -10,27 +9,31 @@ class PlayerController {
 	}
 
 	async create(req, res) {
-		const player = new Player({
+		let params = {
 			firstname: req.body.firstname,
 			lastname: req.body.lastname,
-			profilePhoto: {
+		};
+		if (req.files)
+			params['profilePhoto'] = {
 				data: req.files.file.data,
 				contentType: req.files.file.mimetype
 			}
-		});
+		const player = new Player(params);
 		await player.save()
 		res.send(player);
 	}
 
 	update = async(req, res) => {
-		let player = await Player.findOneAndUpdate({_id: req.params.id}, {
+		let params = {
 			firstname: req.body.firstname,
 			lastname: req.body.lastname,
-			profilePhoto: {
+		};
+		if (req.files)
+			params['profilePhoto'] = {
 				data: req.files.file.data,
 				contentType: req.files.file.mimetype
 			}
-		}, { new: true });
+		let player = await Player.findOneAndUpdate({_id: req.params.id}, params, { new: true });
 	}
 
 	get = async(req, res) => {
@@ -39,9 +42,7 @@ class PlayerController {
 	}
 
 	delete(req, res, next) {
-		console.log(req.params.id);
 		Player.deleteOne({ _id: req.params.id }, function (err) {
-			console.log(err);
 			//if (err) return handleError(err);
 			// deleted at most one player document
 		});

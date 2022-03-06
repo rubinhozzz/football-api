@@ -10,15 +10,17 @@ function NewPlayer(props) {
 		formData.append('firstname', firstname);
 		formData.append('lastname', lastname);
 		if (file) {
+			console.log(file);
 			headers = {"Content-Type": "multipart/form-data"};
-			formData.append('file', file);
+			formData.append('file', file[0]);
 		}
-		const response = await axios.post('players/add', 
-			formData,
-			{headers}
-		);
-		//const response = await axios.post('players/add', {firstname: firstname, lastname: lastname});
-		//const response = await axios.post('players/add', {firstname: firstname, lastname: lastname});
+		try {
+			const response = await axios.post('players/add', formData, {headers});
+		} catch (error) {
+			alert(error);
+		} finally{
+			props.history.push('/players');
+		}
 	}
 
 	return (

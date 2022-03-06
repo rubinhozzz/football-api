@@ -10,14 +10,17 @@ function UpdatePlayer(props) {
 		const formData = new FormData();
 		formData.append('firstname', firstname);
 		formData.append('lastname', lastname);
-		if (file) {
+		if (file.length) {
 			headers = {"Content-Type": "multipart/form-data"};
-			formData.append('file', file);
+			formData.append('file', file[0]);
 		}
-		const response = await axios.put(`players/${id}`, 
-			formData,
-			{headers}
-		);
+		try {
+			const response = await axios.put(`players/${id}`, formData, {headers});	
+		} catch (error) {
+			alert(error);
+		} finally {
+			props.history.push('/players');
+		}
 	}
 
 	return (
