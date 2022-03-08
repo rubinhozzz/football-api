@@ -19,24 +19,26 @@ function PlayerSelect(props) {
 	const players = React.useContext(PlayersContext);
 	const [selected, setSelected] = useState([]);
 
-	useEffect(() => {
+	/*useEffect(() => {
+		console.log(1);
 		if (!props.multiple)
 			setSelected([props.value]);
 		else
 			setSelected(props.value);
-	}, [props.value]);
+	}, [props.value]);*/
 
-	function handleChange(event) {
+	/*function handleChange(event) {
 		event.preventDefault();
 		if ('onChange' in props)
 			if (props.multiple)
 				props.onChange(props.id, getSelectValues(event.target));
 			else
 				props.onChange(props.id, event.target.value);
-	}
+	}*/
 	let multiple = false;
 	let className = 'select';
 	let value = '0';
+	
 	if (props.multiple) {
 		multiple = true;
 		className = 'select is-multiple';
@@ -44,10 +46,11 @@ function PlayerSelect(props) {
 	} else 
 		value = selected[0];
 
+	const register = props.register;
 	return (
 		<div>
 		<div className={className}>
-			<select onChange={handleChange} multiple={multiple} value={value}>
+			<select multiple={multiple} {...register(props.name)}>
 				{!multiple &&
 				<option value="0">---</option>
 				}		

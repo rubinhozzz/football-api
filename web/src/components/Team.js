@@ -4,7 +4,7 @@ import PlayerSelect from './PlayerSelect';
 function Team(props) {
 	const [numberOfPlayers, setNumberOfPlayers] = useState(6);
 	const [players, setPlayers] = useState([]);
-	const [name, setName] = useState('');
+	const [name, setName] = useState(props.id);
 
 	useEffect(() => {
 		if (props.data.name)
@@ -13,7 +13,7 @@ function Team(props) {
 			setPlayers(props.data.players);
 	}, [props.data]);
 
-	function handlePlayerChange(ddId, value) {
+	/*function handlePlayerChange(ddId, value) {
 		setPlayers([...players, value]);
 		props.onPlayerChange(props.id, ddId, value);
 	}
@@ -30,7 +30,7 @@ function Team(props) {
 		event.preventDefault();
 		setName(event.target.value);
 		props.onNameChange(props.id, event.target.value);
-	}
+	}*/
 
 	let dds = []
 	for (let i = 0; i < numberOfPlayers; ++i) {
@@ -39,14 +39,15 @@ function Team(props) {
 		if (players)
 			value = players[i];
 		dds.push(
-			<PlayerSelect key={id} id={id} onChange={handlePlayerChange} value={value}/>
+			<PlayerSelect key={id} id={id} name={id} register={props.register}/>
 		)
 	}
 	const placeholderName = `Team ${props.id}`;
+	const teamName = `team${props.id}Name`;
 	return (
 		<>
 			<div className="control">
-				<input type="text" value={name} onChange={handleNameChange} className="input" placeholder={placeholderName}/>
+				<input type="text" name={teamName} className="input" placeholder={placeholderName} {...props.register(teamName, {required: true})}/>
 			</div>
 			{/*<button className="button" onClick={addPlayer}>+</button><br/>*/}
 			{dds}

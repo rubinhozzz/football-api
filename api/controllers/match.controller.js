@@ -37,7 +37,11 @@ class MatchController {
 				teamAName: req.body.teamAName,
 				teamBName: req.body.teamBName,
 				teamA: req.body.teamA,
-				teamB: req.body.teamB
+				teamB: req.body.teamB,
+				teamAScore: req.body.teamAScore,
+				teamBScore: req.body.teamBScore,
+				pichichi: req.body.pichichi,
+				mvp: req.body.mvp,
 			});
 			await match.save()
 			res.send(match);	
