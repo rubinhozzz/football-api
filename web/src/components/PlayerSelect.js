@@ -19,13 +19,12 @@ function PlayerSelect(props) {
 	const players = React.useContext(PlayersContext);
 	const [selected, setSelected] = useState([]);
 
-	/*useEffect(() => {
-		console.log(1);
+	useEffect(() => {
 		if (!props.multiple)
 			setSelected([props.value]);
 		else
 			setSelected(props.value);
-	}, [props.value]);*/
+	}, [props.value]);
 
 	/*function handleChange(event) {
 		event.preventDefault();
@@ -50,7 +49,7 @@ function PlayerSelect(props) {
 	return (
 		<div>
 		<div className={className}>
-			<select multiple={multiple} {...register(props.name)}>
+			<select multiple={multiple} {...register(props.name)} value={value}>
 				{!multiple &&
 				<option value="0">---</option>
 				}		

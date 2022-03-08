@@ -31,7 +31,11 @@ function Match(props) {
 		async function fetchMatch(id) {
 			const response = await axios.get(`matches/${id}`);
 			const match = response.data;
+			console.log(match);
 			setLocation(match.location);
+			let dt = moment(Date.parse(match.datetime)).format("YYYY-MM-DDTkk:mm");
+			console.log(dt)
+			setDatetime(dt);
 			setTeamAData({name: response.data.teamAName, players: response.data.teamA});
 			setTeamBData({name: response.data.teamBName, players: response.data.teamB});
 			setTeamAScore(match.teamAScore);
@@ -91,7 +95,7 @@ function Match(props) {
 		const response = await axios.delete(`matches/${props.match.params.id}`);
 	}
 
-	function handlePlayerChange(teamId, ddId, value) {
+	/*function handlePlayerChange(teamId, ddId, value) {
 		let team = teamA; 
 		if (teamId == 'B')
 			team = teamB;
@@ -109,7 +113,7 @@ function Match(props) {
 		else
 			setTeamBName(name);
 	}
-/*
+
 	function handlePichichi(value) {
 		setPichichi(value);
 	}
@@ -125,11 +129,11 @@ function Match(props) {
 				<div className="label">Location</div>
 				<div className="control">
 				<div className="select">
-					<select {...register('location', {required: true})}>
+					<select {...register('location', {required: true})} value={location}>
 						<option value="">---</option>
 						{
-							locations.map(location => 
-								<option value={location._id} key={location._id}>{location.name}</option>
+							locations.map(loc => 
+								<option value={loc._id} key={loc._id}>{loc.name}</option>
 							)
 						}
 					</select>
@@ -141,47 +145,43 @@ function Match(props) {
 			<div className="field">
 				<div className="label">Date / time</div>
 				<div className="control">
-					<input type="datetime-local" className="input" defaultValue={datetime} {...register('datetime', {required: true})}/>	
+					<input type="datetime-local" className="input" value={datetime} {...register('datetime', {required: true})}/>	
 				</div>
 			</div>
 			<div className="columns">
 				<div className="column">
 					<Team id="A" 
 						data={teamAData}
-						onNameChange={handleNameChange}
-						onPlayerChange={handlePlayerChange}
 						register={register}/>
 				</div>
 				<div className="column">
 					<Team id="B" 
 						data={teamBData}
-						onNameChange={handleNameChange}
-						onPlayerChange={handlePlayerChange}
 						register={register}/>
 				</div>
 			</div>
 			<div className="field">
 				<div className="label">Score A</div>
 				<div className="control">
-					<input className="input" defaultValue={teamAScore} type="text" {...register('teamAScore', {required: true})} />	
+					<input className="input" value={teamAScore} type="text" {...register('teamAScore', {required: true})} />	
 				</div>
 			</div>
 			<div className="field">
 				<div className="label">Score B</div>
 				<div className="control">
-					<input className="input" defaultValue={teamBScore} type="text" {...register('teamBScore', {required: true})}/>	
+					<input className="input" value={teamBScore} type="text" {...register('teamBScore', {required: true})}/>	
 				</div>
 			</div>
 			<div className="field">
 				<div className="label">Pichichi</div>
 				<div className="control">
-					<PlayerSelect name="pichichi" multiple register={register}/>	
+					<PlayerSelect name="pichichi" multiple register={register} value={pichichi}/>	
 				</div>
 			</div>
 			<div className="field">
 				<div className="label">MVP</div>
 				<div className="control">
-					<PlayerSelect name="mvp" register={register}/>	
+					<PlayerSelect name="mvp" register={register} value={mvp}/>	
 				</div>
 			</div>
 			<div className="field is-grouped">

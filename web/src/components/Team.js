@@ -39,7 +39,7 @@ function Team(props) {
 		if (players)
 			value = players[i];
 		dds.push(
-			<PlayerSelect key={id} id={id} name={id} register={props.register}/>
+			<PlayerSelect key={id} id={id} name={id} register={props.register} value={value}/>
 		)
 	}
 	const placeholderName = `Team ${props.id}`;
@@ -47,7 +47,7 @@ function Team(props) {
 	return (
 		<>
 			<div className="control">
-				<input type="text" name={teamName} className="input" placeholder={placeholderName} {...props.register(teamName, {required: true})}/>
+				<input type="text" name={teamName} value={name} className="input" placeholder={placeholderName} {...props.register(teamName, {required: true})}/>
 			</div>
 			{/*<button className="button" onClick={addPlayer}>+</button><br/>*/}
 			{dds}
