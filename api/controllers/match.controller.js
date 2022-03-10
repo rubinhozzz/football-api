@@ -14,6 +14,8 @@ class MatchController {
 			.populate('location')
 			.populate('teamA')
 			.populate('teamB')
+			.populate('pichichi')
+			.populate('mvp')
 			.exec(function(err, matches) {
 				res.send(matches);
 		});
@@ -21,7 +23,8 @@ class MatchController {
 
 	async get(req, res) {
 		try {
-			let match = await Match.findById(req.params.id).exec();
+			let match = await Match.findById(req.params.id)
+				.exec();
 			res.send(match);	
 		} catch (error) {
 			console.log(error);

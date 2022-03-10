@@ -19,6 +19,7 @@ function Matches(props) {
 				params: {	location: '0',
 							pichichi: '0',
 							mvp: '0'}});
+			console.log(response.data);
 			setMatches(response.data);
 		}
 		fetchMatches();
@@ -55,7 +56,6 @@ function Matches(props) {
 	const styles = {
 		border: '1px solid black', 
 	};
-	
 	return (
 		<div>
 			<div className="field is-horizontal">
@@ -112,6 +112,7 @@ function Matches(props) {
 			</div>
 			<br/>
 			{
+			
 			matches.length == 0 ? 'No matches found.' : 
 			matches.map((match) => {
 					const datetime = moment(new Date(match.datetime)).format('YYYY-MM-DD HH:mm:ss');
@@ -150,7 +151,7 @@ function Matches(props) {
 						</div>
 						<div className="column">
 							<div>MVP</div>
-							{match.mvp ? match.mvp : '----'}
+							{match.mvp ? match.mvp.firstname : '----'}
 						</div>
 					</div>)
 				})

@@ -21,9 +21,9 @@ function PlayerSelect(props) {
 	const players = React.useContext(PlayersContext);
 
 	useEffect(() => {
-		console.log(props.name, props.selected);
+		//console.log(props.name, props.selected);
 		setValue(props.name, props.selected);
-	} );
+	});
 
 	let multiple = false;
 	let className = 'select';
