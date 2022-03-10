@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { PlayersContext } from '../App';
+import { useFormContext } from 'react-hook-form';
 
 function getSelectValues(select) {
 	var result = [];
@@ -16,15 +17,16 @@ function getSelectValues(select) {
 }
 
 function PlayerSelect(props) {
+	const { register, setValue } = useFormContext(); 
 	const players = React.useContext(PlayersContext);
 	const [selected, setSelected] = useState([]);
 
-	useEffect(() => {
-		if (!props.multiple)
-			setSelected([props.value]);
+	/*useEffect(() => {
+		if (props.multiple)
+			setSelected([props.selected]);
 		else
-			setSelected(props.value);
-	}, [props.value]);
+			setSelected(props.selected);
+	}, [props.selected]);*/
 
 	/*function handleChange(event) {
 		event.preventDefault();
@@ -38,18 +40,21 @@ function PlayerSelect(props) {
 	let className = 'select';
 	let value = '0';
 	
+	
 	if (props.multiple) {
 		multiple = true;
 		className = 'select is-multiple';
-		value = selected;
-	} else 
-		value = selected[0];
+		//value = selected;
+		//props.setValue(props.name, props.selected);
+	} 
+	//else 
+		//props.setValue(props.name, props.selected[0]);
+		//value = selected[0];
 
-	const register = props.register;
 	return (
 		<div>
 		<div className={className}>
-			<select multiple={multiple} {...register(props.name)} value={value}>
+			<select multiple={multiple} {...register(props.name)} value={props.selected}>
 				{!multiple &&
 				<option value="0">---</option>
 				}		

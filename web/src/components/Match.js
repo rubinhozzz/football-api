@@ -3,23 +3,14 @@ import Team from './Team';
 import PlayerSelect from './PlayerSelect';
 import axios from 'axios';
 import moment from 'moment';
-import { useForm } from "react-hook-form";
+import { useForm, FormProvider, useFormContext } from "react-hook-form";
 
 function Match(props) {
-	const { register, handleSubmit, watch, formState: { errors } } = useForm();
+	const methods = useForm();
 	const [teamAData, setTeamAData] = useState({});
 	const [teamBData, setTeamBData] = useState({});
-	const [location, setLocation] = useState(0);
 	const [datetime, setDatetime] = useState(moment(Date.now()).format("YYYY-MM-DDTkk:mm"));
 	const [locations, setLocations] = useState([]);
-	const [teamA, setTeamA] = useState([0,0,0,0,0]);
-	const [teamB, setTeamB] = useState([0,0,0,0,0]);
-	const [teamAName, setTeamAName] = useState('');
-	const [teamBName, setTeamBName] = useState('');
-	const [teamAScore, setTeamAScore] = useState(0);
-	const [teamBScore, setTeamBScore] = useState(0);
-	const [pichichi, setPichichi] = useState([]);
-	const [mvp, setMVP] = useState('');
 
 	useEffect(() => {
 		async function fetchLocations() {
@@ -32,16 +23,15 @@ function Match(props) {
 			const response = await axios.get(`matches/${id}`);
 			const match = response.data;
 			console.log(match);
-			setLocation(match.location);
+			methods.setValue('location', match.location);
 			let dt = moment(Date.parse(match.datetime)).format("YYYY-MM-DDTkk:mm");
-			console.log(dt)
-			setDatetime(dt);
+			methods.setValue('datetime', dt);
+			methods.setValue('teamAScore', match.teamAScore);
+			methods.setValue('teamBScore', match.teamBScore);
+			methods.setValue('pichichi', match.pichichi);
+			methods.setValue('mvp', match.mvp);
 			setTeamAData({name: response.data.teamAName, players: response.data.teamA});
 			setTeamBData({name: response.data.teamBName, players: response.data.teamB});
-			setTeamAScore(match.teamAScore);
-			setTeamBScore(match.teamBScore);
-			setPichichi(match.pichichi);
-			setMVP(match.mvp);
 		}
 		if (props.match.params.id)
 			fetchMatch(props.match.params.id);
@@ -76,6 +66,7 @@ function Match(props) {
 				mvp: mvp
 			});
 		} else {
+			console.log('CREATE');
 			const response = await axios.post('matches', {
 				location: location,
 				datetime: datetime,
@@ -95,41 +86,15 @@ function Match(props) {
 		const response = await axios.delete(`matches/${props.match.params.id}`);
 	}
 
-	/*function handlePlayerChange(teamId, ddId, value) {
-		let team = teamA; 
-		if (teamId == 'B')
-			team = teamB;
-
-		team[ddId[1]] = value;
-		if (teamId == 'A')
-			setTeamA(team);
-		else
-			setTeamB(team);
-	}
-
-	function handleNameChange(teamId, name) {
-		if (teamId == 'A')
-			setTeamAName(name);
-		else
-			setTeamBName(name);
-	}
-
-	function handlePichichi(value) {
-		setPichichi(value);
-	}
-
-	function handleMVP(value) {
-		setMVP(value);
-	}*/
-
 	return (
 		<div>
-		<form onSubmit={handleSubmit(onSubmit)}>
+		<FormProvider {...methods}>
+		<form onSubmit={methods.handleSubmit(onSubmit)}>
 			<div className="field">
 				<div className="label">Location</div>
 				<div className="control">
 				<div className="select">
-					<select {...register('location', {required: true})} value={location}>
+					<select name="location" {...methods.register('location', {required: true})}>
 						<option value="">---</option>
 						{
 							locations.map(loc => 
@@ -138,50 +103,44 @@ function Match(props) {
 						}
 					</select>
 				</div>
-				{errors.location?.type === 'required' && (
-					<p className="help is-danger">* Location is required</p>)}
 				</div>
 			</div>
 			<div className="field">
 				<div className="label">Date / time</div>
 				<div className="control">
-					<input type="datetime-local" className="input" value={datetime} {...register('datetime', {required: true})}/>	
+					<input type="datetime-local" className="input" {...methods.register('datetime', {required: true})} defaultValue={datetime}/>	
 				</div>
 			</div>
 			<div className="columns">
 				<div className="column">
-					<Team id="A" 
-						data={teamAData}
-						register={register}/>
+					<Team id="A" data={teamAData}/>
 				</div>
 				<div className="column">
-					<Team id="B" 
-						data={teamBData}
-						register={register}/>
+					<Team id="B" data={teamBData}/>
 				</div>
 			</div>
 			<div className="field">
 				<div className="label">Score A</div>
 				<div className="control">
-					<input className="input" value={teamAScore} type="text" {...register('teamAScore', {required: true})} />	
+					<input className="input" type="text" {...methods.register('teamAScore', {required: true})} />	
 				</div>
 			</div>
 			<div className="field">
 				<div className="label">Score B</div>
 				<div className="control">
-					<input className="input" value={teamBScore} type="text" {...register('teamBScore', {required: true})}/>	
+					<input className="input" type="text" {...methods.register('teamBScore', {required: true})}/>	
 				</div>
 			</div>
 			<div className="field">
 				<div className="label">Pichichi</div>
 				<div className="control">
-					<PlayerSelect name="pichichi" multiple register={register} value={pichichi}/>	
+					<PlayerSelect name="pichichi" multiple selected={methods.getValues('pichichi')}/>	
 				</div>
 			</div>
 			<div className="field">
 				<div className="label">MVP</div>
 				<div className="control">
-					<PlayerSelect name="mvp" register={register} value={mvp}/>	
+					<PlayerSelect name="mvp" selected={methods.getValues('mvp')}/>	
 				</div>
 			</div>
 			<div className="field is-grouped">
@@ -195,8 +154,7 @@ function Match(props) {
 					: ''}
 			</div>
 		</form>
-
-		
+		</FormProvider>
 		</div>
 	)
 }
