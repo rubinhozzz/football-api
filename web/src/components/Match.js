@@ -11,6 +11,8 @@ function Match(props) {
 	const [teamBData, setTeamBData] = useState({});
 	const [datetime, setDatetime] = useState(moment(Date.now()).format("YYYY-MM-DDTkk:mm"));
 	const [locations, setLocations] = useState([]);
+	const [mvp, setMVP] = useState('');
+	const [pichichi, setPichichi] = useState([]);
 
 	useEffect(() => {
 		async function fetchLocations() {
@@ -28,8 +30,8 @@ function Match(props) {
 			methods.setValue('datetime', dt);
 			methods.setValue('teamAScore', match.teamAScore);
 			methods.setValue('teamBScore', match.teamBScore);
-			methods.setValue('pichichi', match.pichichi);
-			methods.setValue('mvp', match.mvp);
+			setPichichi(match.pichichi);
+			setMVP(match.mvp);
 			setTeamAData({name: response.data.teamAName, players: response.data.teamA});
 			setTeamBData({name: response.data.teamBName, players: response.data.teamB});
 		}
@@ -134,13 +136,13 @@ function Match(props) {
 			<div className="field">
 				<div className="label">Pichichi</div>
 				<div className="control">
-					<PlayerSelect name="pichichi" multiple selected={methods.getValues('pichichi')}/>	
+					<PlayerSelect name="pichichi" multiple selected={pichichi}/>	
 				</div>
 			</div>
 			<div className="field">
 				<div className="label">MVP</div>
 				<div className="control">
-					<PlayerSelect name="mvp" selected={methods.getValues('mvp')}/>	
+					<PlayerSelect name="mvp" selected={mvp}/>	
 				</div>
 			</div>
 			<div className="field is-grouped">

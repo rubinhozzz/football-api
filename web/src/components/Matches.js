@@ -125,7 +125,7 @@ function Matches(props) {
 							<b>{match.teamAName}</b> ({match.teamAScore})
 							<ul>
 							{match.teamA.map((player, index) => {
-								const id = `teamA_${index}_${player._id}`;
+								const id = `${match._id}_teamA_${index}_${player._id}`;
 								return (<li key={id}>{player.firstname}</li>)
 							})}
 							</ul>
@@ -134,7 +134,7 @@ function Matches(props) {
 							<b>{match.teamBName}</b> ({match.teamBScore})
 							<ul>
 							{match.teamB.map((player, index) => {
-								const id = `teamB_${index}_${player._id}`;
+								const id = `${match._id}_teamB_${index}_${player._id}`;
 								return (<li key={id}>{player.firstname}</li>)
 							})}
 							</ul>
@@ -144,7 +144,7 @@ function Matches(props) {
 							{
 							match.pichichi.length ? 
 							match.pichichi.map((player) => (
-								<div className="column">{player.firstname}</div>
+								<div className="column" key={player._id}>{player.firstname}</div>
 							)) : '---'
 							}
 						</div>

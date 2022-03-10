@@ -53,8 +53,14 @@ class MatchController {
 
 	async update(req, res) {
 		try {
-			console.log(req.body);
+			console.log(req.body.pichichi);
 			let match = await Match.findOneAndUpdate({_id: req.params.id}, {
+				location: req.body.location,
+				datetime: req.body.datetime,
+				teamAName: req.body.teamAName,
+				teamBName: req.body.teamBName,
+				teamA: req.body.teamA,
+				teamB: req.body.teamB,
 				teamAScore: req.body.teamAScore,
 				teamBScore: req.body.teamBScore,
 				pichichi: req.body.pichichi,
