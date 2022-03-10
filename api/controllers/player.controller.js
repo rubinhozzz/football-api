@@ -3,7 +3,7 @@ const Player = require('../models/player.model');
 class PlayerController {
 
 	getAll(req, res) {
-		Player.find({}, function(err, players) {
+		Player.find({}).sort('firstname').exec(function(err, players) {
 			res.send(players);
 		});
 	}
