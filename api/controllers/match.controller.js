@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Match = require('../models/match.model');
 
 class MatchController {
@@ -44,7 +45,7 @@ class MatchController {
 				teamAScore: req.body.teamAScore,
 				teamBScore: req.body.teamBScore,
 				pichichi: req.body.pichichi,
-				mvp: req.body.mvp,
+				mvp: mongoose.Types.ObjectId.isValid(req.body.mvp) ? mongoose.Types.ObjectId(req.body.mvp) : null,
 			});
 			await match.save()
 			res.send(match);	
@@ -56,7 +57,8 @@ class MatchController {
 
 	async update(req, res) {
 		try {
-			console.log(req.body.pichichi);
+			console.log(req.body);
+			console.log(mongoose.Types.ObjectId.isValid(req.body.mvp));
 			let match = await Match.findOneAndUpdate({_id: req.params.id}, {
 				location: req.body.location,
 				datetime: req.body.datetime,
@@ -67,7 +69,7 @@ class MatchController {
 				teamAScore: req.body.teamAScore,
 				teamBScore: req.body.teamBScore,
 				pichichi: req.body.pichichi,
-				mvp: req.body.mvp,
+				mvp: mongoose.Types.ObjectId.isValid(req.body.mvp) ? mongoose.Types.ObjectId(req.body.mvp) : null,
 			}, { new: true });
 			res.send(match);	
 		} catch (error) {

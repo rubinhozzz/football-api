@@ -36,7 +36,7 @@ function PlayerSelect(props) {
 		<div className={className}>
 			<select multiple={multiple} {...register(props.name)}>
 				{!multiple &&
-				<option value="0">---</option>
+				<option value="">---</option>
 				}		
 				{
 				players.map(player => 

@@ -31,6 +31,7 @@ function Match(props) {
 			methods.setValue('teamAScore', match.teamAScore);
 			methods.setValue('teamBScore', match.teamBScore);
 			setPichichi(match.pichichi);
+			alert(match.mvp);
 			setMVP(match.mvp);
 			setTeamAData({name: response.data.teamAName, players: response.data.teamA});
 			setTeamBData({name: response.data.teamBName, players: response.data.teamB});

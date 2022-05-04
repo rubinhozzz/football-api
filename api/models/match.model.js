@@ -10,7 +10,7 @@ const matchSchema = mongoose.Schema({
 	teamAScore: {type: Number, default: 0},
 	teamBScore: {type: Number, default: 0},
 	pichichi: [{type: mongoose.Types.ObjectId, ref: 'Player'}],
-	mvp: {type: mongoose.Types.ObjectId, ref: 'Player'},
+	mvp: {type: mongoose.Types.ObjectId, ref: 'Player', default:null},
 });
 
 const Match = mongoose.model('Match', matchSchema);
