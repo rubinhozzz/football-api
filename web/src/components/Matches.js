@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom';
+import Select from 'react-select';
 import axios from 'axios';
 import moment from 'moment';
+import PlayerSelect from './PlayerSelect';
 
 function Matches(props) {
 	const [matches, setMatches] = useState([]);
@@ -71,21 +73,14 @@ function Matches(props) {
 								))
 							}
 						</select>
+						
 						</div>
+						<Select className='select'></Select>
 					</div>
 				</div>
 				<div className="field is-narrow">
 					<div className="control">
-						<div className="select">
-						<select onChange={(e) => setPichichi(e.target.value)}>
-							<option value="0">---</option>
-							{
-								players.map(player => (
-									<option key={player._id} value={player._id}>{player.firstname}</option>	
-								))
-							}
-						</select>
-						</div>
+						<PlayerSelect name="pichichi" multiple />
 					</div>
 				</div>
 				<div className="field is-narrow">
