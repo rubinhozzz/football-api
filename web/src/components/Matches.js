@@ -4,8 +4,10 @@ import Select from 'react-select';
 import axios from 'axios';
 import moment from 'moment';
 import PlayerSelect from './PlayerSelect';
+import { Controller, useForm } from 'react-hook-form';
 
 function Matches(props) {
+	const { control, handleSubmit } = useForm();
 	const [matches, setMatches] = useState([]);
 	const [locations, setLocations] = useState([]);
 	const [players, setPlayers] = useState([]);
@@ -40,6 +42,7 @@ function Matches(props) {
 	}, []);
 
 	async function handleSearch(event){
+		console.log(pichichi, mvp, location);
 		const response = await axios.get('matches', {
 				params: {	location: location,
 							pichichi: pichichi,
@@ -58,43 +61,32 @@ function Matches(props) {
 	const styles = {
 		border: '1px solid black', 
 	};
+
+	let options = [];
+	locations.map(location => (
+		options.push({value: location._id, label: location.name})	
+	))
 	return (
 		<div>
 			<div className="field is-horizontal">
 			<div className="field-body">
 				<div className="field is-narrow">
 					<div className="control">
-						<div className="select">
-						<select onChange={(e) => setLocation(e.target.value)}>
-							<option value="0">---</option>
-							{
-								locations.map(location => (
-									<option key={location._id} value={location._id}>{location.name}</option>	
-								))
-							}
-						</select>
-						
-						</div>
-						<Select className='select'></Select>
+						<Select 
+							options={options} 
+							onChange={(e) => setLocation(e.value)}
+							placeholder='Select location...'
+						/>						
 					</div>
 				</div>
 				<div className="field is-narrow">
 					<div className="control">
-						<PlayerSelect name="pichichi" multiple />
+						<PlayerSelect name="pichichi" onChange={(e) => setPichichi(e.value)} placeholder='Select pichichi...' />
 					</div>
 				</div>
 				<div className="field is-narrow">
 					<div className="control">
-						<div className="select">
-						<select onChange={(e) => setMVP(e.target.value)}>
-						<option value="0">---</option>
-						{
-							players.map(player => (
-								<option key={player._id} value={player._id}>{player.firstname}</option>	
-							))
-						}
-						</select>
-						</div>
+						<PlayerSelect name="mvp" onChange={(e) => setMVP(e.value)} placeholder='Select mvp...'/>
 					</div>
 				</div>
 				<div className="field is-narrow">
@@ -112,7 +104,7 @@ function Matches(props) {
 			matches.map((match) => {
 					const datetime = moment(new Date(match.datetime)).format('YYYY-MM-DD HH:mm:ss');
 					return ( 
-					<div key={match._id} className="columns" style={styles} onClick={handleMatchClick} match-id={match._id}>
+					<div key={match._id} className="columns tile" style={styles} onClick={handleMatchClick} match-id={match._id}>
 						<div className="column" match-id={match._id} >
 							{match.location.name}<br/>
 							{datetime}

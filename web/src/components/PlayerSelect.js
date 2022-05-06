@@ -23,7 +23,7 @@ function PlayerSelect(props) {
 	// {...register(props.name)}
 	return (
 		<div>
-			<Select options={options} isMulti={props.multiple ? 'isMulti' : ''}></Select>
+			<Select options={options} isMulti={props.multiple ? 'isMulti' : ''} {...props}></Select>
 		</div>
 	)
 }
