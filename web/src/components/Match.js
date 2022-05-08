@@ -42,7 +42,6 @@ function Match(props) {
 	}, []);
 
 	async function onSubmit(data) {
-		console.log(data);
 		let {location, datetime, pichichi, mvp, teamA, teamAName, teamB, teamAScore, teamBName, teamBScore} = data;
 		if (props.match.params.id) {
 			console.log('UPDATE');
@@ -50,13 +49,13 @@ function Match(props) {
 				location: location,
 				datetime: datetime,
 				teamAName: teamAName,
-				teamA: teamA,
+				teamA: (teamA) ? teamA.map(x => x.value) : null,
 				teamAScore: teamAScore,
-				teamB: teamB,
+				teamB: (teamB) ? teamB.map(x => x.value) : null,
 				teamBName: teamBName,
 				teamBScore: teamBScore,
-				pichichi: pichichi,
-				mvp: mvp
+				pichichi: (pichichi) ? pichichi.map(x => x.value) : null,
+				mvp: (mvp) ? mvp.value : null
 			});
 		} else {
 			console.log('CREATE');
@@ -64,13 +63,13 @@ function Match(props) {
 				location: location,
 				datetime: datetime,
 				teamAName: teamAName,
-				teamA: teamA,
+				teamA: (teamA) ? teamA.map(x => x.value) : null,
 				teamAScore: teamAScore,
-				teamB: teamB,
+				teamB: (teamB) ? teamB.map(x => x.value) : null,
 				teamBName: teamBName,
 				teamBScore: teamBScore,
-				pichichi: pichichi,
-				mvp: mvp
+				pichichi: (pichichi) ? pichichi.map(x => x.value) : null,
+				mvp: (mvp) ? mvp.value : null
 			});
 		}
 	}
