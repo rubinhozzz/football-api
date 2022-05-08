@@ -7,7 +7,6 @@ import PlayerSelect from './PlayerSelect';
 import { Controller, useForm } from 'react-hook-form';
 
 function Matches(props) {
-	const { control, handleSubmit } = useForm();
 	const [matches, setMatches] = useState([]);
 	const [locations, setLocations] = useState([]);
 	const [players, setPlayers] = useState([]);

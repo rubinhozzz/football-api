@@ -5,18 +5,27 @@ import Select from 'react-select';
 
 function PlayerSelect(props) {
 	const methods = useFormContext();
-	console.log(methods);
 	const players = React.useContext(PlayersContext);
 
 	useEffect(() => {
-		//console.log(props.name, props.selected);
-		//methods.setValue(props.name, props.selected);
+		
+		if ((methods) && (props.selected)) {
+			
+			if (Array.isArray(props.selected)) {
+				let data = [];
+				//console.log(props.selected);
+				props.selected.forEach(item => {
+					//console.log(`${item.firstname} ${item.lastname}`);
+					data.push({value: item._id, label: `${item.firstname} ${item.lastname}`})
+				});
+				console.log(data);
+				methods.setValue(props.name, data);
+			}
+			else
+				methods.setValue(props.name, {value: props.selected.id, label: `${props.selected.firstname} ${props.selected.lastname}`});
+		}
 	});
 
-	let className = 'select';
-	if (props.multiple) {
-		className = 'select is-multiple';
-	}
 	const options = [];
 	players.map(player => 
 		options.push({value: player._id , label: player.firstname + ' ' + player.lastname})
@@ -27,7 +36,7 @@ function PlayerSelect(props) {
 				name={props.name}
 				control={methods.control}
 				render={({ field }) =>
-					<Select {...field} options={options} isMulti={props.multiple ? 'isMulti' : ''}></Select>
+					<Select {...field} options={options} isMulti={props.multiple ? 'isMulti' : ''} defaultValue={methods.getValues(props.name)}></Select>
 				}
 			/>
 		</div>

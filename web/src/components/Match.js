@@ -7,7 +7,6 @@ import { useForm, FormProvider } from "react-hook-form";
 
 function Match(props) {
 	const methods = useForm();
-	console.log(methods);
 	const [teamAData, setTeamAData] = useState({});
 	const [teamBData, setTeamBData] = useState({});
 	const [datetime, setDatetime] = useState(moment(Date.now()).format("YYYY-MM-DDTkk:mm"));
@@ -26,16 +25,19 @@ function Match(props) {
 			const response = await axios.get(`matches/${id}`);
 			const match = response.data;
 			console.log(match);
-			methods.setValue('location', match.location);
+			methods.setValue('location', match.location._id);
 			let dt = moment(Date.parse(match.datetime)).format("YYYY-MM-DDTkk:mm");
 			methods.setValue('datetime', dt);
+			methods.setValue('teamAName', match.teamAName);
+			//methods.setValue('teamAData', match.teamA);
 			methods.setValue('teamAScore', match.teamAScore);
+			methods.setValue('teamBName', match.teamBName);
+			//methods.setValue('teamBData', match.teamB);
 			methods.setValue('teamBScore', match.teamBScore);
 			setPichichi(match.pichichi);
-			alert(match.mvp);
 			setMVP(match.mvp);
-			setTeamAData({name: response.data.teamAName, players: response.data.teamA});
-			setTeamBData({name: response.data.teamBName, players: response.data.teamB});
+			setTeamAData(match.teamA);
+			setTeamBData(match.teamB);
 		}
 		if (props.match.params.id)
 			fetchMatch(props.match.params.id);
@@ -107,7 +109,7 @@ function Match(props) {
 				<div className="column">
 					<h1>Team A</h1>
 					<input type="text" className="input" placeholder="Team A" {...methods.register('teamAName', {required: true})}/>
-					<PlayerSelect name="teamA" data={teamAData} multiple/>
+					<PlayerSelect name="teamA" selected={teamAData} multiple/>
 					<div className="field">
 						<div className="control">
 							<input className="input" placeholder="Score A" type="text" {...methods.register('teamAScore', {required: true})} />	
@@ -117,7 +119,7 @@ function Match(props) {
 				<div className="column">
 					<h1>Team B</h1>
 					<input type="text" className="input" placeholder="Team B" {...methods.register('teamBName', {required: true})}/>
-					<PlayerSelect name="teamB" data={teamBData} multiple/>
+					<PlayerSelect name="teamB" selected={teamBData} multiple/>
 					<div className="field">
 					<div className="control">
 						<input className="input" placeholder="Score B" type="text" {...methods.register('teamBScore', {required: true})}/>	
