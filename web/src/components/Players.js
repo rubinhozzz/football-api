@@ -40,6 +40,11 @@ function Players(props) {
 				<tr>
 					<th>Firstname</th>
 					<th>Lastname</th>
+					<th>Played</th>
+					<th>Won</th>
+					<th>Drawn</th>
+					<th>Lost</th>
+					<th>Form</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -49,6 +54,11 @@ function Players(props) {
 					<tr key={el._id} data-id={el._id}>
 						<td>{el.firstname}</td>
 						<td>{el.lastname}</td>
+						<td>30</td>
+						<td>30</td>
+						<td>30</td>
+						<td>30</td>
+						<td>---</td>
 						<td>
 							<Link to={`/players/update/${el._id}`}><button className='button is-small is-info is-outlined'>Edit</button></Link>&nbsp;<button className='button is-small is-danger is-outlined' onClick={handleDeleteClick}>Remove</button>
 						</td>

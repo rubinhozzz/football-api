@@ -3,10 +3,11 @@ import Team from './Team';
 import PlayerSelect from './PlayerSelect';
 import axios from 'axios';
 import moment from 'moment';
-import { useForm, FormProvider, useFormContext } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 
 function Match(props) {
 	const methods = useForm();
+	console.log(methods);
 	const [teamAData, setTeamAData] = useState({});
 	const [teamBData, setTeamBData] = useState({});
 	const [datetime, setDatetime] = useState(moment(Date.now()).format("YYYY-MM-DDTkk:mm"));
@@ -116,24 +117,28 @@ function Match(props) {
 			</div>
 			<div className="columns">
 				<div className="column">
-					<Team id="A" data={teamAData}/>
+					<h1>Team A</h1>
+					<input type="text" className="input" placeholder="Team A" {...methods.register('teamAName', {required: true})}/>
+					<PlayerSelect name="teamA" data={teamAData} multiple/>
+					<div className="field">
+						<div className="control">
+							<input className="input" placeholder="Score A" type="text" {...methods.register('teamAScore', {required: true})} />	
+						</div>
+					</div>
 				</div>
 				<div className="column">
-					<Team id="B" data={teamBData}/>
+					<h1>Team B</h1>
+					<input type="text" className="input" placeholder="Team B" {...methods.register('teamBName', {required: true})}/>
+					<PlayerSelect name="teamB" data={teamBData} multiple/>
+					<div className="field">
+					<div className="control">
+						<input className="input" placeholder="Score B" type="text" {...methods.register('teamBScore', {required: true})}/>	
+					</div>
+					</div>
 				</div>
+			
 			</div>
-			<div className="field">
-				<div className="label">Score A</div>
-				<div className="control">
-					<input className="input" type="text" {...methods.register('teamAScore', {required: true})} />	
-				</div>
-			</div>
-			<div className="field">
-				<div className="label">Score B</div>
-				<div className="control">
-					<input className="input" type="text" {...methods.register('teamBScore', {required: true})}/>	
-				</div>
-			</div>
+			
 			<div className="field">
 				<div className="label">Pichichi</div>
 				<div className="control">
