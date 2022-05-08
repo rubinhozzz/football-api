@@ -41,20 +41,9 @@ function Match(props) {
 			fetchMatch(props.match.params.id);
 	}, []);
 
-	function _getTeams(prefix, data) {
-		let team = [];
-		const keys = Object.keys(data);
-		keys.forEach((key, index) => {
-			if ((key.substring(0,1) == prefix) && (data[key] != '0'))
-				team.push(data[key]);
-		});
-		return team;
-	}
-
 	async function onSubmit(data) {
-		let {location, datetime, pichichi, mvp, teamAName, teamAScore, teamBName, teamBScore} = data;
-		const teamA = _getTeams('A', data);
-		const teamB = _getTeams('B', data);
+		console.log(data);
+		let {location, datetime, pichichi, mvp, teamA, teamAName, teamB, teamAScore, teamBName, teamBScore} = data;
 		if (props.match.params.id) {
 			console.log('UPDATE');
 			const response = await axios.put(`matches/${props.match.params.id}`, {
