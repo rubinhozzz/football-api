@@ -8,9 +8,7 @@ function PlayerSelect(props) {
 	const players = React.useContext(PlayersContext);
 
 	useEffect(() => {
-		
-		if ((methods) && (props.selected)) {
-			
+		if ((methods) && (props.selected)) {		
 			if (Array.isArray(props.selected)) {
 				let data = [];
 				//console.log(props.selected);
@@ -18,30 +16,43 @@ function PlayerSelect(props) {
 					//console.log(`${item.firstname} ${item.lastname}`);
 					data.push({value: item._id, label: `${item.firstname} ${item.lastname}`})
 				});
-				console.log(data);
+				//console.log(data);
 				methods.setValue(props.name, data);
 			}
 			else
 				methods.setValue(props.name, {value: props.selected.id, label: `${props.selected.firstname} ${props.selected.lastname}`});
 		}
-	});
+	}, [props.selected] );
 
 	const options = [];
 	players.map(player => 
 		options.push({value: player._id , label: player.firstname + ' ' + player.lastname})
 	)
+
+	const onChangeFirst = (e)=> {
+		console.log(e);
+	}
 	return ( (methods) ? 
 		<div>
 			<Controller
 				name={props.name}
+				//defaultValue={methods.getValues(props.name) ?? ''}
 				control={methods.control}
-				render={({ field }) =>
-					<Select {...field} options={options} isMulti={props.multiple ? 'isMulti' : ''} defaultValue={methods.getValues(props.name)}></Select>
+				rules={{ required: true }}
+				render={({ field : { onChange, onBlur, value, ref } }) =>
+					<Select 
+						options={options}
+						onChange={(e) => {
+							onChangeFirst(value);
+							onChange(e);}
+						}
+						value={value}
+						isMulti={props.multiple ? 'isMulti' : ''}></Select>
 				}
 			/>
 		</div>
 		:
-		<Select options={options} isMulti={props.multiple ? 'isMulti' : ''} {...props}></Select>
+		<Select options={options} isMulti={props.multiple ? 'isMulti' : ''} ></Select>
 	)
 }
 

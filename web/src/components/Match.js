@@ -6,7 +6,15 @@ import moment from 'moment';
 import { useForm, FormProvider } from "react-hook-form";
 
 function Match(props) {
-	const methods = useForm();
+	const methods = useForm({
+		defaultValues: {
+			teamA: {},
+			teamB: {},			
+			pichichi: {},
+			mvp: {},
+
+		}
+	});
 	const [teamAData, setTeamAData] = useState({});
 	const [teamBData, setTeamBData] = useState({});
 	const [datetime, setDatetime] = useState(moment(Date.now()).format("YYYY-MM-DDTkk:mm"));
@@ -78,6 +86,10 @@ function Match(props) {
 
 	async function handleDeleteMatch(event) {
 		const response = await axios.delete(`matches/${props.match.params.id}`);
+	}
+
+	const isUniquePlayer = (playerId) => {
+		return true;
 	}
 
 	return (
