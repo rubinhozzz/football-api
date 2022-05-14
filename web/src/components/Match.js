@@ -15,8 +15,8 @@ function Match(props) {
 
 		}
 	});
-	const [teamAData, setTeamAData] = useState({});
-	const [teamBData, setTeamBData] = useState({});
+	const [teamAData, setTeamAData] = useState([]);
+	const [teamBData, setTeamBData] = useState([]);
 	const [datetime, setDatetime] = useState(moment(Date.now()).format("YYYY-MM-DDTkk:mm"));
 	const [locations, setLocations] = useState([]);
 	const [mvp, setMVP] = useState('');
@@ -91,7 +91,7 @@ function Match(props) {
 	const isUniquePlayer = (playerId) => {
 		return true;
 	}
-
+	const errors = methods.formState.errors;
 	return (
 		<div>
 		<FormProvider {...methods}>
@@ -108,19 +108,23 @@ function Match(props) {
 							)
 						}
 					</select>
+					
 				</div>
 				</div>
+				{errors.location?.type === 'required' && <p className="help is-danger">Location is required</p>}
 			</div>
 			<div className="field">
 				<div className="label">Date / time</div>
 				<div className="control">
 					<input type="datetime-local" className="input" {...methods.register('datetime', {required: true})} defaultValue={datetime}/>	
 				</div>
+				{errors.datetime?.type === 'required' && <p className="help is-danger">Datetime is required</p>}
 			</div>
 			<div className="columns">
 				<div className="column">
 					<h1>Team A</h1>
 					<input type="text" className="input" placeholder="Team A" {...methods.register('teamAName', {required: true})}/>
+					{errors.teamAName?.type === 'required' && <p className="help is-danger">Name is required</p>}
 					<PlayerSelect name="teamA" selected={teamAData} multiple/>
 					<div className="field">
 						<div className="control">
@@ -131,6 +135,7 @@ function Match(props) {
 				<div className="column">
 					<h1>Team B</h1>
 					<input type="text" className="input" placeholder="Team B" {...methods.register('teamBName', {required: true})}/>
+					{errors.teamBName?.type === 'required' && <p className="help is-danger">Name is required</p>}
 					<PlayerSelect name="teamB" selected={teamBData} multiple/>
 					<div className="field">
 					<div className="control">

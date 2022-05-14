@@ -8,21 +8,22 @@ function PlayerSelect(props) {
 	const players = React.useContext(PlayersContext);
 
 	useEffect(() => {
-		if ((methods) && (props.selected)) {		
-			if (Array.isArray(props.selected)) {
+		if (!methods)
+			return
+		if (!props.selected)
+			return		//console.log(props.selected);
+		if (Array.isArray(props.selected)) {
 				let data = [];
-				//console.log(props.selected);
 				props.selected.forEach(item => {
-					//console.log(`${item.firstname} ${item.lastname}`);
 					data.push({value: item._id, label: `${item.firstname} ${item.lastname}`})
 				});
-				//console.log(data);
+				console.log(data);
 				methods.setValue(props.name, data);
 			}
 			else
 				methods.setValue(props.name, {value: props.selected.id, label: `${props.selected.firstname} ${props.selected.lastname}`});
-		}
-	}, [props.selected] );
+		
+	});
 
 	const options = [];
 	players.map(player => 
@@ -36,7 +37,7 @@ function PlayerSelect(props) {
 		<div>
 			<Controller
 				name={props.name}
-				//defaultValue={methods.getValues(props.name) ?? ''}
+				defaultValue={methods.getValues(props.name) ?? ''}
 				control={methods.control}
 				rules={{ required: true }}
 				render={({ field : { onChange, onBlur, value, ref } }) =>
