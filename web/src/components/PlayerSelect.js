@@ -36,7 +36,7 @@ function PlayerSelect(props) {
 		<div>
 			<Controller
 				name={props.name}
-				//defaultValue={methods.getValues(props.name) ?? ''}
+				defaultValue={methods.getValues(props.name) ?? ''}
 				control={methods.control}
 				rules={{ 
 					required: props.required ? true : false, 

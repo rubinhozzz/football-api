@@ -129,11 +129,28 @@ function Match(props) {
 			</div>
 			<div className="columns">
 				<div className="column">
-					<h1>Team A</h1>
-					<input type="text" className="input" placeholder="Team A" {...methods.register('teamAName', {required: true})}/>
-					{errors.teamAName?.type === 'required' && <p className="help is-danger">Name is required</p>}
-					<PlayerSelect name="teamA" selected={teamAData} multiple validate={validateTeams} oponent="teamB" required/>
-					{errors.teamA?.type === 'required' && <p className="help is-danger">Team is required</p>}
+					<p>Team A</p>
+					<div className="field">
+						<div className="control">
+							<input type="text" className="input" placeholder="Team A" {...methods.register('teamAName', {required: true})}/>
+						</div>
+						{errors.teamAName?.type === 'required' && <p className="help is-danger">Name is required</p>}
+					</div>
+					<div className="field">
+						<div className="control">
+							<PlayerSelect name="teamA" selected={teamAData} multiple 
+								validate={{
+									validateEqualPlayers: (value) => value.length == methods.getValues('teamB').length, 
+									validateDifferentPlayers: (value) => {
+										console.log(value);
+										return true;
+									}
+								}} 
+								required/>
+						</div>
+						{errors.teamA?.type === 'required' && <p className="help is-danger">Team is required</p>}
+						{errors.teamA?.type === 'validateEqualPlayers' && <p className="help is-danger">Different amount of players</p>}
+					</div>
 					<div className="field">
 						<div className="control">
 							<input className="input" placeholder="Score A" type="text" {...methods.register('teamAScore', {required: true})} />	
@@ -141,15 +158,23 @@ function Match(props) {
 					</div>
 				</div>
 				<div className="column">
-					<h1>Team B</h1>
-					<input type="text" className="input" placeholder="Team B" {...methods.register('teamBName', {required: true})}/>
-					{errors.teamBName?.type === 'required' && <p className="help is-danger">Name is required</p>}
-					<PlayerSelect name="teamB" selected={teamBData} multiple validate={validateTeams} required/>
-					{errors.teamB?.type === 'required' && <p className="help is-danger">Team is required</p>}
+					<p>Team B</p>
 					<div className="field">
-					<div className="control">
-						<input className="input" placeholder="Score B" type="text" {...methods.register('teamBScore', {required: true})}/>	
+						<div className="control">
+							<input type="text" className="input" placeholder="Team B" {...methods.register('teamBName', {required: true})}/>
+						</div>
+						{errors.teamBName?.type === 'required' && <p className="help is-danger">Name is required</p>}
 					</div>
+					<div className="field">
+						<div className="control">
+							<PlayerSelect name="teamB" selected={teamBData} multiple required/>
+						</div>
+						{errors.teamB?.type === 'required' && <p className="help is-danger">Team is required</p>}
+					</div>
+					<div className="field">
+						<div className="control">
+							<input className="input" placeholder="Score B" type="text" {...methods.register('teamBScore', {required: true})}/>	
+						</div>
 					</div>
 				</div>
 			
