@@ -11,13 +11,12 @@ function PlayerSelect(props) {
 		if (!methods)
 			return
 		if (!props.selected)
-			return		//console.log(props.selected);
+			return
 		if (Array.isArray(props.selected)) {
 				let data = [];
 				props.selected.forEach(item => {
 					data.push({value: item._id, label: `${item.firstname} ${item.lastname}`})
 				});
-				console.log(data);
 				methods.setValue(props.name, data);
 			}
 			else
@@ -31,15 +30,17 @@ function PlayerSelect(props) {
 	)
 
 	const onChangeFirst = (e)=> {
-		console.log(e);
+		//console.log(e);
 	}
 	return ( (methods) ? 
 		<div>
 			<Controller
 				name={props.name}
-				defaultValue={methods.getValues(props.name) ?? ''}
+				//defaultValue={methods.getValues(props.name) ?? ''}
 				control={methods.control}
-				rules={{ required: true }}
+				rules={{ 
+					required: props.required ? true : false, 
+					validate: props.validate ? props.validate : null}}
 				render={({ field : { onChange, onBlur, value, ref } }) =>
 					<Select 
 						options={options}

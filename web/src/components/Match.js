@@ -88,8 +88,15 @@ function Match(props) {
 		const response = await axios.delete(`matches/${props.match.params.id}`);
 	}
 
-	const isUniquePlayer = (playerId) => {
-		return true;
+	const validateTeams = {
+		validateEqualPlayers: (value) => {
+			console.log(value);
+			return true;
+		}, 
+		validateDifferentPlayers: (value) => {
+			console.log(value);
+			return true;
+		}
 	}
 	const errors = methods.formState.errors;
 	return (
@@ -125,7 +132,8 @@ function Match(props) {
 					<h1>Team A</h1>
 					<input type="text" className="input" placeholder="Team A" {...methods.register('teamAName', {required: true})}/>
 					{errors.teamAName?.type === 'required' && <p className="help is-danger">Name is required</p>}
-					<PlayerSelect name="teamA" selected={teamAData} multiple/>
+					<PlayerSelect name="teamA" selected={teamAData} multiple validate={validateTeams} oponent="teamB" required/>
+					{errors.teamA?.type === 'required' && <p className="help is-danger">Team is required</p>}
 					<div className="field">
 						<div className="control">
 							<input className="input" placeholder="Score A" type="text" {...methods.register('teamAScore', {required: true})} />	
@@ -136,7 +144,8 @@ function Match(props) {
 					<h1>Team B</h1>
 					<input type="text" className="input" placeholder="Team B" {...methods.register('teamBName', {required: true})}/>
 					{errors.teamBName?.type === 'required' && <p className="help is-danger">Name is required</p>}
-					<PlayerSelect name="teamB" selected={teamBData} multiple/>
+					<PlayerSelect name="teamB" selected={teamBData} multiple validate={validateTeams} required/>
+					{errors.teamB?.type === 'required' && <p className="help is-danger">Team is required</p>}
 					<div className="field">
 					<div className="control">
 						<input className="input" placeholder="Score B" type="text" {...methods.register('teamBScore', {required: true})}/>	
