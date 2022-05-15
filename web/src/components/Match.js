@@ -142,14 +142,19 @@ function Match(props) {
 								validate={{
 									validateEqualPlayers: (value) => value.length == methods.getValues('teamB').length, 
 									validateDifferentPlayers: (value) => {
-										console.log(value);
-										return true;
+										const teamA = value.map(x => x.value);
+										const teamB = methods.getValues('teamB').map(x => x.value);
+										const intersection = teamA.filter(x => teamB.includes(x));
+										if (intersection.length == 0)
+											return true;
+										return false;
 									}
 								}} 
 								required/>
 						</div>
 						{errors.teamA?.type === 'required' && <p className="help is-danger">Team is required</p>}
 						{errors.teamA?.type === 'validateEqualPlayers' && <p className="help is-danger">Different amount of players</p>}
+						{errors.teamA?.type === 'validateDifferentPlayers' && <p className="help is-danger">Players just one team</p>}
 					</div>
 					<div className="field">
 						<div className="control">
