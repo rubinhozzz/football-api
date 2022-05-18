@@ -1,0 +1,9 @@
+[
+{"_id": 1, "name": "Sporthal Zeeburg", "address": "Insulindeweg 1001", "postcode": "1095 DH", "city": "Amsterdam" },
+{"_id": 2, "name": "Sportgebouw Zeeburgereiland", "address": "Foekje Dillemastraat 118", "postcode": "", "city": "Amsterdam" },
+{"_id": 3, "name": "Sportcentrum De Pijp", "address": "Lizzy Ansinghstraat 88", "postcode": "1072 RD", "city": "Amsterdam" },
+{"_id": 4, "name": "Hogendorp Sportcentrum", "address": "Van Hogendorpstraat 921", "postcode": "1051 CE", "city": "Amsterdam" },
+{"_id": 5, "name": "Sporthal Oostenburg", "address": "Oostenburgergracht 151", "postcode": "1018 ND", "city": "Amsterdam" },
+{"_id": 6, "name": "Sportpark Elzenhagen", "address": "J.H. Hisgenpad 1", "postcode": "1025 WK", "city": "Amsterdam" },
+{"_id": 7, "name": "Sporthallen Zuid", "address": "Burgerweeshuispad 54", "postcode": "1076 EP", "city": "Amsterdam" }
+]

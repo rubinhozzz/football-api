@@ -5,26 +5,26 @@ class PlayerController {
 	async getAll(req, res) {
 		const results = await Player.aggregate([
 			{
-				"$lookup": {
-					"from": "Match",
-					"let": { "myId": "$_id" },
-					"pipeline": [
+				'$lookup': {
+					'from': 'Match',
+					'let': { 'myId': '$_id' },
+					'pipeline': [
 					{
-						"$match": {
-						"$expr": {
-						"$in": [ "$$myId", { "$setUnion": [ "$teamA", "$teamB" ] } ]
-					  }
-					}
+						'$match': {
+							'$expr': {
+								'$in': [ "$$myId", { "$setUnion": [ "$teamA", "$teamB" ] } ]
+							}
+						}
 					},
-					{ "$count": "numMatches" }
-				],
-				"as": "matchCount"
+					{ '$count': 'numMatches' }
+					],
+					'as': 'matchCount'
 			  }
 			},
 			{
-			  "$set": {
-				"matches": {
-				  "$ifNull": [ { "$first": "$matchCount.numMatches" }, 0 ]
+			'$set': {
+				'matches': {
+					'$ifNull': [ { '$first': '$matchCount.numMatches' }, 0 ]
 				}
 			  }
 			},
