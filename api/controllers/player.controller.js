@@ -2,10 +2,38 @@ const Player = require('../models/player.model');
 
 class PlayerController {
 
-	getAll(req, res) {
-		Player.find({}).sort('firstname').exec(function(err, players) {
-			res.send(players);
-		});
+	async getAll(req, res) {
+		const results = await Player.aggregate([
+			{
+				"$lookup": {
+					"from": "Match",
+					"let": { "myId": "$_id" },
+					"pipeline": [
+					{
+						"$match": {
+						"$expr": {
+						"$in": [ "$$myId", { "$setUnion": [ "$teamA", "$teamB" ] } ]
+					  }
+					}
+					},
+					{ "$count": "numMatches" }
+				],
+				"as": "matchCount"
+			  }
+			},
+			{
+			  "$set": {
+				"matches": {
+				  "$ifNull": [ { "$first": "$matchCount.numMatches" }, 0 ]
+				}
+			  }
+			},
+			{ "$unset": "matchCount" }
+		])
+			//.sort('firstname')
+		//.exec(function(err, players) {
+		console.log(results);
+		res.send(results);
 	}
 
 	async create(req, res) {
