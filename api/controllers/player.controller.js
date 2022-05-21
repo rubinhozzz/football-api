@@ -8,15 +8,14 @@ class PlayerController {
 				'$lookup': {
 					'from': 'Match',
 					'let': { 'myId': '$_id' },
-					'pipeline': [
-					{
+					'pipeline': [{
 						'$match': {
 							'$expr': {
 								'$in': [ "$$myId", { "$setUnion": [ "$teamA", "$teamB" ] } ]
 							}
 						}
-					},
-					{ '$count': 'numMatches' }
+						},
+						{ '$count': 'numMatches' }
 					],
 					'as': 'matchCount'
 			  }

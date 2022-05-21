@@ -7,6 +7,7 @@ import NewPlayer from './components/NewPlayer.js';
 import UpdatePlayer from './components/UpdatePlayer.js';
 import Matches from './components/Matches.js';
 import Match from './components/Match.js';
+import ComparePlayers from './components/ComparePlayers';
 import axios from 'axios';
 
 const PlayersContext = React.createContext(null);
@@ -44,6 +45,9 @@ function App() {
 					<Link to="/players" className="navbar-item">
 						<p>Players</p>
 					</Link>
+					<Link to="/compare" className="navbar-item">
+						<p>Compare</p>
+					</Link>
 				</div>
 
 				<div className="navbar-end">
@@ -67,6 +71,7 @@ function App() {
 				<Route path="/matches/add" component={Match}></Route>
 				<Route path="/matches/:id" component={Match}></Route>
 				<Route path="/matches" component={Matches}></Route>
+				<Route path="/compare" component={ComparePlayers}></Route>
 				<Route path="/" component={Matches}></Route>
 			</Switch>
 			</PlayersContext.Provider>
@@ -75,7 +80,7 @@ function App() {
 		</div>
 		<footer className="footer">
 				<div className="content has-text-centered">
-					<p>Aves @2021</p>
+					<p>Aves @2022</p>
 				</div>
 			</footer>
 		</Router>

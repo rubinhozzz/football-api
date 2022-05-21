@@ -54,7 +54,7 @@ function PlayerSelect(props) {
 			/>
 		</div>
 		:
-		<Select options={options} isMulti={props.multiple ? 'isMulti' : ''} ></Select>
+		<Select options={options} isMulti={props.multiple ? 'isMulti' : ''} value={props.selected} ></Select>
 	)
 }
 

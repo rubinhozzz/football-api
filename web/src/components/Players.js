@@ -31,7 +31,7 @@ function Players(props) {
 			alert(error);
 		}
 	}
-
+	console.log(players);
 	return (
 		<div>
 		<Link to="/players/add"><button className='button '>New player</button></Link>
@@ -54,11 +54,17 @@ function Players(props) {
 					<tr key={el._id} data-id={el._id}>
 						<td>{el.firstname}</td>
 						<td>{el.lastname}</td>
+						<td>{el.matches}</td>
 						<td>30</td>
 						<td>30</td>
 						<td>30</td>
-						<td>30</td>
-						<td>---</td>
+						<td>
+							<span className="tag is-success">W</span>&nbsp;
+							<span className="tag is-success">W</span>&nbsp;
+							<span className="tag is-danger">L</span>&nbsp;
+							<span className="tag is-dark">D</span>&nbsp;
+							<span className="tag is-danger">L</span>
+						</td>
 						<td>
 							<Link to={`/players/update/${el._id}`}><button className='button is-small is-info is-outlined'>Edit</button></Link>&nbsp;<button className='button is-small is-danger is-outlined' onClick={handleDeleteClick}>Remove</button>
 						</td>
