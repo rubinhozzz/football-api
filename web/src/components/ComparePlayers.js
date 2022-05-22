@@ -1,33 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import Select from 'react-select';
 import axios from 'axios';
-import moment from 'moment';
 import PlayerSelect from './PlayerSelect';
-import { Controller, useForm } from 'react-hook-form';
 
 function ComparePlayers(props) {
 	let history = useHistory();
+	const [playerA, setPlayerA] = useState('playerA', null);
+	const [playerB, setPlayerB] = useState('playerB', null);
 
 	useEffect(() => {
 	}, []);
+
+	const onChange = async (tag, item) => {
+		const response = await axios.get(`players/${item.value}`);
+		console.log(response);
+		if (tag == 'A')
+			setPlayerA(response.data);
+		else
+			setPlayerB(response.data);
+	}
 
 	return (
 		<div>
 			<div className="columns">
 				<div className="column">
-					<PlayerSelect></PlayerSelect>
-					Play together
-					Play against
+					hghj
+					gghj
+					hjghj
 				</div>
 				<div className="column">
-					<PlayerSelect></PlayerSelect>
+					<PlayerSelect name="playerA" onChange={(item) => onChange('A', item)}></PlayerSelect>
 					Play together
 					Play against
+					<figure className="image is-128x128">
+  						<img src="https://bulma.io/images/placeholders/256x256.png"/>
+					</figure>
+				</div>
+				<div className="column">
+					<PlayerSelect name="playerB" onChange={(item) => onChange('B', item)}></PlayerSelect>
+					Play together
+					Play against
+					<figure className="image is-128x128">
+						<img src="https://bulma.io/images/placeholders/256x256.png"/>
+					</figure>
 				</div>
 			</div>
 		</div>
 	)
 }
 
-export default ComparePlayers
+export default ComparePlayers;
