@@ -18,6 +18,7 @@ class MatchController {
 			.populate('pichichi')
 			.populate('mvp')
 			.exec(function(err, matches) {
+				console.log(matches);
 				res.send(matches);
 		});
 	}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import PlayerSelect from './PlayerSelect';
@@ -24,22 +24,15 @@ function ComparePlayers(props) {
 		<div>
 			<div className="columns">
 				<div className="column">
-					hghj
-					gghj
-					hjghj
-				</div>
-				<div className="column">
 					<PlayerSelect name="playerA" onChange={(item) => onChange('A', item)}></PlayerSelect>
-					Play together
-					Play against
+					{playerA.firstname} {playerA.lastname}
 					<figure className="image is-128x128">
   						<img src="https://bulma.io/images/placeholders/256x256.png"/>
 					</figure>
 				</div>
 				<div className="column">
 					<PlayerSelect name="playerB" onChange={(item) => onChange('B', item)}></PlayerSelect>
-					Play together
-					Play against
+					{playerB.firstname} {playerB.lastname}
 					<figure className="image is-128x128">
 						<img src="https://bulma.io/images/placeholders/256x256.png"/>
 					</figure>

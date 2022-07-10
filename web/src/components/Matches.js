@@ -22,7 +22,6 @@ function Matches(props) {
 				params: {	location: '0',
 							pichichi: '0',
 							mvp: '0'}});
-			console.log(response.data);
 			setMatches(response.data);
 		}
 		fetchMatches();
@@ -62,8 +61,8 @@ function Matches(props) {
 	};
 
 	let options = [];
-	locations.map(location => (
-		options.push({value: location._id, label: location.name})	
+	locations.map(loc => (
+		options.push({value: loc._id, label: loc.name})	
 	))
 	return (
 		<div>
@@ -75,6 +74,7 @@ function Matches(props) {
 							options={options} 
 							onChange={(e) => setLocation(e.value)}
 							placeholder='Select location...'
+							defaultValue={location}
 						/>						
 					</div>
 				</div>

@@ -65,7 +65,6 @@ class PlayerController {
 
 	get = async(req, res) => {
 		try {
-			console.log(req.params.id);
 			let player = await Player.findById(req.params.id).exec();
 			res.send(player);	
 		} catch (error) {
