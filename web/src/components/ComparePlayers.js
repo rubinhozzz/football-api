@@ -2,6 +2,7 @@ import React, { useEffect, useState, Suspense } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import PlayerSelect from './PlayerSelect';
+import Layout from './layouts/MainLayout';
 
 function ComparePlayers(props) {
 	let history = useHistory();
@@ -21,7 +22,7 @@ function ComparePlayers(props) {
 	}
 
 	return (
-		<div>
+		<Layout>
 			<div className="columns">
 				<div className="column">
 					<PlayerSelect name="playerA" onChange={(item) => onChange('A', item)}></PlayerSelect>
@@ -38,7 +39,7 @@ function ComparePlayers(props) {
 					</figure>
 				</div>
 			</div>
-		</div>
+		</Layout>
 	)
 }
 

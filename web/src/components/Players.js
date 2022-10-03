@@ -1,6 +1,7 @@
 import React, { Component, useEffect, useState } from 'react';
 import { Link, Button } from 'react-router-dom';
 import axios from 'axios';
+import Layout from './layouts/MainLayout';
 
 function Players(props) {
 	const [players, setPlayers] = useState([]);
@@ -33,7 +34,7 @@ function Players(props) {
 	}
 	console.log(players);
 	return (
-		<div>
+		<Layout>
 		<Link to="/players/add"><button className='button '>New player</button></Link>
 		<table className="table is-narrow" width="100%">
 			<thead>
@@ -73,7 +74,7 @@ function Players(props) {
 			}
 			</tbody>
 		</table>
-		</div>
+		</Layout>
 	)
 }
 

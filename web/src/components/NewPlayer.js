@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import PlayerForm from './PlayerForm';
+import Layout from './layouts/MainLayout';
 
 function NewPlayer(props) {
 
@@ -24,7 +25,9 @@ function NewPlayer(props) {
 	}
 
 	return (
+		<Layout>
 		<PlayerForm buttonLabel="Create" handleSubmit={handleSubmit}/>
+		</Layout>
 	)
 }
 

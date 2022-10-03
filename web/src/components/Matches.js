@@ -5,6 +5,7 @@ import axios from 'axios';
 import moment from 'moment';
 import PlayerSelect from './PlayerSelect';
 import { Controller, useForm } from 'react-hook-form';
+import Layout from './layouts/MainLayout';
 
 function Matches(props) {
 	const [matches, setMatches] = useState([]);
@@ -65,7 +66,7 @@ function Matches(props) {
 		options.push({value: loc._id, label: loc.name})	
 	))
 	return (
-		<div>
+		<Layout>
 			<div className="field is-horizontal">
 			<div className="field-body">
 				<div className="field is-narrow">
@@ -142,7 +143,7 @@ function Matches(props) {
 					</div>)
 				})
 				}
-		</div>
+		</Layout>
 	)
 }
 

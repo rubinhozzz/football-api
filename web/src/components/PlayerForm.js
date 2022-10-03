@@ -59,8 +59,7 @@ function PlayerForm(props) {
 				<button className="button is-primary" type="submit">{props.buttonLabel}</button>
 			</div>
 		</form>
-		<img src={imgSrc} className="image is-128x128"/>
-		
+		{props.dataId ?  <img src={imgSrc} className="image is-128x128"/>: ''}
 		</div>
 	) 
 }
