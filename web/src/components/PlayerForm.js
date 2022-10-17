@@ -31,13 +31,13 @@ function PlayerForm(props) {
 		<form onSubmit={handleSubmit(onSubmit)} method="post">
 			<div className="field">
 				<label className="label">Firstname</label>
-				<input type="text" className="input" placeholder="Firstname" name="firstname" {...register('firstname', { required: true })}/>
+				<input type="text" className={errors.firstname ? 'input is-danger' : 'input'} placeholder="Firstname" name="firstname" {...register('firstname', { required: true })}/>
 				{errors.firstname?.type === 'required' && (
 					<p className="help is-danger">* Firstname is required</p>)}
 			</div>
 			<div className="field">
 				<label className="label">Lastname</label>
-				<input type="text" className="input" placeholder="Lastname" name="lastname" {...register('lastname', { required: true })}/>
+				<input type="text" className={errors.lastname ? 'input is-danger' : 'input'} placeholder="Lastname" name="lastname" {...register('lastname', { required: true })}/>
 				{errors.lastname?.type === 'required' && (
 					<p className="help is-danger">* Lastname is required</p>
 					)}
