@@ -4,6 +4,7 @@ import PlayerSelect from './PlayerSelect';
 import axios from 'axios';
 import moment from 'moment';
 import { useForm, FormProvider } from "react-hook-form";
+import Layout from './layouts/MainLayout';
 
 function Match(props) {
 	const methods = useForm({
@@ -100,7 +101,7 @@ function Match(props) {
 	}
 	const errors = methods.formState.errors;
 	return (
-		<div>
+		<Layout>
 		<FormProvider {...methods}>
 		<form onSubmit={methods.handleSubmit(onSubmit)}>
 			<div className="field">
@@ -209,7 +210,7 @@ function Match(props) {
 			</div>
 		</form>
 		</FormProvider>
-		</div>
+		</Layout>
 	)
 }
 

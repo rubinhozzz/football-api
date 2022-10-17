@@ -1,6 +1,7 @@
 import React, { Component, useEffect, useState } from 'react';
 import axios from 'axios';
 import PlayerForm from './PlayerForm';
+import Layout from './layouts/MainLayout';
 
 function UpdatePlayer(props) {
 	const [id, setId] = useState(props.match.params.id);
@@ -24,7 +25,9 @@ function UpdatePlayer(props) {
 	}
 
 	return (
+		<Layout>
 		<PlayerForm dataId={id} buttonLabel="Update" handleSubmit={handleSubmit}/>
+		</Layout>
 	)
 }
 
