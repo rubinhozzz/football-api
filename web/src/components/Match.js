@@ -13,7 +13,6 @@ function Match(props) {
 			teamB: {},			
 			pichichi: {},
 			mvp: {},
-
 		}
 	});
 	const [teamAData, setTeamAData] = useState([]);
@@ -200,7 +199,9 @@ function Match(props) {
 			</div>
 			<div className="field is-grouped">
 				<div className="control">
-					<button className="button is-primary" type="submit">Create</button>
+					<button className="button is-primary" type="submit">
+						{props.match.params.id ? 'Update' : 'Create'}
+					</button>
 				</div>
 				{(props.match.params.id) ?
 					<div className="control">
