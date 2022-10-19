@@ -23,12 +23,11 @@ function NewPlayer(props) {
 			props.history.push('/players');
 		}
 	}
-
-	return (
+	return(
 		<Layout>
-		<PlayerForm buttonLabel="Create" handleSubmit={handleSubmit}/>
-		</Layout>
-	)
+			<PlayerForm buttonLabel="Create" handleSubmit={handleSubmit}/>
+		</Layout>)
+	
 }
 
 export default NewPlayer;

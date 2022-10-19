@@ -1,11 +1,11 @@
 import React, { useEffect, useState, Suspense } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import PlayerSelect from './PlayerSelect';
 import Layout from './layouts/MainLayout';
 
 function ComparePlayers(props) {
-	let history = useHistory();
+	let navigate = useNavigate();
 	const [playerA, setPlayerA] = useState('playerA', null);
 	const [playerB, setPlayerB] = useState('playerB', null);
 

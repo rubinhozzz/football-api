@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import 'bulma/css/bulma.min.css';
-import './App.css';
-import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Players from './components/Players.js';
 import NewPlayer from './components/NewPlayer.js';
 import UpdatePlayer from './components/UpdatePlayer.js';
@@ -13,7 +12,14 @@ import axios from 'axios';
 
 const PlayersContext = React.createContext(null);
 
+function getUser() {
+	const user = sessionStorage.getItem('user');
+	//const user = {'user_id':1, 'username': 'ruben'};
+	return user;
+}
+
 function App() {
+	const [user, setUser] = useState(getUser());
 	const [players, setPlayers] = useState([]);
 
 	useEffect(() => {
@@ -29,20 +35,26 @@ function App() {
 	return (
 		<Router>
 			<PlayersContext.Provider value={players}>
-			<Switch>
-				<Route path="/players/add" component={NewPlayer}></Route>
-				<Route path="/players/update/:id" component={UpdatePlayer}></Route>
-				<Route path="/players" component={Players}></Route>
-				<Route path="/matches/add" component={Match}></Route>
-				<Route path="/matches/:id" component={Match}></Route>
-				<Route path="/matches" component={Matches}></Route>
-				<Route path="/compare" component={ComparePlayers}></Route>
-				<Route path="/login" component={Login}></Route>
-				<Route path="/" component={Matches}></Route>
-			</Switch>
+			<Routes>
+				<Route path="/players/add" element={<Auth user={user}><NewPlayer/></Auth>}/>
+				<Route path="/players/update/:id" element={<UpdatePlayer/>}></Route>
+				<Route path="/players" element={<Players/>}></Route>
+				<Route path="/matches/add" element={<Matches user={user}></Matches>}/>
+				<Route path="/matches/:id" element={Match}></Route>
+				<Route path="/matches" element={<Match user={user}/>}></Route>
+				<Route path="/compare" element={<ComparePlayers/>}></Route>
+				<Route path="/login" element={<Login/>}></Route>
+				<Route path="/" element={<Matches/>}></Route>
+			</Routes>
 			</PlayersContext.Provider>
 		</Router>
 	);
+}
+
+function Auth(props) {
+	return (!props.user) ?
+		<Login></Login> :
+		props.children;
 }
 
 export default App;

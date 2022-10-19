@@ -12,7 +12,7 @@ function Match(props) {
 			teamA: {},
 			teamB: {},			
 			pichichi: {},
-			mvp: {},
+			mvp: null,
 		}
 	});
 	const [teamAData, setTeamAData] = useState([]);
@@ -37,10 +37,8 @@ function Match(props) {
 			let dt = moment(Date.parse(match.datetime)).format("YYYY-MM-DDTkk:mm");
 			methods.setValue('datetime', dt);
 			methods.setValue('teamAName', match.teamAName);
-			//methods.setValue('teamAData', match.teamA);
 			methods.setValue('teamAScore', match.teamAScore);
 			methods.setValue('teamBName', match.teamBName);
-			//methods.setValue('teamBData', match.teamB);
 			methods.setValue('teamBScore', match.teamBScore);
 			setPichichi(match.pichichi);
 			setMVP(match.mvp);

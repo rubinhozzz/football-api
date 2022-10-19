@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import axios from 'axios';
 import moment from 'moment';
 import PlayerSelect from './PlayerSelect';
 import { Controller, useForm } from 'react-hook-form';
 import Layout from './layouts/MainLayout';
+import Login from './Login';
 
 function Matches(props) {
 	const [matches, setMatches] = useState([]);
@@ -15,7 +16,7 @@ function Matches(props) {
 	const [location, setLocation] = useState(0);
 	const [pichichi, setPichichi] = useState(0);
 	const [mvp, setMVP] = useState(0);
-	let history = useHistory();
+	let navigate = useNavigate();
 
 	useEffect(() => {
 		async function fetchMatches() {
@@ -54,7 +55,7 @@ function Matches(props) {
 		if (!el)
 			return
 		const matchId = el.getAttribute('match-id');
-		history.push(`/matches/${matchId}`);
+		navigate(`/matches/${matchId}`);
 	}
 
 	const styles = {
@@ -65,6 +66,7 @@ function Matches(props) {
 	locations.map(loc => (
 		options.push({value: loc._id, label: loc.name})	
 	))
+
 	return (
 		<Layout>
 			<div className="field is-horizontal">
@@ -93,7 +95,8 @@ function Matches(props) {
 					<button className="button is-primary" onClick={handleSearch}>Search</button>
 				</div>
 				<div className="field is-narrow">
-					<Link to="/matches/add"><button className="button">New match</button></Link>
+					{props.user ? <Link to="/matches/add"><button className="button">New match</button></Link> : ''}
+					
 				</div>
 				</div>
 			</div>

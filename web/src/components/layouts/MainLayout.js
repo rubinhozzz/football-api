@@ -29,8 +29,8 @@ function Layout(props) {
 			<div className="navbar-end">
 				<div className="navbar-item">
 				<div className="buttons">
-					<Link to="/admin" className="button is-primary">
-					<p>Admin</p>
+					<Link to="/login" className="button is-primary">
+					<p>Log in</p>
 					</Link>
 				</div>
 				</div>
