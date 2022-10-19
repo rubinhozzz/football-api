@@ -1,10 +1,11 @@
 import React, { Component, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import PlayerForm from './PlayerForm';
 import Layout from './layouts/MainLayout';
 
 function UpdatePlayer(props) {
-	const [id, setId] = useState(props.match.params.id);
+	const { id } = useParams();
 
 	async function handleSubmit(firstname, lastname, file) {
 		let headers = {};

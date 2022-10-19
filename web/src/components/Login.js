@@ -24,7 +24,8 @@ function Login(props) {
 		});*/
 		sessionStorage.setItem('user', {'user_id':1, 'username': 'ruben'})
 		const next = (!props.next) ? '/' : props.next;
-		navigate(next, {replace: true});
+		console.log(next);
+		navigate(next);
 		window.location.reload();
 	}
 

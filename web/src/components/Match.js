@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import Team from './Team';
 import PlayerSelect from './PlayerSelect';
 import axios from 'axios';
@@ -7,6 +8,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import Layout from './layouts/MainLayout';
 
 function Match(props) {
+	const { id } = useParams();
 	const methods = useForm({
 		defaultValues: {
 			teamA: {},
@@ -45,15 +47,15 @@ function Match(props) {
 			setTeamAData(match.teamA);
 			setTeamBData(match.teamB);
 		}
-		if (props.match.params.id)
-			fetchMatch(props.match.params.id);
+		if (id)
+			fetchMatch(id);
 	}, []);
 
 	async function onSubmit(data) {
 		let {location, datetime, pichichi, mvp, teamA, teamAName, teamB, teamAScore, teamBName, teamBScore} = data;
-		if (props.match.params.id) {
+		if (id) {
 			console.log('UPDATE');
-			const response = await axios.put(`matches/${props.match.params.id}`, {
+			const response = await axios.put(`matches/${id}`, {
 				location: location,
 				datetime: datetime,
 				teamAName: teamAName,
@@ -83,7 +85,7 @@ function Match(props) {
 	}
 
 	async function handleDeleteMatch(event) {
-		const response = await axios.delete(`matches/${props.match.params.id}`);
+		const response = await axios.delete(`matches/${id}`);
 	}
 
 	const validateTeams = {
@@ -198,10 +200,10 @@ function Match(props) {
 			<div className="field is-grouped">
 				<div className="control">
 					<button className="button is-primary" type="submit">
-						{props.match.params.id ? 'Update' : 'Create'}
+						{id ? 'Update' : 'Create'}
 					</button>
 				</div>
-				{(props.match.params.id) ?
+				{(id) ?
 					<div className="control">
 						<button className="button is-danger" type="button" onClick={handleDeleteMatch}>Delete</button>
 					</div>
