@@ -21,7 +21,6 @@ function getUser() {
 }
 
 function App() {
-	const [user, setUser] = useState(getUser());
 	const [players, setPlayers] = useState([]);
 
 	useEffect(() => {
@@ -55,7 +54,7 @@ function App() {
 }
 
 function AuthWrapper(props) {
-	const user = useState(getUser());
+	const [user,] = useState(getUser());
 	const location = useLocation();
 	return (!user) ?
 		<Login next={location.pathname}></Login> :

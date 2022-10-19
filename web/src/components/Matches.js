@@ -4,16 +4,14 @@ import Select from 'react-select';
 import axios from 'axios';
 import moment from 'moment';
 import PlayerSelect from './PlayerSelect';
-import { Controller, useForm } from 'react-hook-form';
 import Layout from './layouts/MainLayout';
-import Login from './Login';
 import { getUser } from '../App';
 
 function Matches(props) {
-	const user = useState(getUser())
+	const [user,] = useState(getUser())
 	const [matches, setMatches] = useState([]);
 	const [locations, setLocations] = useState([]);
-	const [players, setPlayers] = useState([]);
+	const [, setPlayers] = useState([]);
 	// filters
 	const [location, setLocation] = useState(0);
 	const [pichichi, setPichichi] = useState(0);
@@ -105,7 +103,7 @@ function Matches(props) {
 			<br/>
 			{
 			
-			matches.length == 0 ? 'No matches found.' : 
+			matches.length === 0 ? 'No matches found.' : 
 			matches.map((match) => {
 					const datetime = moment(new Date(match.datetime)).format('YYYY-MM-DD HH:mm:ss');
 					return ( 

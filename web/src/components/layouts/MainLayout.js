@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { getUser } from "../../App";
 
 function Layout(props) {
-	const [user, setUser] = useState(getUser());
+	const [user, ] = useState(getUser());
 	return (
 		<>
 		<nav className="navbar" role="navigation" aria-label="main navigation">
