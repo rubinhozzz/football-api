@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { getUser } from "../../App";
 
 function Layout(props) {
+	const [user, setUser] = useState(getUser());
 	return (
 		<>
 		<nav className="navbar" role="navigation" aria-label="main navigation">
@@ -29,9 +31,14 @@ function Layout(props) {
 			<div className="navbar-end">
 				<div className="navbar-item">
 				<div className="buttons">
+					{(!user) ?
 					<Link to="/login" className="button is-primary">
-					<p>Log in</p>
+						<p>Log in</p>
 					</Link>
+					:
+					(<>Bienvenido user... <Link to="/logout" className="button is-secondary">
+					<p>Log out</p>
+					</Link></>)}
 				</div>
 				</div>
 			</div>

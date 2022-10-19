@@ -24,8 +24,8 @@ function Login(props) {
 		});*/
 		sessionStorage.setItem('user', {'user_id':1, 'username': 'ruben'})
 		const next = (!props.next) ? '/' : props.next;
-		console.log(next)
-		navigate(next);
+		navigate(next, {replace: true});
+		window.location.reload();
 	}
 
 	const errors = methods.formState.errors;
