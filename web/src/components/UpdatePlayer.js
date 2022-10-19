@@ -27,7 +27,7 @@ function UpdatePlayer(props) {
 
 	return (
 		<Layout>
-		<PlayerForm dataId={id} buttonLabel="Update" handleSubmit={handleSubmit}/>
+			<PlayerForm dataId={id} buttonLabel="Update" handleSubmit={handleSubmit}/>
 		</Layout>
 	)
 }

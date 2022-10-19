@@ -36,7 +36,7 @@ function Layout(props) {
 						<p>Log in</p>
 					</Link>
 					:
-					(<>Bienvenido user... <Link to="/logout" className="button is-secondary">
+					(<><span>Bienvenido <b>{user.username}</b></span>&nbsp;<Link to="/logout" className="button is-secondary">
 					<p>Log out</p>
 					</Link></>)}
 				</div>

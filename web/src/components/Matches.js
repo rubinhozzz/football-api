@@ -7,8 +7,10 @@ import PlayerSelect from './PlayerSelect';
 import { Controller, useForm } from 'react-hook-form';
 import Layout from './layouts/MainLayout';
 import Login from './Login';
+import { getUser } from '../App';
 
 function Matches(props) {
+	const user = useState(getUser())
 	const [matches, setMatches] = useState([]);
 	const [locations, setLocations] = useState([]);
 	const [players, setPlayers] = useState([]);
@@ -95,7 +97,7 @@ function Matches(props) {
 					<button className="button is-primary" onClick={handleSearch}>Search</button>
 				</div>
 				<div className="field is-narrow">
-					{props.user ? <Link to="/matches/add"><button className="button">New match</button></Link> : ''}
+					{user ? <Link to="/matches/add"><button className="button">New match</button></Link> : ''}
 					
 				</div>
 				</div>

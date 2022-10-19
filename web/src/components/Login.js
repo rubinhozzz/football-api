@@ -16,15 +16,14 @@ function Login(props) {
 	}, []);
 
 	async function onSubmit(data) {
-		console.log(data);
 		const {username, password} = data;
 		/*const response = await axios.post('login', {
 			username: username,
 			password: password
 		});*/
-		sessionStorage.setItem('user', {'user_id':1, 'username': 'ruben'})
+		const json = {'user_id':1, 'username': 'ruben'}
+		sessionStorage.setItem('user', JSON.stringify(json))
 		const next = (!props.next) ? '/' : props.next;
-		console.log(next);
 		navigate(next);
 		window.location.reload();
 	}
