@@ -25,11 +25,16 @@ class PlayerController {
 							}
 						},
 						{ '$sort': {'datetime': -1} },
-						{ '$limit': 2}
+						{ '$limit': 5}
 					],
 					'as': 'games'
 			  }
 			},
+			{
+				'$addFields' : {
+					'totalGames': { $size: '$games'}
+				}
+			}
 			//{ "$unset": "matchCount" }
 		])
 		console.log(results);

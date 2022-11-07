@@ -1,5 +1,5 @@
-import React, { Component, useEffect, useState } from 'react';
-import { Link, Button } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Layout from './layouts/MainLayout';
 
@@ -9,7 +9,7 @@ function Players(props) {
 	useEffect(() => {
 		async function getPlayers(){
 			try {
-				console.log(axios.defaults.baseURL)
+				//console.log(axios.defaults.baseURL)
 				const response = await axios.get('players');
 				setPlayers(response.data);
 			} catch (error) {
@@ -32,6 +32,26 @@ function Players(props) {
 			alert(error);
 		}
 	}
+
+	function getGameResult(game, playerId) {
+		const teamA = game.teamA;
+		const teamB = game.teamB;
+		let winner = '';
+		if (game.teamAScore > game.teamBScore)
+			winner = 'A'
+		else if (game.teamAScore < game.teamBScore)
+			winner = 'B'
+		if (teamA.includes(playerId) && winner === 'A' )
+			return 'W';
+		if (teamA.includes(playerId) && winner ==='B' )
+			return 'L';
+		if (teamB.includes(playerId) && winner === 'A' )
+			return 'L';
+		if (teamB.includes(playerId) && winner === 'B' )
+			return 'W';
+		return 'D';
+	}
+
 	console.log(players);
 	return (
 		<Layout>
@@ -55,16 +75,20 @@ function Players(props) {
 					<tr key={el._id} data-id={el._id}>
 						<td>{el.firstname}</td>
 						<td>{el.lastname}</td>
-						<td>{el.matches}</td>
-						<td>30</td>
+						<td>{el.totalGames}</td>
+						<td>{el.totalGames}</td>
 						<td>30</td>
 						<td>30</td>
 						<td>
-							<span className="tag is-success">W</span>&nbsp;
-							<span className="tag is-success">W</span>&nbsp;
-							<span className="tag is-danger">L</span>&nbsp;
-							<span className="tag is-dark">D</span>&nbsp;
-							<span className="tag is-danger">L</span>
+							{
+							el.games.map((game) => {
+								const result = getGameResult(game, el._id);
+								let className = ''
+								if (result === 'W') className = 'is-success';
+								if (result === 'L') className = 'is-danger';
+								return (<><span className={'tag ' + className}>{result}</span><>&nbsp;</></>)
+								}
+							)}
 						</td>
 						<td>
 							<Link to={`/players/update/${el._id}`}><button className='button is-small is-info is-outlined'>Edit</button></Link>&nbsp;<button className='button is-small is-danger is-outlined' onClick={handleDeleteClick}>Remove</button>
