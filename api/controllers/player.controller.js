@@ -6,31 +6,32 @@ class PlayerController {
 		const results = await Player.aggregate([
 			{
 				'$lookup': {
-					'from': 'Match',
-					'let': { 'myId': '$_id' },
-					'pipeline': [{
+					'from': 'matches',
+					'let': { 'myId': { '$toString': '$_id' } },
+					'pipeline': [
+						{
 						'$match': {
 							'$expr': {
-								'$in': [ "$$myId", { "$setUnion": [ "$teamA", "$teamB" ] } ]
+								'$in': [ "$$myId", { '$map': {
+									'input': {"$setUnion": [ "$teamA", "$teamB" ]}, 
+									'as': 'playerId',
+									'in': {
+										'$toString': '$$playerId'
+										} 
+									}
+								}
+								]
 							}
-						}
+							}
 						},
-						{ '$count': 'numMatches' }
+						{ '$sort': {'datetime': -1} },
+						{ '$limit': 2}
 					],
-					'as': 'matchCount'
+					'as': 'games'
 			  }
 			},
-			{
-			'$set': {
-				'matches': {
-					'$ifNull': [ { '$first': '$matchCount.numMatches' }, 0 ]
-				}
-			  }
-			},
-			{ "$unset": "matchCount" }
+			//{ "$unset": "matchCount" }
 		])
-			//.sort('firstname')
-		//.exec(function(err, players) {
 		console.log(results);
 		res.send(results);
 	}
