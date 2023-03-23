@@ -17,5 +17,5 @@ Functionality
 
 Structure of the project
 ========================
-1. server/api: Express (mongoose)
-2. web: CRA (react-hook-forms)
+1. server/api: Python (FastAPI, SQLAlchemy, PostgreSQL) 
+2. web: Next.js
