@@ -1,3 +1,5 @@
+
+
 html,
 body {
   padding: 0;
@@ -36,3 +38,7 @@ button {
   padding: 0.5rem 1rem;
   font-weight: bold;
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
