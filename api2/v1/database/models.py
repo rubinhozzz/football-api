@@ -1,6 +1,6 @@
 from typing import List, Optional
 from datetime import datetime
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, LargeBinary, Table
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, LargeBinary, Table, DateTime
 from sqlalchemy.orm import relationship, mapped_column, Mapped
 
 from .database import Base
@@ -37,7 +37,7 @@ class Player(Base):
 class Match(Base):
     __tablename__ = "match"
     id: Mapped[int] = mapped_column(primary_key=True)
-    datetime: Mapped[datetime] = mapped_column(default=datetime.now())
+    datetime: Mapped[int] = mapped_column(DateTime(timezone=True), default=datetime.now())
     teamA_name: Mapped[str] = mapped_column(String(100))
     teamB_name: Mapped[str] = mapped_column(String(100))
     teamA_score: Mapped[Optional[int]] = mapped_column(default=0)
