@@ -19,7 +19,7 @@ class User(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(String(100))
     hashed_password: Mapped[str] = mapped_column(String(100))
-    is_active: Mapped[bool] = mapped_column(default=True)
+    is_active: Mapped[bool] = mapped_column(Boolean, server_default='t', default=True)
 
 class Player(Base):
     __tablename__ = "player"
@@ -29,7 +29,7 @@ class Player(Base):
     telephone: Mapped[Optional[str]] = mapped_column(String(30))
     country_code: Mapped[Optional[str]] = mapped_column(String(3))
     photo: Mapped[Optional[bytes]] = mapped_column(LargeBinary())
-    is_active: Mapped[bool] = mapped_column(default=True)
+    is_active: Mapped[bool] = mapped_column(Boolean, server_default='t', default=True)
     matches: Mapped[List["Match"]] = relationship(secondary=player_match)
     match_mvp: Mapped["Match"] = relationship(back_populates="mvp")
     match_pichichis: Mapped["Match"] = relationship(back_populates="pichichis")
@@ -54,6 +54,6 @@ class Location(Base):
     name: Mapped[str] = mapped_column(String(100))
     postcode: Mapped[Optional[str]] = mapped_column(String(10))
     address: Mapped[Optional[str]] = mapped_column(String(100))
-    is_active: Mapped[bool] = mapped_column(default=True)
+    is_active: Mapped[bool] = mapped_column(Boolean, server_default='t', default=True)
     match: Mapped["Match"] = relationship(back_populates="location")
     
