@@ -53,18 +53,18 @@ export default function Players(props) {
 	const players = [];
 	return (
 		<>
-		<Link href="/players/create"><button className='button '>New player</button></Link>
-		<table className="table is-narrow" width="100%">
+		<Link href="/players/create"><button className='btn btn-primary'>New player</button></Link>
+		<table className="table w-full table-auto border-collapse border border-slate-400">
 			<thead>
 				<tr>
-					<th>Firstname</th>
-					<th>Lastname</th>
-					<th>Played</th>
-					<th>Won</th>
-					<th>Drawn</th>
-					<th>Lost</th>
-					<th>Form</th>
-					<th></th>
+					<th className="border border-slate-300">Firstname</th>
+					<th className="border border-slate-300">Lastname</th>
+					<th className="border border-slate-300">Played</th>
+					<th className="border border-slate-300">Won</th>
+					<th className="border border-slate-300">Drawn</th>
+					<th className="border border-slate-300">Lost</th>
+					<th className="border border-slate-300">Form</th>
+					<th className="border border-slate-300"></th>
 				</tr>
 			</thead>
 			<tbody>
