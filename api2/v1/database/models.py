@@ -1,8 +1,7 @@
 from typing import List, Optional
 from datetime import datetime
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, LargeBinary, Table, DateTime
-from sqlalchemy.orm import relationship, mapped_column, Mapped
-
+from sqlalchemy.orm import Mapped, relationship, mapped_column
+from sqlalchemy import Boolean, Column, ForeignKey, String, LargeBinary, Table, DateTime
 from .database import Base
 
 player_match = Table(
