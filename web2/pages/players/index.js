@@ -1,16 +1,18 @@
 
-//import axios from 'axios';
-//import Layout from './layouts/MainLayout';
+import axios from 'axios';
 import Link from 'next/link'
+import { useState, useEffect } from 'react';
 
 export default function Players(props) {
-	/*
+	const [players, setPlayers] = useState([]);
+
 	useEffect(() => {
 		async function getPlayers(){
 			try {
-				//console.log(axios.defaults.baseURL)
-				const response = await axios.get('players');
-				setPlayers(response.data);
+				const response = await fetch('http://192.168.178.44:8000/players/');
+				const players = await response.json();
+				console.log(players);
+				setPlayers(players);
 			} catch (error) {
 				alert(error)
 			}
@@ -31,7 +33,7 @@ export default function Players(props) {
 			alert(error);
 		}
 	}
-
+	/*
 	function getGameResult(game, playerId) {
 		const teamA = game.teamA;
 		const teamB = game.teamB;
@@ -50,7 +52,6 @@ export default function Players(props) {
 			return 'W';
 		return 'D';
 	}*/
-	const players = [];
 	return (
 		<>
 		<Link href="/players/create"><button className='btn btn-primary'>New player</button></Link>
@@ -78,7 +79,7 @@ export default function Players(props) {
 						<td>30</td>
 						<td>30</td>
 						<td>
-							{
+							{ /*
 							el.games.map((game) => {
 								const result = getGameResult(game, el._id);
 								let className = ''
@@ -86,10 +87,10 @@ export default function Players(props) {
 								if (result === 'L') className = 'is-danger';
 								return (<><span className={'tag ' + className}>{result}</span><>&nbsp;</></>)
 								}
-							)}
+							)*/}
 						</td>
 						<td>
-							<Link to={`/players/update/${el._id}`}><button className='button is-small is-info is-outlined'>Edit</button></Link>&nbsp;<button className='button is-small is-danger is-outlined' onClick={handleDeleteClick}>Remove</button>
+							<Link href={`/players/update/${el._id}`}><button className='button is-small is-info is-outlined'>Edit</button></Link>&nbsp;<button className='button is-small is-danger is-outlined' onClick={handleDeleteClick}>Remove</button>
 						</td>
 					</tr>
 				)
