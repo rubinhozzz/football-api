@@ -53,3 +53,10 @@ button {
 .btn-primary:hover {
   @apply bg-blue-700;
 }
+
+.btn-danger {
+  @apply bg-red-500 text-white;
+}
+.btn-danger:hover {
+  @apply bg-red-700;
+}
