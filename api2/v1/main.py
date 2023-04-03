@@ -60,6 +60,18 @@ async def update_player(session: AsyncSession = Depends(get_session)) -> JSONRes
         print(f"{row.id} {row.firstname} {row.lastname}")
     return JSONResponse({"message": "It worked!!"})
 
+@app.delete('/players/{id}')
+async def delete_player(id: int, session: AsyncSession = Depends(get_session)) -> JSONResponse:
+    try:
+        stmt = select(models.Player).filter_by(id=id)
+        result = await session.execute(stmt)
+        player = result.scalars().first()
+        await session.delete(player)
+        await session.commit()
+        return JSONResponse({'ok': True})
+    except Exception as ex:
+        return JSONResponse({'ok': False, 'error': str(ex)}, status_code=500)    
+
 async def async_main():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)

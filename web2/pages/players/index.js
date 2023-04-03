@@ -1,5 +1,4 @@
 
-import axios from 'axios';
 import Link from 'next/link'
 import { useState, useEffect } from 'react';
 
@@ -26,7 +25,10 @@ export default function Players(props) {
 			if (!ok)
 				return
 			const el = event.target.closest('tr');
-			const response = await axios.delete(`players/delete/${el.getAttribute('data-id')}`);	
+			const playerId = el.getAttribute('data-id');
+			if (!playerId)
+				return
+			const response = await fetch(`http://192.168.178.44:8000/players/${playerId}`, {method: 'DELETE'});	
 			// remove player from
 		} catch (error) {
 			console.error(error);
@@ -54,30 +56,30 @@ export default function Players(props) {
 	}*/
 	return (
 		<>
-		<Link href="/players/create"><button className='btn btn-primary'>New player</button></Link>
-		<table className="table w-full table-auto border-collapse border border-slate-400">
-			<thead>
+		<Link href="/players/create"><button className='btn btn-primary my-2'>New player</button></Link>
+		<table className="min-w-full text-left text-sm font-light">
+			<thead className='border-b font-medium dark:border-neutral-500'>
 				<tr>
-					<th className="border border-slate-300">Firstname</th>
-					<th className="border border-slate-300">Lastname</th>
-					<th className="border border-slate-300">Played</th>
-					<th className="border border-slate-300">Won</th>
-					<th className="border border-slate-300">Drawn</th>
-					<th className="border border-slate-300">Lost</th>
-					<th className="border border-slate-300">Form</th>
-					<th className="border border-slate-300"></th>
+					<th className="px-6 py-4">Firstname</th>
+					<th className="px-6 py-4">Lastname</th>
+					<th className="px-6 py-4">Played</th>
+					<th className="px-6 py-4">Won</th>
+					<th className="px-6 py-4">Drawn</th>
+					<th className="px-6 py-4">Lost</th>
+					<th className="px-6 py-4">Form</th>
+					<th className="px-6 py-4"></th>
 				</tr>
 			</thead>
 			<tbody>
 			{
 				players.map(el => 
-					<tr key={el._id} data-id={el._id}>
+					<tr className='border-b dark:border-neutral-500' key={el.id} data-id={el.id}>
 						<td>{el.firstname}</td>
 						<td>{el.lastname}</td>
 						<td>{el.totalGames}</td>
 						<td>{el.totalGames}</td>
-						<td>30</td>
-						<td>30</td>
+						<td>{el.totalGames}</td>
+						<td>{el.totalGames}</td>
 						<td>
 							{ /*
 							el.games.map((game) => {
@@ -90,7 +92,10 @@ export default function Players(props) {
 							)*/}
 						</td>
 						<td>
-							<Link href={`/players/update/${el._id}`}><button className='button is-small is-info is-outlined'>Edit</button></Link>&nbsp;<button className='button is-small is-danger is-outlined' onClick={handleDeleteClick}>Remove</button>
+							<Link href={`/players/${el.id}`}>
+								<button className='btn btn-primary'>Edit</button>
+							</Link>&nbsp;
+							<button className='btn btn-danger' onClick={handleDeleteClick}>Remove</button>
 						</td>
 					</tr>
 				)
