@@ -7,7 +7,7 @@ from database.database import engine, Base, get_session
 import asyncio
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-
+from database.schemas import Player
 
 app = FastAPI()
 
@@ -32,10 +32,13 @@ async def health() -> JSONResponse:
 
 @app.get("/players/{id}")
 async def get_players(id: int, session: AsyncSession = Depends(get_session)) -> JSONResponse:
-    stmt = select(models.Player).filter_by(id=id).order_by(models.Player.id)
-    result = await session.execute(stmt)
-    player = result.scalars().first()
-    return jsonable_encoder(player)
+    try:
+        stmt = select(models.Player).filter_by(id=id).order_by(models.Player.id)
+        result = await session.execute(stmt)
+        player = result.scalars().first()
+        return jsonable_encoder(player)
+    except Exception as ex:
+        return JSONResponse({'ok': False, 'error': str(ex)}, status_code=500)    
 
 @app.get("/players/")
 async def get_players(session: AsyncSession = Depends(get_session)) -> JSONResponse:
@@ -43,14 +46,18 @@ async def get_players(session: AsyncSession = Depends(get_session)) -> JSONRespo
     result = await session.execute(stmt)
     players = result.scalars().all()
     return jsonable_encoder(players)
-
+   
 @app.post("/players/")
-async def create_player(session: AsyncSession = Depends(get_session)) -> JSONResponse:
-    stmt = select(models.Player).order_by(models.Player.id)
-    r = await session.execute(stmt)
-    for row in r.scalars():
-        print(f"{row.id} {row.firstname} {row.lastname}")
-    return JSONResponse({"message": "It worked!!"})
+async def create_player(player: Player, session: AsyncSession = Depends(get_session)) -> JSONResponse:
+    try:
+        async with session.begin():
+            p = models.Player(firstname=player.firstname, lastname=player.lastname, country_code=player.country_code)
+            session.add(p)
+            await session.commit()
+            return jsonable_encoder(p)
+    except Exception as ex:
+        print(ex)
+        return JSONResponse({'ok': False, 'error': str(ex)}, status_code=500)   
 
 @app.put("/players/{id}")
 async def update_player(session: AsyncSession = Depends(get_session)) -> JSONResponse:
