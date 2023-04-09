@@ -1,15 +1,13 @@
-from fastapi import Request, FastAPI, Depends
+from fastapi import Depends
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi import APIRouter
-from database.models import Player
-from sqlalchemy.ext.asyncio import AsyncSession
+from database.schemas import Player
 import database.models as models
-from database.database import engine, Base, get_session
-from sqlalchemy import select
+from database.database import get_session
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import NoResultFound 
-from database.schemas import Player
 
 router = APIRouter(prefix='/players', tags=['players'])
 
@@ -24,7 +22,7 @@ async def get_players(session: AsyncSession = Depends(get_session)) -> JSONRespo
 		return JSONResponse({'ok': False, 'error': str(ex)}, status_code=500)    
 
 @router.get('/{id}')
-async def get_players(id: int, session: AsyncSession = Depends(get_session)) -> JSONResponse:
+async def get_player(id: int, session: AsyncSession = Depends(get_session)) -> JSONResponse:
     try:
         stmt = select(models.Player).filter_by(id=id).order_by(models.Player.id)
         result = await session.execute(stmt)
@@ -48,13 +46,19 @@ async def create_player(player: Player, session: AsyncSession = Depends(get_sess
 		return JSONResponse({'ok': False, 'error': str(ex)}, status_code=500)   
 
 @router.put('/{id}')
-async def update_player(session: AsyncSession = Depends(get_session)) -> JSONResponse:
+async def update_player(id: int, playerSchema: Player, session: AsyncSession = Depends(get_session)) -> JSONResponse:
 	try:
-		stmt = select(models.Player).order_by(models.Player.id)
-		r = await session.execute(stmt)
-		for row in r.scalars():
-			print(f"{row.id} {row.firstname} {row.lastname}")
-		return JSONResponse({"message": "It worked!!"})
+		async with session.begin():
+			stmt = select(models.Player).filter_by(id=id).order_by(models.Player.id)
+			result = await session.execute(stmt)
+			player = result.scalars().one()
+			player.firstname = playerSchema.firstname
+			player.lastname = playerSchema.lastname
+			player.country_code = playerSchema.country_code
+			await session.commit()
+			return jsonable_encoder(player)
+	except NoResultFound as ex:
+		return JSONResponse({'ok': False, 'error': str(ex)}, status_code=404)
 	except Exception as ex:
 		print(ex)
 		return JSONResponse({'ok': False, 'error': str(ex)}, status_code=500)   
