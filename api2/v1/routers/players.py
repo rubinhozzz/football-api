@@ -66,12 +66,13 @@ async def update_player(id: int, playerSchema: Player, session: AsyncSession = D
 @router.delete('/{id}')
 async def delete_player(id: int, session: AsyncSession = Depends(get_session)) -> JSONResponse:
 	try:
-		stmt = select(models.Player).filter_by(id=id)
-		result = await session.execute(stmt)
-		player = result.scalars().one()
-		await session.delete(player)
-		await session.commit()
-		return JSONResponse({'ok': True})
+		async with session.begin():
+			stmt = select(models.Player).filter_by(id=id)
+			result = await session.execute(stmt)
+			player = result.scalars().one()
+			await session.delete(player)
+			await session.commit()
+			return JSONResponse({'ok': True})
 	except NoResultFound as ex:
 		return JSONResponse({'ok': False, 'error': str(ex)}, status_code=404)    
 	except Exception as ex:
