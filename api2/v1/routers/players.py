@@ -5,7 +5,7 @@ from fastapi import APIRouter
 from database.schemas import Player
 import database.models as models
 from database.database import get_session
-from sqlalchemy import select, update
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import NoResultFound 
 
@@ -23,15 +23,15 @@ async def get_players(session: AsyncSession = Depends(get_session)) -> JSONRespo
 
 @router.get('/{id}')
 async def get_player(id: int, session: AsyncSession = Depends(get_session)) -> JSONResponse:
-    try:
-        stmt = select(models.Player).filter_by(id=id).order_by(models.Player.id)
-        result = await session.execute(stmt)
-        player = result.scalars().one()
-        return jsonable_encoder(player)
-    except NoResultFound as ex:
-        return JSONResponse({'ok': False, 'error': str(ex)}, status_code=404)    
-    except Exception as ex:
-        return JSONResponse({'ok': False, 'error': str(ex)}, status_code=500)    
+	try:
+		stmt = select(models.Player).filter_by(id=id).order_by(models.Player.id)
+		result = await session.execute(stmt)
+		player = result.scalars().one()
+		return jsonable_encoder(player)
+	except NoResultFound as ex:
+		return JSONResponse({'ok': False, 'error': str(ex)}, status_code=404)    
+	except Exception as ex:
+		return JSONResponse({'ok': False, 'error': str(ex)}, status_code=500)    
 
 @router.post('/')
 async def create_player(player: Player, session: AsyncSession = Depends(get_session)) -> JSONResponse:
