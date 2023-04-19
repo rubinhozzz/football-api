@@ -16,7 +16,7 @@ export default function PlayerForm(props) {
 	}, [props.data]);
 
 	function onSubmit(data) {
-		props.onSubmit();
+		props.onSubmit(data);
 	}
 
 	return (
