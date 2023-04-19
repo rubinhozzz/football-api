@@ -17,9 +17,9 @@ export default function Players(props) {
 			}
 		}
 		getPlayers();
-	}, []);
+	},  []);
 
-	async function handleDeleteClick(event) {
+	async function handleDeleteClick(index, event) {
 		try {
 			const ok = window.confirm('Do you want to remove this player?');
 			if (!ok)
@@ -29,12 +29,13 @@ export default function Players(props) {
 			if (!playerId)
 				return
 			const response = await fetch(`http://192.168.178.44:8000/players/${playerId}`, {method: 'DELETE'});	
-			// remove player from
+			setPlayers(players.filter((v, i) => i !== index));
 		} catch (error) {
 			console.error(error);
 			alert(error);
 		}
 	}
+
 	/*
 	function getGameResult(game, playerId) {
 		const teamA = game.teamA;
@@ -72,7 +73,7 @@ export default function Players(props) {
 			</thead>
 			<tbody>
 			{
-				players.map(el => 
+				players.map((el, index) => 
 					<tr className='border-b dark:border-neutral-500' key={el.id} data-id={el.id}>
 						<td>{el.firstname}</td>
 						<td>{el.lastname}</td>
@@ -95,7 +96,7 @@ export default function Players(props) {
 							<Link href={`/players/${el.id}`}>
 								<button className='btn btn-primary'>Edit</button>
 							</Link>&nbsp;
-							<button className='btn btn-danger' onClick={handleDeleteClick}>Remove</button>
+							<button className='btn btn-danger' onClick={e => handleDeleteClick(index, e)}>Remove</button>
 						</td>
 					</tr>
 				)
