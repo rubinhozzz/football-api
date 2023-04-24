@@ -29,9 +29,8 @@ class Player(Base):
     country_code: Mapped[Optional[str]] = mapped_column(String(3))
     photo: Mapped[Optional[bytes]] = mapped_column(LargeBinary())
     is_active: Mapped[bool] = mapped_column(Boolean, server_default='t', default=True)
-    matches: Mapped[List["Match"]] = relationship(secondary=player_match)
+    matches: Mapped[Optional[List["Match"]]] = relationship(secondary="player_match")
     match_mvp: Mapped["Match"] = relationship(back_populates="mvp")
-    match_pichichis: Mapped["Match"] = relationship(back_populates="pichichis")
 
 class Match(Base):
     __tablename__ = "match"
@@ -42,10 +41,10 @@ class Match(Base):
     teamA_score: Mapped[Optional[int]] = mapped_column(default=0)
     teamB_score: Mapped[Optional[int]] = mapped_column(default=0)
     location_id: Mapped[int] = mapped_column(ForeignKey("location.id")) 
-    location: Mapped["Location"] = relationship(back_populates="match")
-    mvp_id: Mapped[int] = mapped_column(ForeignKey("player.id")) 
-    mvp: Mapped["Player"] = relationship(back_populates="match_mvp")
-    pichichis: Mapped[List["Player"]] = relationship(secondary="player_match")
+    location: Mapped["Location"] = relationship(back_populates="matches")
+    mvp_id: Mapped[Optional[int]] = mapped_column(ForeignKey("player.id")) 
+    mvp: Mapped[Optional["Player"]] = relationship(back_populates="match_mvp")
+    #pichichis: Mapped[Optional[List["Player"]]] = relationship(secondary="player_match")
 
 class Location(Base):
     __tablename__ = "location"
@@ -54,5 +53,5 @@ class Location(Base):
     postcode: Mapped[Optional[str]] = mapped_column(String(10))
     address: Mapped[Optional[str]] = mapped_column(String(100))
     is_active: Mapped[bool] = mapped_column(Boolean, server_default='t', default=True)
-    match: Mapped["Match"] = relationship(back_populates="location")
+    matches: Mapped[List["Match"]] = relationship(back_populates="location")
     

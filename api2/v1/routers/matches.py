@@ -34,20 +34,18 @@ async def get_player(id: int, session: AsyncSession = Depends(get_session)) -> J
 		return JSONResponse({'ok': False, 'error': str(ex)}, status_code=500)    
 """
 @router.post('/')
-async def create_match(match: Match, session: AsyncSession = Depends(get_session)) -> JSONResponse:
-	print(match)
+async def create_match(matchSchema: Match, session: AsyncSession = Depends(get_session)) -> JSONResponse:
 	async with session.begin():
+		stmt = select(models.Location).filter_by(id=matchSchema.location).order_by(models.Location.id)
+		result = await session.execute(stmt)
+		location = result.scalars().one()
 		m = models.Match(
-			datetime=match.datetime, 
-			teamA_name=match.teamA_name,
-			teamB_name=match.teamB_name,
-			teamA_score=match.teamA_score,
-			teamB_score=match.teamB_score)
-			#location:
-			#location: Mapped["Location"] = relationship(back_populates="match")
-			#mvp_id: Mapped[int] = mapped_column(ForeignKey("player.id")) 
-			#mvp: Mapped["Player"] = relationship(back_populates="match_mvp")
-			#pichichis: Mapped[List["Player"]] = relationship(secondary="player_match")
+			datetime=matchSchema.datetime, 
+			teamA_name=matchSchema.teamA_name,
+			teamB_name=matchSchema.teamB_name,
+			teamA_score=matchSchema.teamA_score,
+			teamB_score=matchSchema.teamB_score)
+		m.location = location
 		session.add(m)
 		await session.commit()
 		return jsonable_encoder(m)
@@ -70,19 +68,18 @@ async def update_player(id: int, playerSchema: Player, session: AsyncSession = D
 	except Exception as ex:
 		print(ex)
 		return JSONResponse({'ok': False, 'error': str(ex)}, status_code=500)   
+"""
 
 @router.delete('/{id}')
 async def delete_player(id: int, session: AsyncSession = Depends(get_session)) -> JSONResponse:
-	try:
-		async with session.begin():
-			stmt = select(models.Player).filter_by(id=id)
-			result = await session.execute(stmt)
-			player = result.scalars().one()
-			await session.delete(player)
-			await session.commit()
-			return JSONResponse({'ok': True})
-	except NoResultFound as ex:
-		return JSONResponse({'ok': False, 'error': str(ex)}, status_code=404)    
-	except Exception as ex:
-		return JSONResponse({'ok': False, 'error': str(ex)}, status_code=500)    
-"""
+	async with session.begin():
+		stmt = select(models.Match).filter_by(id=id)
+		result = await session.execute(stmt)
+		try: 
+			match = result.scalars().one()
+		except NoResultFound as ex:
+			return JSONResponse({'ok': False, 'error': str(ex)}, status_code=404)    
+		await session.delete(match)
+		await session.commit()
+		return JSONResponse({'ok': True})
+		
