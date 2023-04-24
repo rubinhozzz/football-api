@@ -1,12 +1,2 @@
-INSERT INTO player("firstname", "lastname", "country_code") VALUES('Ruben', 'Sanchez', 'PER');
-INSERT INTO player("firstname", "lastname", "country_code") VALUES('Anthony', 'Ren', 'BEL');
-INSERT INTO player("firstname", "lastname", "country_code") VALUES('Gustavo', 'Otero', 'VEN');
-INSERT INTO player("firstname", "lastname", "country_code") VALUES('Anderson', 'Muller', 'BRA');
-INSERT INTO player("firstname", "lastname", "country_code") VALUES('Marco', 'Burelli', 'ITA');
-INSERT INTO player("firstname", "lastname", "country_code") VALUES('Jorge', 'Fernandez', 'ESP');
-INSERT INTO player("firstname", "lastname", "country_code") VALUES('Luke', 'Mc Donic', 'GBR');
-INSERT INTO player("firstname", "lastname", "country_code") VALUES('Luke', 'Monty', 'GBR');
-INSERT INTO player("firstname", "lastname", "country_code") VALUES('Mark Hann', 'Burelli', 'GBR');
-INSERT INTO player("firstname", "lastname", "country_code") VALUES('Alex', 'Valente', 'PRT');
-INSERT INTO player("firstname", "lastname", "country_code") VALUES('Can', 'Öztürk', 'TUR');
-INSERT INTO player("firstname", "lastname", "country_code") VALUES('Hector', 'Gabriel', 'VEN');
+INSERT INTO location("name", "postcode", "address", "is_active") VALUES('Sportal Zeeburg', '', '', true);
+
