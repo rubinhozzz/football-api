@@ -10,7 +10,6 @@ SQLALCHEMY_DATABASE_URL = "postgresql+asyncpg://{}:{}@{}/{}".format(
 )
 
 engine = create_async_engine(SQLALCHEMY_DATABASE_URL, echo=True)
-print(engine)
 
 Base = declarative_base()
 

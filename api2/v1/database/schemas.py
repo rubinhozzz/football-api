@@ -15,9 +15,11 @@ class Player(BaseModel):
 class Match(BaseModel):
 	datetime: datetime.datetime
 	teamA_name: str
-	teamB_name: str
 	teamA_score: int
+	teamA_players: list[int] | None = None
+	teamB_name: str
 	teamB_score: int
+	teamB_players: list[int] | None = None
 	location: int | None = None
 	mvp: int | None = None
 	pichichis: list[int] | None = None
