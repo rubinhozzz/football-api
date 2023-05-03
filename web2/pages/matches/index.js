@@ -2,10 +2,13 @@ import React, { useEffect, useState, useId} from 'react';
 //import { Link, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 //import axios from 'axios';
-//import moment from 'moment';
+import moment from 'moment';
 import PlayerSelect from '../../components/PlayerSelect';
 //import Layout from './layouts/MainLayout';
 //import { getUser } from '../App';
+import { useAppContext } from '../../context/state'; 
+import { useRouter } from 'next/router';
+
 import Link from 'next/link';
 
 export default function Matches(props) {
@@ -19,11 +22,14 @@ export default function Matches(props) {
 	const [pichichi, setPichichi] = useState(0);
 	const [mvp, setMVP] = useState(0);
 	//let navigate = useNavigate();
+	const appData = useAppContext();
+	const router = useRouter();
 
 	useEffect(() => {
 		async function getMatches(){
 			try {
-				const response = await fetch('http://192.168.178.44:8000/matches/');
+				
+				const response = await fetch('http://192.168.137.248:8000/matches/');
 				const matches = await response.json();
 				console.log(matches);
 				setMatches(matches);
@@ -41,105 +47,91 @@ export default function Matches(props) {
 							pichichi: pichichi,
 							mvp: mvp}});*/
 		//setMatches(response.data);
+		
 	}
 
 	async function handleMatchClick(event) {
-		const el = event.target.closest('.columns');
+		const el = event.target.closest('.match');
 		if (!el)
 			return
 		const matchId = el.getAttribute('match-id');
-		navigate(`/matches/${matchId}`);
+		router.push(`/matches/${matchId}`);
 	}
 
 	const styles = {
 		border: '1px solid black', 
 	};
 
-	let options = [];
-	locations.map(loc => (
-		options.push({value: loc._id, label: loc.name})	
-	))
-
 	return (
 		<>
 			<Link href={`/matches/create`}>				
-			<button className="btn btn-primary">New match</button>
+			<button className="btn btn-secondary mt-2">New match</button>
 			</Link>
 			
-			<div className="field is-horizontal">
-			<div className="field-body">
-				<div className="field is-narrow">
-					<div className="control">
+			<form className="w-full max-w-sm mt-2 mb-2">
+				<div className="md:flex md:items-center mb-2">
+					<div className="md:w-1/3">
+						<label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">Location</label>
+					</div>
+					<div className="md:w-2/3">
 						<Select 
-							instanceId={useId()}
-							options={options} 
-							onChange={(e) => setLocation(e.value)}
-							placeholder='Select location...'
-							defaultValue={location}
+								instanceId={useId()}
+								options={appData.locations} 
+								//onChange={(e) => setLocation(e.value)}
+								getOptionLabel={(option)=>option.name}
+								getOptionValue={(option)=>option.id}
+								placeholder='Select location...'
+								
 						/>						
 					</div>
 				</div>
-				<div className="field is-narrow">
-					<div className="control">
-						<PlayerSelect name="pichichi" onChange={(e) => setPichichi(e.value)} placeholder='Select pichichi...' />
+				<div className="md:flex md:items-center mb-2">
+					<div className="md:w-1/3">
+						<label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">Pichichi</label>
+					</div>
+					<div className="md:w-2/3">
+						<PlayerSelect name="pichichi" onChange={(e) => setPichichi(e.value)} placeholder='Select pichichi...' multiple/>
 					</div>
 				</div>
-				<div className="field is-narrow">
-					<div className="control">
-						<PlayerSelect name="mvp" onChange={(e) => setMVP(e.value)} placeholder='Select mvp...'/>
+				<div className="md:flex md:items-center mb-2">
+						<div className="md:w-1/3">
+							<label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">MVP</label>
+						</div>
+						<div className="md:w-2/3">
+							<PlayerSelect name="mvp" onChange={(e) => setMVP(e.value)} placeholder='Select mvp...' multiple/>
+						</div>
+				</div>
+				<div className="md:flex md:items-center">
+					<div className="md:w-1/3">
+						<button className="btn btn-primary" onClick={handleSearch}>Search</button>
 					</div>
-				</div>
-				<div className="field is-narrow">
-					<button className="btn btn-primary" onClick={handleSearch}>Search</button>
-				</div>
-				<div className="field is-narrow">
-					{user ? <Link to="/matches/add"><button className="button">New match</button></Link> : ''}
-					
-				</div>
-				</div>
-			</div>
-			<br/>
+					<div className="md:w-2/3">
+						{user ? <Link to="/matches/add"><button className="button">New match</button></Link> : ''}
+					</div>
+				</div>	
+			</form>
 			{
 			
 			matches.length === 0 ? 'No matches found.' : 
 			matches.map((match) => {
 					const datetime = moment(new Date(match.datetime)).format('YYYY-MM-DD HH:mm:ss');
 					return ( 
-					<div key={match._id} className="columns tile" style={styles} onClick={handleMatchClick} match-id={match._id}>
-						<div className="column" match-id={match._id} >
-							{match.location.name}<br/>
-							{datetime}
+					<div key={match.id} className="flex flex-row match" style={styles} onClick={handleMatchClick} match-id={match.id}>
+						<div className="basis-1/3" match-id={match.id} >
+							{match.location_id}<br/>
+							{match.datetime}
 						</div>
-						<div className="column">
-							<b>{match.teamAName}</b> ({match.teamAScore})
+						<div className="basis-1/3">
+							<b>{match.teamA_name}</b> ({match.teamA_score})
 							<ul>
-							{match.teamA.map((player, index) => {
-								const id = `${match._id}_teamA_${index}_${player._id}`;
-								return (<li key={id}>{player.firstname}</li>)
-							})}
+							
 							</ul>
 						</div>
-						<div className="column">
-							<b>{match.teamBName}</b> ({match.teamBScore})
+						<div className="basis-1/3">
+							<b>{match.teamB_name}</b> ({match.teamB_score})
 							<ul>
-							{match.teamB.map((player, index) => {
-								const id = `${match._id}_teamB_${index}_${player._id}`;
-								return (<li key={id}>{player.firstname}</li>)
-							})}
+							
 							</ul>
-						</div>
-						<div className="column">
-							<div>Pichichi</div>
-							{
-							match.pichichi.length ? 
-							match.pichichi.map((player) => (
-								<div className="column" key={player._id}>{player.firstname}</div>
-							)) : '---'
-							}
-						</div>
-						<div className="column">
-							<div>MVP</div>
-							{match.mvp ? match.mvp.firstname : '----'}
 						</div>
 					</div>)
 				})
