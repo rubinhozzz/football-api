@@ -5,16 +5,22 @@ from fastapi import APIRouter
 from database.schemas import Match
 import database.models as models
 from database.database import get_session
-from sqlalchemy import select
+from sqlalchemy import select, and_
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.exc import NoResultFound 
+from sqlalchemy.exc import NoResultFound
 
 router = APIRouter(prefix='/matches', tags=['matches'])
 
 @router.get('/')
-async def get_matches(session: AsyncSession = Depends(get_session)) -> JSONResponse:
+async def get_matches(location: int=0, pichichi: int=0, mvp: int=0, session: AsyncSession = Depends(get_session)) -> JSONResponse:
 	try:
-		stmt = select(models.Match).order_by(models.Match.id)
+		print(location, pichichi, mvp)
+		where = []
+		if location:
+			where.append(models.Match.location_id == location)
+		if mvp:
+			where.append(models.Match.mvp_id == mvp)
+		stmt = select(models.Match).where(and_(*where))
 		result = await session.execute(stmt)
 		matches = result.scalars().all()
 		return jsonable_encoder(matches)
