@@ -10,7 +10,7 @@ export function AppWrapper({ children }) {
 	useEffect(() => {
 		async function getPlayers(){
 			try {
-				const response = await fetch('http://192.168.137.248:8000/players/');
+				const response = await fetch('http://localhost:8000/players/');
 				const players = await response.json();
 				setPlayers(players);
 			} catch (error) {

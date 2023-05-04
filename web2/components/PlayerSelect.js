@@ -16,7 +16,7 @@ export default function PlayerSelect(props) {
 		if (Array.isArray(props.selected)) {
 				let data = [];
 				props.selected.forEach(item => {
-					data.push({value: item._id, label: `${item.firstname} ${item.lastname}`})
+					data.push({value: item.id, label: `${item.firstname} ${item.lastname}`})
 				});
 				methods.setValue(props.name, data);
 			}
@@ -29,7 +29,7 @@ export default function PlayerSelect(props) {
 	appData.players.map(player => 
 		options.push({value: player.id , label: player.firstname + ' ' + player.lastname})
 	)
-
+	
 	const onChangeFirst = (e)=> {
 		//console.log(e);
 	}
