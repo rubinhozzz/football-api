@@ -56,6 +56,6 @@ export default function PlayerSelect(props) {
 			/>
 		</div>
 		:
-		<Select options={options} isMulti={props.multiple ? 'isMulti' : ''} value={props.selected} onChange={props.onChange} instanceId={useId()}></Select>
+		<Select options={options} isMulti={props.multiple ? 'isMulti' : ''} value={props.selected} onChange={props.onChange} instanceId={useId()} isClearable="true"></Select>
 	)
 }

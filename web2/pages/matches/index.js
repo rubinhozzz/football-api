@@ -53,7 +53,6 @@ export default function Matches(props) {
 		const matchId = el.getAttribute('match-id');
 		router.push(`/matches/${matchId}`);
 	}
-
 	return (
 		<>
 			<Link href={`/matches/create`}>				
@@ -69,10 +68,11 @@ export default function Matches(props) {
 						<Select 
 								instanceId={useId()}
 								options={appData.locations} 
-								onChange={(e) => setLocation(e.id)}
+								onChange={(e) => (e == null) ? setLocation(0) : setLocation(e.id)}
 								getOptionLabel={(option)=>option.name}
 								getOptionValue={(option)=>option.id}
 								placeholder='Select location...'
+								isClearable="true"
 								
 						/>						
 					</div>
@@ -82,7 +82,7 @@ export default function Matches(props) {
 						<label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">Pichichi</label>
 					</div>
 					<div className="md:w-2/3">
-						<PlayerSelect name="pichichi" onChange={(e) => setPichichi(e.value)} placeholder='Select pichichi...'/>
+						<PlayerSelect name="pichichi"  onChange={(e) => {(e == null) ? setPichichi(0) : setPichichi(e.value)}} placeholder='Select pichichi...'/>
 					</div>
 				</div>
 				<div className="md:flex md:items-center mb-2">
@@ -90,7 +90,7 @@ export default function Matches(props) {
 							<label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">MVP</label>
 						</div>
 						<div className="md:w-2/3">
-							<PlayerSelect name="mvp" onChange={(e) => setMVP(e.value)} placeholder='Select mvp...' />
+							<PlayerSelect name="mvp" onChange={(e) => {(e == null) ? setMVP(0) : setMVP(e.value)}} placeholder='Select mvp...' />
 						</div>
 				</div>
 				<div className="md:flex md:items-center">
@@ -104,7 +104,8 @@ export default function Matches(props) {
 			</form>
 			{
 			
-			matches.length === 0 ? 'No matches found.' : 
+			matches.length === 0 ? 'No matches found.' :
+			
 			matches.map((match) => {
 					const datetime = moment(new Date(match.datetime)).format('YYYY-MM-DD HH:mm:ss');
 					return ( 
@@ -127,7 +128,7 @@ export default function Matches(props) {
 						</div>
 					</div>)
 				})
-				}
+			}
 		</>
 	)
 }
