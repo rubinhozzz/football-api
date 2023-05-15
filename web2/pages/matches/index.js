@@ -53,6 +53,7 @@ export default function Matches(props) {
 		const matchId = el.getAttribute('match-id');
 		router.push(`/matches/${matchId}`);
 	}
+	console.log(matches);
 	return (
 		<>
 			<Link href={`/matches/create`}>				
@@ -103,32 +104,48 @@ export default function Matches(props) {
 				</div>	
 			</form>
 			{
+			(matches.length === 0) ? 
+				'No matches found.' :	
+						(	
+							<>
+							<h1>Records: {matches.length}</h1>
+							<div>
+							{matches.map((match) => { 
+								const datetime = moment(new Date(match.datetime)).format('YYYY-MM-DD HH:mm:ss');
+								return (
+								<div key={match.id} className="flex flex-row match" onClick={handleMatchClick} match-id={match.id}>
+									<div className="basis-1/3" match-id={match.id}>
+										{match.location.name}<br />
+										{datetime}
+									</div>
+									<div className="basis-1/3">
+										<b>{match.teamA_name}</b> ({match.teamA_score})
+										<ul>
+											{
+												match.players.filter(m => m.team == 'A').map( player => (
+													<li key={player.player_id}>{player.player.firstname}</li>
+												))												
+											}
+										</ul>
+									</div>
+									<div className="basis-1/3">
+										<b>{match.teamB_name}</b> ({match.teamB_score})
+										<ul>
+										{
+												match.players.filter(m => m.team == 'B').map( player => (
+													<li key={player.player_id}>{player.player.firstname}</li>
+												))												
+											}
+
+										</ul>
+									</div>
+								</div>)
+							})}
+							</div>
+							</>
+						)
+			}	
 			
-			matches.length === 0 ? 'No matches found.' :
-			
-			matches.map((match) => {
-					const datetime = moment(new Date(match.datetime)).format('YYYY-MM-DD HH:mm:ss');
-					return ( 
-					<div key={match.id} className="flex flex-row match" onClick={handleMatchClick} match-id={match.id}>
-						<div className="basis-1/3" match-id={match.id} >
-							{match.location_id}<br/>
-							{match.datetime}
-						</div>
-						<div className="basis-1/3">
-							<b>{match.teamA_name}</b> ({match.teamA_score})
-							<ul>
-							
-							</ul>
-						</div>
-						<div className="basis-1/3">
-							<b>{match.teamB_name}</b> ({match.teamB_score})
-							<ul>
-							
-							</ul>
-						</div>
-					</div>)
-				})
-			}
 		</>
 	)
 }
