@@ -4,11 +4,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from database.database import engine, Base, get_session
 from routers.players import router as player_router
 from routers.matches import router as match_router
+from routers.locations import router as location_router
 import asyncio
 
 app = FastAPI()
 app.include_router(player_router)
 app.include_router(match_router)
+app.include_router(location_router)
 
 origins = [
     "http://localhost",

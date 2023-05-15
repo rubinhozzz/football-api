@@ -20,9 +20,8 @@ export function AppWrapper({ children }) {
 		getPlayers();
 		async function getLocations(){
 			try {
-				//const response = await fetch('http://192.168.178.44:8000/players/');
-				//const locations = await response.json();
-				const locations = [{id:1, name:'ssssss'}]
+				const response = await fetch('http://192.168.178.44:8000/locations/');
+				const locations = await response.json();
 				setLocations(locations);
 			} catch (error) {
 				alert(error)
