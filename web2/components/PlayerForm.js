@@ -1,8 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 
-const fetcher = (...args) => fetch(...args).then((res) => res.json())
-
 export default function PlayerForm(props) {
 	const { register, handleSubmit, watch, formState: { errors }, setValue } = useForm();
 	

@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import useSWR from 'swr';
-import PlayerForm from "../../components/player_form";
+import PlayerForm from "../../components/PlayerForm";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 

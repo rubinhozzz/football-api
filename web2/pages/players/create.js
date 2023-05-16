@@ -1,4 +1,4 @@
-import PlayerForm from "../../components/player_form";
+import PlayerForm from "../../components/PlayerForm";
 import { useRouter } from 'next/router';
 
 export default function Create(props) {
