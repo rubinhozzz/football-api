@@ -113,7 +113,7 @@ export default function Matches(props) {
 							{matches.map((match) => { 
 								const datetime = moment(new Date(match.datetime)).format('YYYY-MM-DD HH:mm:ss');
 								return (
-								<div key={match.id} className="flex flex-row match" onClick={handleMatchClick} match-id={match.id}>
+								<div key={match.id} className="flex flex-row border match" onClick={handleMatchClick} match-id={match.id}>
 									<div className="basis-1/3" match-id={match.id}>
 										{match.location.name}<br />
 										{datetime}

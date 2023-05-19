@@ -5,7 +5,7 @@ from fastapi import APIRouter
 from database.schemas import Match
 import database.models as models
 from database.database import get_session
-from sqlalchemy import select, and_
+from sqlalchemy import select, and_, desc
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import NoResultFound
 
@@ -20,7 +20,7 @@ async def get_matches(location: int=0, pichichi: int=0, mvp: int=0, session: Asy
 			where.append(models.Match.location_id == location)
 		if mvp:
 			where.append(models.Match.mvp_id == mvp)
-		stmt = select(models.Match).where(and_(*where))
+		stmt = select(models.Match).where(and_(*where)).order_by(desc(models.Match.id))
 		result = await session.execute(stmt)
 		matches = result.scalars().all()
 		return jsonable_encoder(matches)
@@ -39,8 +39,10 @@ async def get_match(id: int, session: AsyncSession = Depends(get_session)) -> JS
 
 @router.post('/')
 async def create_match(matchSchema: Match, session: AsyncSession = Depends(get_session)) -> JSONResponse:
+	print(matchSchema)
 	async with session.begin():
 		try:
+			print('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
 			stmt = select(models.Location).filter_by(id=matchSchema.location).order_by(models.Location.id)
 			result = await session.execute(stmt)
 			location = result.scalars().one()
@@ -52,10 +54,10 @@ async def create_match(matchSchema: Match, session: AsyncSession = Depends(get_s
 				teamB_score= matchSchema.teamB_score)
 			match.location = location
 			# mvp
-			if not matchSchema.mvp:
-				match.mvp = None
+			if not matchSchema.mvp_id:
+				match.mvp_id = None
 			else:
-				stmt = select(models.Player).filter_by(id=matchSchema.mvp)
+				stmt = select(models.Player).filter_by(id=matchSchema.mvp_id)
 				result = await session.execute(stmt)
 				player = result.scalars().one()
 				match.mvp = player
@@ -94,7 +96,7 @@ async def update_match(id: int, matchSchema: Match, session: AsyncSession = Depe
 			if not matchSchema.mvp:
 				match.mvp = None
 			else:
-				stmt = select(models.Player).filter_by(id=matchSchema.mvp)
+				stmt = select(models.Player).filter_by(id=matchSchema.mvp_id)
 				result = await session.execute(stmt)
 				player = result.scalars().one()
 				match.mvp = player
@@ -113,7 +115,7 @@ async def update_match(id: int, matchSchema: Match, session: AsyncSession = Depe
 					p.player = p1
 					match.players.append(p)
 			await session.commit()
-			return jsonable_encoder(match)
+			return jsonable_encoder([])
 		except NoResultFound as ex:
 			return JSONResponse({'ok': False, 'error': str(ex)}, status_code=404)
 
