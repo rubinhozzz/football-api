@@ -14,14 +14,14 @@ export default function PlayerSelect(props) {
 		if (!props.selected)
 			return
 		if (Array.isArray(props.selected)) {
-				let data = [];
-				props.selected.forEach(item => {
-					data.push({value: item.id, label: `${item.firstname} ${item.lastname}`})
-				});
-				methods.setValue(props.name, data);
-			}
-			else
-				methods.setValue(props.name, {value: props.selected.id, label: `${props.selected.firstname} ${props.selected.lastname}`});
+			let data = [];
+			props.selected.forEach(item => {
+				data.push({value: item.id, label: `${item.firstname} ${item.lastname}`})
+			});
+			methods.setValue(props.name, data);
+		}
+		else
+			methods.setValue(props.name, {value: props.selected.id, label: `${props.selected.firstname} ${props.selected.lastname}`});
 		
 	});
 

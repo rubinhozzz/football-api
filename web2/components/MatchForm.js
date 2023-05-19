@@ -9,6 +9,9 @@ export default function MatchForm(props) {
 	const id = useId();
 	const appData = useAppContext();
 	const [mvp, setMVP] = useState();
+	const [pichichis, setPichichis] = useState();
+	const [playersA, setPlayersA] = useState();
+	const [playersB, setPlayersB] = useState();
 	const methods = useForm({
 		defaultValues: {
 			location: 1,
@@ -19,7 +22,7 @@ export default function MatchForm(props) {
 			teamB_name: '',
 			teamB_score: 0,
 			teamB_players: [],			
-			pichichi: null,
+			pichichis: null,
 			mvp: null,
 		}
 	});
@@ -27,6 +30,7 @@ export default function MatchForm(props) {
 	useEffect(() => {
 		if (!props.data)
 			return
+		console.log(props.data);
 		methods.setValue('location', {name: props.data.location.name, id: props.data.location_id}, { shouldValidate: true});
 		let dt = moment(Date.parse(props.data.datetime)).format("YYYY-MM-DDTkk:mm");
 		methods.setValue('datetime', dt);
@@ -35,11 +39,13 @@ export default function MatchForm(props) {
 		methods.setValue('teamB_name', props.data.teamB_name);
 		methods.setValue('teamB_score', props.data.teamB_score);
 		methods.setValue('mvp', props.data.mvp);
-		
-		//setPichichi(props.data.pichichi);
+		setPichichis(props.data.pichichis);
 		setMVP(props.data.mvp);
-		//setTeamAData(props.data.teamA);
-		//setTeamBData(props.data.teamB);
+		const playersA = props.data.players.filter(m => m.team == 'A').map(item => item.player);
+		setPlayersA(playersA);
+		const playersB = props.data.players.filter(m => m.team == 'B').map(item => item.player);
+		setPlayersB(playersB);
+		setPichichis(props.data.players.filter(m => m.pichichi == true).map(item => item.player));
 	}, [props.data]);
 
 	async function handleDeleteMatch(event) {
@@ -94,7 +100,7 @@ export default function MatchForm(props) {
 					<input type="text" className="form-control" placeholder="Team A" {...methods.register('teamA_name', {required: true})}/>
 					{errors.teamAName?.type === 'required' && <p className="help is-danger">Name is required</p>}
 					
-					<PlayerSelect name="teamAPlayers"  multiple/>
+					<PlayerSelect name="teamA_players"  multiple selected={playersA}/>
 					{errors.teamA?.type === 'required' && <p className="help is-danger">Team is required</p>}
 					{errors.teamA?.type === 'validateEqualPlayers' && <p className="help is-danger">Different amount of players</p>}
 					{errors.teamA?.type === 'validateDifferentPlayers' && <p className="help is-danger">Players just one team</p>}
@@ -106,7 +112,7 @@ export default function MatchForm(props) {
 					<label className="form-label">Team B</label>
 					<input type="text" className="form-control" placeholder="Team B" {...methods.register('teamB_name', {required: true})}/>
 					{errors.teamBName?.type === 'required' && <p className="help is-danger">Name is required</p>}
-					<PlayerSelect name="teamBPlayers" multiple />
+					<PlayerSelect name="teamB_players" multiple selected={playersB}/>
 					{errors.teamB?.type === 'required' && <p className="help is-danger">Team is required</p>}
 					<input className="form-control" placeholder="Score B" type="text" {...methods.register('teamB_score', {required: true})}/>	
 				</div>
@@ -115,7 +121,7 @@ export default function MatchForm(props) {
 			
 			<div className="mb-4">
 				<label className="form-label">Pichichi</label>
-				<PlayerSelect name="pichichi" multiple />	
+				<PlayerSelect name="pichichis" multiple selected={pichichis}/>	
 			</div>
 			<div className="mb-4">
 				<label className="form-label">MVP</label>

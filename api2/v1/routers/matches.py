@@ -103,16 +103,20 @@ async def update_match(id: int, matchSchema: Match, session: AsyncSession = Depe
 			# players
 			match.players = []
 			if matchSchema.teamA_players:
-				for player_id in matchSchema.teamA_players:
-					p1 = await get_player(player_id, session)
+				for player_dict in matchSchema.teamA_players:
+					p1 = await get_player(player_dict['value'], session)
 					p = models.PlayerMatch(team='A')
 					p.player = p1
+					if p1.id in matchSchema.pichichis:
+						p.pichichi = True 
 					match.players.append(p)
 			if matchSchema.teamB_players:
-				for player_id in matchSchema.teamB_players:
-					p1 = await get_player(player_id, session)
+				for player_dict in matchSchema.teamB_players:
+					p1 = await get_player(player_dict['value'], session)
 					p = models.PlayerMatch(team='B')
 					p.player = p1
+					if p1.id in matchSchema.pichichis:
+						p.pichichi = True
 					match.players.append(p)
 			await session.commit()
 			return jsonable_encoder([])

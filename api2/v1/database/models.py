@@ -22,7 +22,7 @@ class PlayerMatch(Base):
 	team: Mapped[Optional[str]] = mapped_column(String(1))
 	pichichi: Mapped[bool] = mapped_column(Boolean, server_default='f', default=False)
         
-	player: Mapped["Player"] = relationship(back_populates="matches")
+	player: Mapped["Player"] = relationship(back_populates="matches", lazy="selectin")
 	match: Mapped["Match"] = relationship(back_populates="players")
 
 class User(Base):
@@ -43,7 +43,7 @@ class Player(Base):
 	is_active: Mapped[bool] = mapped_column(Boolean, server_default='t', default=True)
 	match_mvp: Mapped["Match"] = relationship(back_populates="mvp")
 	
-	matches: Mapped[List["PlayerMatch"]] = relationship(back_populates="player", lazy='selectin', cascade='save-update, merge, delete, delete-orphan')
+	matches: Mapped[List["PlayerMatch"]] = relationship(back_populates="player", cascade='save-update, merge, delete, delete-orphan')
     
 
 class Match(Base):
@@ -55,10 +55,10 @@ class Match(Base):
 	teamA_score: Mapped[Optional[int]] = mapped_column(default=0)
 	teamB_score: Mapped[Optional[int]] = mapped_column(default=0)
 	location_id: Mapped[int] = mapped_column(ForeignKey("location.id")) 
-	location: Mapped["Location"] = relationship(back_populates="matches")
+	location: Mapped["Location"] = relationship(back_populates="matches", lazy='selectin')
 	mvp_id: Mapped[Optional[int]] = mapped_column(ForeignKey("player.id")) 
 	mvp: Mapped[Optional["Player"]] = relationship(back_populates="match_mvp", lazy='selectin')
-	players: Mapped[List["PlayerMatch"]] = relationship(back_populates="match", lazy='selectin', cascade='save-update, merge, delete, delete-orphan')
+	players: Mapped[List["PlayerMatch"]] = relationship(back_populates="match", lazy="selectin", cascade='save-update, merge, delete, delete-orphan')
 
 class Location(Base):
     __tablename__ = "location"

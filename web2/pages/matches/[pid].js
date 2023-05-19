@@ -13,6 +13,8 @@ export default function UpdateMatch(props) {
 		if (data['mvp'])
 			data['mvp_id'] = data.mvp.value; 
 		console.log(data);
+		if (data['pichichis'])
+			data['pichichis'] = data.pichichis.map(item => item.value);
 		const options = {
 			method: 'PUT',
 			headers: {
