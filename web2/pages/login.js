@@ -22,7 +22,7 @@ export default function Login() {
 		//const next = (!props.next) ? '/' : props.next;
 		//navigate(next);
 		router.push('/matches');
-		window.location.reload();
+		//window.location.reload();
 	}
 
 	return (

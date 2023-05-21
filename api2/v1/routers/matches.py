@@ -8,19 +8,24 @@ from database.database import get_session
 from sqlalchemy import select, and_, desc
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import NoResultFound
+from sqlalchemy.dialects import postgresql
 
 router = APIRouter(prefix='/matches', tags=['matches'])
 
 @router.get('/')
 async def get_matches(location: int=0, pichichi: int=0, mvp: int=0, session: AsyncSession = Depends(get_session)) -> JSONResponse:
 	try:
-		print(location, pichichi, mvp)
+		stmt = select(models.Match)
 		where = []
 		if location:
 			where.append(models.Match.location_id == location)
 		if mvp:
 			where.append(models.Match.mvp_id == mvp)
-		stmt = select(models.Match).where(and_(*where)).order_by(desc(models.Match.id))
+		if pichichi:
+			stmt = stmt.join(models.PlayerMatch).filter(models.PlayerMatch.pichichi == True)
+			where.append(models.PlayerMatch.player_id == pichichi)
+		stmt = stmt.where(and_(*where)).order_by(desc(models.Match.id))
+		#print(stmt.compile(dialect=postgresql.dialect()))
 		result = await session.execute(stmt)
 		matches = result.scalars().all()
 		return jsonable_encoder(matches)
@@ -42,7 +47,6 @@ async def create_match(matchSchema: Match, session: AsyncSession = Depends(get_s
 	print(matchSchema)
 	async with session.begin():
 		try:
-			print('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
 			stmt = select(models.Location).filter_by(id=matchSchema.location).order_by(models.Location.id)
 			result = await session.execute(stmt)
 			location = result.scalars().one()
