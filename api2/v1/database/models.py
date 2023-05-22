@@ -23,7 +23,7 @@ class PlayerMatch(Base):
 	pichichi: Mapped[bool] = mapped_column(Boolean, server_default='f', default=False)
         
 	player: Mapped["Player"] = relationship(back_populates="matches", lazy="selectin")
-	match: Mapped["Match"] = relationship(back_populates="players")
+	match: Mapped["Match"] = relationship(back_populates="players", lazy="selectin")
 
 class User(Base):
     __tablename__ = "user"
@@ -43,7 +43,7 @@ class Player(Base):
 	is_active: Mapped[bool] = mapped_column(Boolean, server_default='t', default=True)
 	match_mvp: Mapped["Match"] = relationship(back_populates="mvp")
 	
-	matches: Mapped[List["PlayerMatch"]] = relationship(back_populates="player", cascade='save-update, merge, delete, delete-orphan')
+	matches: Mapped[List["PlayerMatch"]] = relationship(back_populates="player", cascade='save-update, merge, delete, delete-orphan', lazy="selectin")
     
 
 class Match(Base):
