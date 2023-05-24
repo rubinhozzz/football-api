@@ -42,7 +42,6 @@ class Player(Base):
 	photo: Mapped[Optional[bytes]] = mapped_column(LargeBinary())
 	is_active: Mapped[bool] = mapped_column(Boolean, server_default='t', default=True)
 	match_mvp: Mapped["Match"] = relationship(back_populates="mvp")
-	
 	matches: Mapped[List["PlayerMatch"]] = relationship(back_populates="player", cascade='save-update, merge, delete, delete-orphan', lazy="selectin")
     
 
@@ -57,7 +56,7 @@ class Match(Base):
 	location_id: Mapped[int] = mapped_column(ForeignKey("location.id")) 
 	location: Mapped["Location"] = relationship(back_populates="matches", lazy='selectin')
 	mvp_id: Mapped[Optional[int]] = mapped_column(ForeignKey("player.id")) 
-	mvp: Mapped[Optional["Player"]] = relationship(back_populates="match_mvp", lazy='selectin')
+	mvp: Mapped[Optional["Player"]] = relationship(back_populates="match_mvp")
 	players: Mapped[List["PlayerMatch"]] = relationship(back_populates="match", lazy="selectin", cascade='save-update, merge, delete, delete-orphan')
 
 class Location(Base):

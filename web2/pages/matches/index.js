@@ -123,7 +123,11 @@ export default function Matches(props) {
 										<ul>
 											{
 												match.players.filter(m => m.team == 'A').map( player => (
-													<li key={player.player_id}>{player.player.firstname}</li>
+													<li key={player.player_id}><div className="flex">
+														{player.player.firstname}
+														{(match.mvp_id == player.player_id) ?  <img className="w-5 h-5" src="https://cdn-icons-png.flaticon.com/512/625/625393.png?w=1380&t=st=1684924236~exp=1684924836~hmac=22f5a425d4a06c7fc205ab73d89c733f815b9159ac1236fdf788e55e65d86d05" alt="MVP"/>: ''}
+														{(player.pichichi) ? <img className="w-6 h-6" src="https://img.freepik.com/premium-vector/football-logo-design-vector-icon-template_185004-615.jpg?w=1380" alt="MVP"/>: ''}</div>
+													</li>
 												))												
 											}
 										</ul>
@@ -133,7 +137,7 @@ export default function Matches(props) {
 										<ul>
 										{
 												match.players.filter(m => m.team == 'B').map( player => (
-													<li key={player.player_id}>{player.player.firstname}</li>
+													<li key={player.player_id}>{player.player.firstname} {(match.mvp_id == player.player_id) ? 'MVP': ''}</li>
 												))												
 											}
 

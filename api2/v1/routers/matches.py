@@ -28,6 +28,7 @@ async def get_matches(location: int=0, pichichi: int=0, mvp: int=0, session: Asy
 		#print(stmt.compile(dialect=postgresql.dialect()))
 		result = await session.execute(stmt)
 		matches = result.scalars().all()
+		print(matches)
 		return jsonable_encoder(matches)
 	except Exception as ex:
 		return JSONResponse({'ok': False, 'error': str(ex)}, status_code=500)    
