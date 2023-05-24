@@ -36,6 +36,7 @@ export default function Players(props) {
 		}
 	}
 
+
 	function getMatchesInfo(matches) {
 		const totalGames = matches.length;
 		if (!totalGames)
@@ -94,7 +95,10 @@ export default function Players(props) {
 						<td className="text-center">{draw}</td>
 						<td>
 							{ 
-							results.map((result) => {
+							[...Array(5)].map((x, i) => {
+								if (i >= results.length)
+									return (<><span className={`text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 rounded-full`}>-</span><>&nbsp;</></>)
+								const result = results[i];
 								let bgColor = 'bg-gray-200';
 								let textColor = 'text-gray-700';
 								if (result == 'W') {
