@@ -30,7 +30,6 @@ export default function MatchForm(props) {
 	useEffect(() => {
 		if (!props.data)
 			return
-		console.log(props.data);
 		methods.setValue('location', {name: props.data.location.name, id: props.data.location_id}, { shouldValidate: true});
 		let dt = moment(Date.parse(props.data.datetime)).format("YYYY-MM-DDTkk:mm");
 		methods.setValue('datetime', dt);
@@ -53,13 +52,13 @@ export default function MatchForm(props) {
 	}
 
 	const validateTeams = {
-		validateEqualPlayers: (value) => {
+		validatePlayers: (value) => {
 			console.log(value);
-			return true;
+			return false;
 		}, 
-		validateDifferentPlayers: (value) => {
+		validateAmountPlayers: (value) => {
 			console.log(value);
-			return true;
+			return false;
 		}
 	}
 
@@ -97,21 +96,26 @@ export default function MatchForm(props) {
 			<div className="mb-4 flex flex-row">
 				<div className="basis-1/2">
 					<label className="form-label">Team A</label>
-					<input type="text" className="form-control" placeholder="Team A" {...methods.register('teamA_name', {required: true})}/>
-					{errors.teamAName?.type === 'required' && <p className="help is-danger">Name is required</p>}
+					<input type="text" className="form-control" placeholder="Team A" {...methods.register('teamA_name', {
+						required: true,
+						validate: validateTeams
+					})}/>
+					{errors.teamA_name?.type === 'required' && <p className="help is-danger">Name is required</p>}
 					
 					<PlayerSelect name="teamA_players"  multiple selected={playersA}/>
-					{errors.teamA?.type === 'required' && <p className="help is-danger">Team is required</p>}
-					{errors.teamA?.type === 'validateEqualPlayers' && <p className="help is-danger">Different amount of players</p>}
-					{errors.teamA?.type === 'validateDifferentPlayers' && <p className="help is-danger">Players just one team</p>}
+					{errors.teamA_players?.type === 'required' && <p className="help is-danger">Team is required</p>}
+					{errors.teamA_players?.type === 'validatePlayers' && <p className="help is-danger">Players cannot be in both teams</p>}
+					{errors.teamA_players?.type === 'validateAmountPlayers' && <p className="help is-danger">Teams must have same amount of players</p>}
 					<input className="form-control" placeholder="Score A" type="text" {...methods.register('teamA_score', {required: true})} />	
 					
 				</div>
 
 				<div className="basis-1/2">
 					<label className="form-label">Team B</label>
-					<input type="text" className="form-control" placeholder="Team B" {...methods.register('teamB_name', {required: true})}/>
-					{errors.teamBName?.type === 'required' && <p className="help is-danger">Name is required</p>}
+					<input type="text" className="form-control" placeholder="Team B" {...methods.register('teamB_name', {
+						required: true,
+						validate: validateTeams})}/>
+					{errors.teamB_name?.type === 'required' && <p className="help is-danger">Name is required</p>}
 					<PlayerSelect name="teamB_players" multiple selected={playersB}/>
 					{errors.teamB?.type === 'required' && <p className="help is-danger">Team is required</p>}
 					<input className="form-control" placeholder="Score B" type="text" {...methods.register('teamB_score', {required: true})}/>	
