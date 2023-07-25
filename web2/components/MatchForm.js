@@ -52,13 +52,21 @@ export default function MatchForm(props) {
 	}
 
 	const validateTeams = {
-		validatePlayers: (value) => {
-			console.log(value);
-			return false;
+		validatePlayers: () => {
+			const playersA = methods.getValues('teamA_players').map(item => item.value);
+			const playersB = methods.getValues('teamB_players').map(item => item.value);
+			const result = playersA.filter(value => playersB.includes(value));
+			console.log(result)
+			if (result.length > 0)
+				return false;
+			return true;
 		}, 
-		validateAmountPlayers: (value) => {
-			console.log(value);
-			return false;
+		validateAmountPlayers: () => {
+			const playersA = methods.getValues('teamA_players');
+			const playersB = methods.getValues('teamB_players');
+			if (playersA.length != playersB.length)
+				return false;
+			return true
 		}
 	}
 
@@ -102,7 +110,7 @@ export default function MatchForm(props) {
 					})}/>
 					{errors.teamA_name?.type === 'required' && <p className="help is-danger">Name is required</p>}
 					
-					<PlayerSelect name="teamA_players"  multiple selected={playersA}/>
+					<PlayerSelect name="teamA_players"  multiple selected={playersA} validate={validateTeams}/>
 					{errors.teamA_players?.type === 'required' && <p className="help is-danger">Team is required</p>}
 					{errors.teamA_players?.type === 'validatePlayers' && <p className="help is-danger">Players cannot be in both teams</p>}
 					{errors.teamA_players?.type === 'validateAmountPlayers' && <p className="help is-danger">Teams must have same amount of players</p>}
@@ -116,8 +124,10 @@ export default function MatchForm(props) {
 						required: true,
 						validate: validateTeams})}/>
 					{errors.teamB_name?.type === 'required' && <p className="help is-danger">Name is required</p>}
-					<PlayerSelect name="teamB_players" multiple selected={playersB}/>
-					{errors.teamB?.type === 'required' && <p className="help is-danger">Team is required</p>}
+					<PlayerSelect name="teamB_players" multiple selected={playersB} validate={validateTeams}/>
+					{errors.teamB_players?.type === 'required' && <p className="help is-danger">Team is required</p>}
+					{errors.teamB_players?.type === 'validatePlayers' && <p className="help is-danger">Players cannot be in both teams</p>}
+					{errors.teamB_players?.type === 'validateAmountPlayers' && <p className="help is-danger">Teams must have same amount of players</p>}
 					<input className="form-control" placeholder="Score B" type="text" {...methods.register('teamB_score', {required: true})}/>	
 				</div>
 			
