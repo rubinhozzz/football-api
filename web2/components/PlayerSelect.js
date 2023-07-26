@@ -30,9 +30,7 @@ export default function PlayerSelect(props) {
 		options.push({value: player.id , label: player.firstname + ' ' + player.lastname})
 	)
 	
-	const onChangeFirst = (e)=> {
-		//console.log(e);
-	}
+
 	return ( (methods) ? 
 		<div>
 			<Controller
@@ -46,10 +44,7 @@ export default function PlayerSelect(props) {
 					<Select 
 						instanceId={useId()}
 						options={options}
-						onChange={(e) => {
-							onChangeFirst(value);
-							onChange(e);}
-						}
+						onChange={onChange}
 						value={value}
 						isMulti={props.multiple ? 'isMulti' : ''}></Select>
 				}

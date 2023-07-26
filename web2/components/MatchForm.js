@@ -15,7 +15,7 @@ export default function MatchForm(props) {
 	const methods = useForm({
 		defaultValues: {
 			location: 1,
-			datetime: moment(Date.now()).format("YYYY-MM-DDTkk:mm"),
+			datetime: moment(Date.now()).format("YYYY-MM-DD"),
 			teamA_name: '',
 			teamA_score: 0,
 			teamA_players: [],
@@ -31,7 +31,7 @@ export default function MatchForm(props) {
 		if (!props.data)
 			return
 		methods.setValue('location', {name: props.data.location.name, id: props.data.location_id}, { shouldValidate: true});
-		let dt = moment(Date.parse(props.data.datetime)).format("YYYY-MM-DDTkk:mm");
+		let dt = moment(Date.parse(props.data.datetime)).format("YYYY-MM-DD");
 		methods.setValue('datetime', dt);
 		methods.setValue('teamA_name', props.data.teamA_name);
 		methods.setValue('teamA_score', props.data.teamA_score);
@@ -56,7 +56,6 @@ export default function MatchForm(props) {
 			const playersA = methods.getValues('teamA_players').map(item => item.value);
 			const playersB = methods.getValues('teamB_players').map(item => item.value);
 			const result = playersA.filter(value => playersB.includes(value));
-			console.log(result)
 			if (result.length > 0)
 				return false;
 			return true;
@@ -64,10 +63,29 @@ export default function MatchForm(props) {
 		validateAmountPlayers: () => {
 			const playersA = methods.getValues('teamA_players');
 			const playersB = methods.getValues('teamB_players');
-			if (playersA.length != playersB.length)
+			if ((playersA.length && playersB.length) && (playersA.length != playersB.length))
 				return false;
 			return true
 		}
+	}
+
+	const validatePichichis = (items) => {
+		const playersA = methods.getValues('teamA_players')?.map(item => item.value);
+		const playersB = methods.getValues('teamB_players')?.map(item => item.value); 
+		const pichichis = items.map(item => item.value); 
+		const players = [...playersA, ... playersB];
+		const diff = pichichis.filter(x => !players.includes(x));
+		if (diff.length > 0)
+			return false;
+		return true;
+	}
+
+	const validateMVP = (item) => {
+		const playersA = methods.getValues('teamA_players').map(item => item.value);
+		const playersB = methods.getValues('teamB_players').map(item => item.value); 
+		if ([...playersA, ... playersB].includes(item.value))
+			return true;
+		return false;
 	}
 
 	const errors = methods.formState.errors;
@@ -98,7 +116,7 @@ export default function MatchForm(props) {
 			</div>
 			<div className="mb-4">
 				<label className="form-label">Date</label>
-				<input type="datetime-local" className="form-control" {...methods.register('datetime', {required: true})}/>	
+				<input type="date" className="form-control" {...methods.register('datetime', {required: true})}/>	
 				{errors.datetime?.type === 'required' && <p className="help is-danger">Date is required</p>}
 			</div>
 			<div className="mb-4 flex flex-row">
@@ -135,11 +153,13 @@ export default function MatchForm(props) {
 			
 			<div className="mb-4">
 				<label className="form-label">Pichichi</label>
-				<PlayerSelect name="pichichis" multiple selected={pichichis}/>	
+				<PlayerSelect name="pichichis" multiple selected={pichichis} validate={validatePichichis}/>
+				{errors.pichichis?.type === 'validate' && <p className="help is-danger">Pichichis must be part of one of the teams</p>}
 			</div>
 			<div className="mb-4">
 				<label className="form-label">MVP</label>
-				<PlayerSelect name="mvp" selected={mvp} />	
+				<PlayerSelect name="mvp" selected={mvp} validate={validateMVP} />
+				{errors.mvp?.type === 'validate' && <p className="help is-danger">MVP must be part of one of the teams</p>}
 			</div>
 			<div className="flex flex-row">
 				<button className="btn btn-primary" type="submit">Save</button>
