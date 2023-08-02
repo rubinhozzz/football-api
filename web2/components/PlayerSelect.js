@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useId } from 'react';
-//import { PlayersContext } from '../App';
 import { Controller, useFormContext } from 'react-hook-form';
 import Select from 'react-select';
 import { useAppContext } from '../context/state';
@@ -22,15 +21,13 @@ export default function PlayerSelect(props) {
 		}
 		else
 			methods.setValue(props.name, {value: props.selected.id, label: `${props.selected.firstname} ${props.selected.lastname}`});
-		
-	});
+	}, [props.selected]);
 
 	const options = [];
 	appData.players.map(player => 
 		options.push({value: player.id , label: player.firstname + ' ' + player.lastname})
 	)
 	
-
 	return ( (methods) ? 
 		<div>
 			<Controller
@@ -40,12 +37,11 @@ export default function PlayerSelect(props) {
 				rules={{ 
 					required: props.required ? true : false, 
 					validate: props.validate ? props.validate : null}}
-				render={({ field : { onChange, onBlur, value, ref } }) =>
+				render={({ field }) =>
 					<Select 
+						{...field} 
 						instanceId={useId()}
 						options={options}
-						onChange={onChange}
-						value={value}
 						isMulti={props.multiple ? 'isMulti' : ''}></Select>
 				}
 			/>

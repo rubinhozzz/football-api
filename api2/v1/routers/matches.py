@@ -59,10 +59,10 @@ async def create_match(matchSchema: Match, session: AsyncSession = Depends(get_s
 				teamB_score= matchSchema.teamB_score)
 			match.location = location
 			# mvp
-			if not matchSchema.mvp_id:
-				match.mvp_id = None
+			if not matchSchema.mvp:
+				match.mvp = None
 			else:
-				stmt = select(models.Player).filter_by(id=matchSchema.mvp_id)
+				stmt = select(models.Player).filter_by(id=matchSchema.mvp)
 				result = await session.execute(stmt)
 				player = result.scalars().one()
 				match.mvp = player
@@ -82,12 +82,13 @@ async def create_match(matchSchema: Match, session: AsyncSession = Depends(get_s
 					match.players.append(pm)
 			session.add(match)
 			await session.commit()
-			return jsonable_encoder(match)
+			return jsonable_encoder([])
 		except NoResultFound as ex:
 			return JSONResponse({'ok': False, 'error': str(ex)}, status_code=404)
 
 @router.put('/{id}')
 async def update_match(id: int, matchSchema: Match, session: AsyncSession = Depends(get_session)) -> JSONResponse:
+	print(matchSchema)
 	async with session.begin():
 		try:
 			stmt = select(models.Match).filter_by(id=id)
@@ -101,23 +102,23 @@ async def update_match(id: int, matchSchema: Match, session: AsyncSession = Depe
 			if not matchSchema.mvp:
 				match.mvp = None
 			else:
-				stmt = select(models.Player).filter_by(id=matchSchema.mvp_id)
+				stmt = select(models.Player).filter_by(id=matchSchema.mvp)
 				result = await session.execute(stmt)
 				player = result.scalars().one()
 				match.mvp = player
 			# players
 			match.players = []
 			if matchSchema.teamA_players:
-				for player_dict in matchSchema.teamA_players:
-					p1 = await get_player(player_dict['value'], session)
+				for player_id in matchSchema.teamA_players:
+					p1 = await get_player(player_id, session)
 					p = models.PlayerMatch(team='A')
 					p.player = p1
 					if p1.id in matchSchema.pichichis:
 						p.pichichi = True 
 					match.players.append(p)
 			if matchSchema.teamB_players:
-				for player_dict in matchSchema.teamB_players:
-					p1 = await get_player(player_dict['value'], session)
+				for player_id in matchSchema.teamB_players:
+					p1 = await get_player(player_id, session)
 					p = models.PlayerMatch(team='B')
 					p.player = p1
 					if p1.id in matchSchema.pichichis:

@@ -37,9 +37,9 @@ export default function MatchForm(props) {
 		methods.setValue('teamA_score', props.data.teamA_score);
 		methods.setValue('teamB_name', props.data.teamB_name);
 		methods.setValue('teamB_score', props.data.teamB_score);
-		methods.setValue('mvp', props.data.mvp);
-		setPichichis(props.data.pichichis);
-		setMVP(props.data.mvp);
+		const results = props.data.players.filter(p => p.player_id == props.data.mvp_id);
+		if (results && results.length)
+			setMVP(results[0].player);
 		const playersA = props.data.players.filter(m => m.team == 'A').map(item => item.player);
 		setPlayersA(playersA);
 		const playersB = props.data.players.filter(m => m.team == 'B').map(item => item.player);
@@ -63,13 +63,15 @@ export default function MatchForm(props) {
 		validateAmountPlayers: () => {
 			const playersA = methods.getValues('teamA_players');
 			const playersB = methods.getValues('teamB_players');
-			if ((playersA.length && playersB.length) && (playersA.length != playersB.length))
+			if (playersA.length != playersB.length)
 				return false;
 			return true
 		}
 	}
 
 	const validatePichichis = (items) => {
+		if (!((items) && (items.length > 0)))
+			return true;
 		const playersA = methods.getValues('teamA_players')?.map(item => item.value);
 		const playersB = methods.getValues('teamB_players')?.map(item => item.value); 
 		const pichichis = items.map(item => item.value); 
@@ -81,6 +83,8 @@ export default function MatchForm(props) {
 	}
 
 	const validateMVP = (item) => {
+		if (!item)
+			return true;
 		const playersA = methods.getValues('teamA_players').map(item => item.value);
 		const playersB = methods.getValues('teamB_players').map(item => item.value); 
 		if ([...playersA, ... playersB].includes(item.value))
@@ -108,6 +112,7 @@ export default function MatchForm(props) {
 							options={appData.locations}
 							getOptionLabel={(option)=>option.name}
 							getOptionValue={(option)=>option.id}
+							isClearable
 							
 						/>
 					}
@@ -123,8 +128,7 @@ export default function MatchForm(props) {
 				<div className="basis-1/2">
 					<label className="form-label">Team A</label>
 					<input type="text" className="form-control" placeholder="Team A" {...methods.register('teamA_name', {
-						required: true,
-						validate: validateTeams
+						required: true
 					})}/>
 					{errors.teamA_name?.type === 'required' && <p className="help is-danger">Name is required</p>}
 					
@@ -140,7 +144,7 @@ export default function MatchForm(props) {
 					<label className="form-label">Team B</label>
 					<input type="text" className="form-control" placeholder="Team B" {...methods.register('teamB_name', {
 						required: true,
-						validate: validateTeams})}/>
+					})}/>
 					{errors.teamB_name?.type === 'required' && <p className="help is-danger">Name is required</p>}
 					<PlayerSelect name="teamB_players" multiple selected={playersB} validate={validateTeams}/>
 					{errors.teamB_players?.type === 'required' && <p className="help is-danger">Team is required</p>}

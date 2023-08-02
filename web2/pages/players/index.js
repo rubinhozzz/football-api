@@ -86,7 +86,7 @@ export default function Players(props) {
 				players.map((el, index) => {
 					const [total, won, lost, draw, results] = getMatchesInfo(el.matches); 
 					return (
-					<tr className='border-b dark:border-neutral-500' key={el.id} data-id={el.id}>
+					<tr className='border-b dark:border-neutral-500' key={index} data-id={el.id}>
 						<td>{el.firstname}</td>
 						<td>{el.lastname}</td>
 						<td className="text-center">{total}</td>
@@ -94,10 +94,11 @@ export default function Players(props) {
 						<td className="text-center">{lost}</td>
 						<td className="text-center">{draw}</td>
 						<td>
+							<div>
 							{ 
 							[...Array(5)].map((x, i) => {
 								if (i >= results.length)
-									return (<><span className={`text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 rounded-full`}>-</span><>&nbsp;</></>)
+									return (<span key={i} className={`text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 rounded-full`}>-</span>)
 								const result = results[i];
 								let bgColor = 'bg-gray-200';
 								let textColor = 'text-gray-700';
@@ -109,9 +110,10 @@ export default function Players(props) {
 									bgColor = 'bg-red-200';
 									textColor = 'text-red-700';
 								}
-								return (<><span className={`text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 ${bgColor} ${textColor} rounded-full`}>{result}</span><>&nbsp;</></>)
-								}
+								return (<span key={i} className={`text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 ${bgColor} ${textColor} rounded-full`}>{result}</span>)
+							}
 							)}
+							</div>
 						</td>
 						<td>
 							<Link href={`/players/${el.id}`}>

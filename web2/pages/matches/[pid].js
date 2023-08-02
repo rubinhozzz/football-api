@@ -10,11 +10,16 @@ export default function UpdateMatch(props) {
 	const { data, error, isLoading } = useSWR(pid ? `http://192.168.178.44:8000/matches/${pid}` : null, fetcher);
 
 	async function handleSubmit(data) {
-		if (data['mvp'])
-			data['mvp_id'] = data.mvp.value; 
-		console.log(data);
-		if (data['pichichis'])
-			data['pichichis'] = data.pichichis.map(item => item.value);
+		if (data.location)
+			data.location = data.location.id
+		if (data.teamA_players) 
+			data.teamA_players = data.teamA_players.map(x => x.value)
+		if (data.teamB_players) 
+			data.teamB_players = data.teamB_players.map(x => x.value)
+		if (data.pichichis) 
+			data.pichichis = data.pichichis.map(x => x.value);
+		if (data.mvp)
+			data.mvp = data.mvp.value;
 		const options = {
 			method: 'PUT',
 			headers: {
@@ -33,6 +38,5 @@ export default function UpdateMatch(props) {
 
 	if (error) return <div>Failed to load</div>
 	if (isLoading) return <div>Loading...</div>
-
 	return (<MatchForm data={data} onSubmit={handleSubmit}></MatchForm>)
 }
