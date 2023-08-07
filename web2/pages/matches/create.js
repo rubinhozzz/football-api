@@ -1,9 +1,11 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import MatchForm from '../../components/MatchForm';
 
 export default function CreateMatch(props) {
 	const router = useRouter();
+	const { data: session, status } = useSession();
 
 	async function handleSubmit(data) {
 		if (data.location)
@@ -16,7 +18,6 @@ export default function CreateMatch(props) {
 			data.pichichis = data.pichichis.map(x => x.value);
 		if (data.mvp)
 			data.mvp = data.mvp.value;
-		console.log(data);
 		const options = {
 			method: 'POST',
 			headers: {
@@ -32,6 +33,8 @@ export default function CreateMatch(props) {
 			alert(error);
 		}
 	}
+
+	console.log(status);
 
 	return (<MatchForm onSubmit={handleSubmit}></MatchForm>)
 }

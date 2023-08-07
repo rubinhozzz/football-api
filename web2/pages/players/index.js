@@ -1,8 +1,10 @@
 
 import Link from 'next/link'
 import { useState, useEffect } from 'react';
+import { useSession } from "next-auth/react";
 
 export default function Players(props) {
+	const { data:session, status} = useSession();
 	const [players, setPlayers] = useState([]);
 
 	useEffect(() => {
@@ -10,7 +12,6 @@ export default function Players(props) {
 			try {
 				const response = await fetch('http://192.168.178.44:8000/players/');
 				const players = await response.json();
-				console.log(players);
 				setPlayers(players);
 			} catch (error) {
 				alert(error)
@@ -64,10 +65,10 @@ export default function Players(props) {
 		}
 		return [totalGames, won, lost, draw, results];
 	}
-
+	console.log(status);
 	return (
 		<>
-		<Link href="/players/create"><button className='btn btn-primary my-2'>New player</button></Link>
+		{(session) ? <Link href="/players/create"><button className='btn btn-primary my-2'>New player</button></Link> : null}
 		<table className="min-w-full text-left text-sm font-light">
 			<thead className='border-b font-medium dark:border-neutral-500'>
 				<tr>
@@ -116,10 +117,13 @@ export default function Players(props) {
 							</div>
 						</td>
 						<td>
+							{(session) ?
+							<>
 							<Link href={`/players/${el.id}`}>
 								<button className='btn btn-primary'>Edit</button>
-							</Link>&nbsp;
-							<button className='btn btn-danger' onClick={e => handleDeleteClick(index, e)}>Remove</button>
+							</Link>
+							<button className='btn btn-danger' onClick={e => handleDeleteClick(index, e)}>Remove</button></> : null
+							}
 						</td>
 					</tr>)
 				})

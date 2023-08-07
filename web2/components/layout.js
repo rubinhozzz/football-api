@@ -1,8 +1,8 @@
-import useSessionStorage from "../../web2/utils/useSessionStorage"
-import Link from "next/link";
+import { signIn, signOut } from "next-auth/react"
+import { useSession } from "next-auth/react"
 
 export default function Layout({ children }) {
-	let user = useSessionStorage('user');
+	const { data: session, status } = useSession();
 	return (
     <div className="container mx-auto px-4">
 		<nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
@@ -25,9 +25,9 @@ export default function Layout({ children }) {
 				</a>
 				</div>
 				<div>
-				{(user) ? 
-					(<>{user.username} <a href="/logout" className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Logout</a></>) :
-					<a href="/login" className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Log in</a>}
+				{(session) ? 
+					(<>{session.user.name} <a href="#" onClick={() => signOut()} className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Logout</a></>) :
+					<a href="#" onClick={() => signIn()} className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Log in</a>}
 				</div>
 			</div>
 		</nav>

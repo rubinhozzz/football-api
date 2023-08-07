@@ -1,18 +1,15 @@
 import React, { useEffect, useState, useId} from 'react';
-//import { Link, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-//import axios from 'axios';
 import moment from 'moment';
 import PlayerSelect from '../../components/PlayerSelect';
-//import Layout from './layouts/MainLayout';
-//import { getUser } from '../App';
 import { useAppContext } from '../../context/state'; 
 import { useRouter } from 'next/router';
-
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 
 export default function Matches(props) {
-	//const [user,] = useState(getUser())
+	const { data: session, status } = useSession();
+	
 	const [user,] = useState(null)
 	const [matches, setMatches] = useState([]);
 	const [location, setLocation] = useState(0);
@@ -26,7 +23,6 @@ export default function Matches(props) {
 			try {
 				const response = await fetch('http://localhost:8000/matches/');
 				const matches = await response.json();
-				console.log(matches);
 				setMatches(matches);
 			} catch (error) {
 				alert(error)
@@ -36,7 +32,6 @@ export default function Matches(props) {
 	},  []);
 
 	async function handleSearch(event){
-		console.log(pichichi, mvp, location);
 		try {
 			const response = await fetch('http://localhost:8000/matches/?' + new URLSearchParams({ location: location, pichichi: pichichi, mvp: mvp}));
 			const matches = await response.json();
@@ -53,12 +48,12 @@ export default function Matches(props) {
 		const matchId = el.getAttribute('match-id');
 		router.push(`/matches/${matchId}`);
 	}
-	console.log(matches);
 	return (
 		<>
-			<Link href={`/matches/create`}>				
-			<button className="btn btn-secondary mt-2">New match</button>
-			</Link>
+			{(session) ? 
+				<Link href={`/matches/create`}>				
+					<button className="btn btn-secondary mt-2">New match</button>
+				</Link>: null}
 			
 			<form className="w-full max-w-sm mt-2 mb-2">
 				<div className="md:flex md:items-center mb-2">
