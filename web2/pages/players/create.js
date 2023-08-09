@@ -1,8 +1,10 @@
 import PlayerForm from "../../components/PlayerForm";
 import { useRouter } from 'next/router';
+import { signIn, useSession } from 'next-auth/react';
 
 export default function Create(props) {
 	const router = useRouter();
+	const { data: session, status } = useSession();
 	
 	async function handleSubmit(data) {
 		const options = {
@@ -20,6 +22,11 @@ export default function Create(props) {
 			alert(error);
 		}
 	}
-
+	if (status == 'loading')
+		return <>Loading...</>
+	if (status == 'unauthenticated') {
+		signIn();
+		return
+	}
 	return (<PlayerForm onSubmit={handleSubmit}></PlayerForm>)
 }

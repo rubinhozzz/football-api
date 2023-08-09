@@ -1,11 +1,13 @@
 import { useRouter } from "next/router";
 import useSWR from 'swr';
 import MatchForm from "../../components/MatchForm";
+import { signIn, useSession } from 'next-auth/react';
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
 export default function UpdateMatch(props) {
 	const router = useRouter();
+	const { data: session, status } = useSession();
 	const { pid } = router.query
 	const { data, error, isLoading } = useSWR(pid ? `http://192.168.178.44:8000/matches/${pid}` : null, fetcher);
 
@@ -38,5 +40,11 @@ export default function UpdateMatch(props) {
 
 	if (error) return <div>Failed to load</div>
 	if (isLoading) return <div>Loading...</div>
+	if (status == 'loading')
+		return <>Loading...</>
+	if (status == 'unauthenticated') {
+		signIn();
+		return
+	}
 	return (<MatchForm data={data} onSubmit={handleSubmit}></MatchForm>)
 }

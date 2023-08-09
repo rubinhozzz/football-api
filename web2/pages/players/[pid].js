@@ -1,11 +1,13 @@
 import { useRouter } from "next/router";
 import useSWR from 'swr';
 import PlayerForm from "../../components/PlayerForm";
+import { signIn, useSession } from 'next-auth/react';
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
 export default function UpdatePlayer(props) {
 	const router = useRouter();
+	const { data: session, status } = useSession();
 	const { pid } = router.query
 	const { data, error, isLoading } = useSWR(pid ? `http://192.168.178.44:8000/players/${pid}` : null, fetcher);
 
@@ -28,6 +30,11 @@ export default function UpdatePlayer(props) {
 
 	if (error) return <div>Failed to load</div>
 	if (isLoading) return <div>Loading...</div>
-
+	if (status == 'loading')
+		return <>Loading...</>
+	if (status == 'unauthenticated') {
+		signIn();
+		return
+	}
 	return (<PlayerForm data={data} onSubmit={handleSubmit}></PlayerForm>)
 }
