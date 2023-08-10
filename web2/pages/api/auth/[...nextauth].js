@@ -2,6 +2,7 @@ import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 
 export default NextAuth({
+	secret: 'test',
 	providers: [
 	  CredentialsProvider({
 		name: "Credentials",
