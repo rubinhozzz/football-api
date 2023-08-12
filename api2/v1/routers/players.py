@@ -9,6 +9,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import NoResultFound 
 
+
 router = APIRouter(prefix='/players', tags=['players'])
 
 @router.get('/')

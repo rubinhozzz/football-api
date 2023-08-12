@@ -1,27 +1,28 @@
 from pydantic import BaseModel
 import datetime
+from typing import Optional
 
 class Location(BaseModel):
     name: str
-    postcode: str | None = None
-    address: str | None = None
-    is_active: bool | None = True
+    postcode: Optional[str] = None
+    address: Optional[str] = None
+    is_active: Optional[bool] = True
 
 class Player(BaseModel):
    firstname: str
    lastname: str
-   country_code: str | None = None
+   country_code: Optional[str] = None
 
 class Match(BaseModel):
 	datetime: datetime.date
 	teamA_name: str
 	teamA_score: int
-	teamA_players: list[int] | None = None
+	teamA_players: Optional[list[int]] = None
 	teamB_name: str
 	teamB_score: int
-	teamB_players: list[int] | None = None
-	location: int | None = None
+	teamB_players: Optional[list[int]] = None
+	location: Optional[int] = None
 	#location_id: int | None = None
-	mvp: int | None = None
+	mvp: Optional[int] = None
 	#mvp_id: int | None = None
-	pichichis: list[int] | None = None
+	pichichis: Optional[list[int]] = None

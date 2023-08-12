@@ -9,6 +9,7 @@ from sqlalchemy import select, and_, desc
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.dialects import postgresql
+from typing import Optional
 
 router = APIRouter(prefix='/matches', tags=['matches'])
 
@@ -142,7 +143,7 @@ async def delete_match(id: int, session: AsyncSession = Depends(get_session)) ->
 		except NoResultFound as ex:
 			return JSONResponse({'ok': False, 'error': str(ex)}, status_code=404)
 
-async def get_player(id: int, session: AsyncSession = Depends(get_session)) -> models.Player | None:
+async def get_player(id: int, session: AsyncSession = Depends(get_session)) -> Optional[models.Player]:
 	try:
 		stmt = select(models.Player).filter_by(id=id)
 		result = await session.execute(stmt)
@@ -150,5 +151,3 @@ async def get_player(id: int, session: AsyncSession = Depends(get_session)) -> m
 		return player
 	except NoResultFound as ex:
 		return None
-
-		
