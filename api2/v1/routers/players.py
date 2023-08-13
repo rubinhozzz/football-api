@@ -4,23 +4,26 @@ from fastapi.encoders import jsonable_encoder
 from fastapi import APIRouter
 from database.schemas import Player
 import database.models as models
-from database.database import get_session
+from database.database import get_session, engine
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import NoResultFound 
 
-
 router = APIRouter(prefix='/players', tags=['players'])
 
 @router.get('/')
-async def get_players(session: AsyncSession = Depends(get_session)) -> JSONResponse:
-	try:
-		stmt = select(models.Player).order_by(models.Player.id)
-		result = await session.execute(stmt)
-		players = result.scalars().all()
-		return jsonable_encoder(players)
-	except Exception as ex:
-		return JSONResponse({'ok': False, 'error': str(ex)}, status_code=500)    
+async def get_players() -> JSONResponse:
+	async with AsyncSession(engine) as session:
+		async with session.begin():
+			try:
+				stmt = select(models.Player).order_by(models.Player.id)
+				result = await session.execute(stmt)
+				players = result.scalars().all()
+				return jsonable_encoder(players)
+			except Exception as ex:
+				return JSONResponse({'ok': False, 'error': str(ex)}, status_code=500)  
+			finally:
+				await engine.dispose()  
 
 @router.get('/{id}')
 async def get_player(id: int, session: AsyncSession = Depends(get_session)) -> JSONResponse:

@@ -4,36 +4,39 @@ from fastapi.encoders import jsonable_encoder
 from fastapi import APIRouter
 from database.schemas import Match
 import database.models as models
-from database.database import get_session
+from database.database import get_session, engine
 from sqlalchemy import select, and_, desc
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import NoResultFound
-from sqlalchemy.dialects import postgresql
 from typing import Optional
 
 router = APIRouter(prefix='/matches', tags=['matches'])
 
 @router.get('/')
-async def get_matches(location: int=0, pichichi: int=0, mvp: int=0, session: AsyncSession = Depends(get_session)) -> JSONResponse:
-	try:
-		stmt = select(models.Match)
-		where = []
-		if location:
-			where.append(models.Match.location_id == location)
-		if mvp:
-			where.append(models.Match.mvp_id == mvp)
-		if pichichi:
-			stmt = stmt.join(models.PlayerMatch).filter(models.PlayerMatch.pichichi == True)
-			where.append(models.PlayerMatch.player_id == pichichi)
-		stmt = stmt.where(and_(*where)).order_by(desc(models.Match.id))
-		#print(stmt.compile(dialect=postgresql.dialect()))
-		result = await session.execute(stmt)
-		matches = result.scalars().all()
-		print(matches)
-		return jsonable_encoder(matches)
-	except Exception as ex:
-		return JSONResponse({'ok': False, 'error': str(ex)}, status_code=500)    
-
+async def get_matches(location: int=0, pichichi: int=0, mvp: int=0) -> JSONResponse:
+	async with AsyncSession(engine) as session:
+		async with session.begin():
+			try:
+				stmt = select(models.Match)
+				where = []
+				if location:
+					where.append(models.Match.location_id == location)
+				if mvp:
+					where.append(models.Match.mvp_id == mvp)
+				if pichichi:
+					stmt = stmt.join(models.PlayerMatch).filter(models.PlayerMatch.pichichi == True)
+					where.append(models.PlayerMatch.player_id == pichichi)
+				stmt = stmt.where(and_(*where)).order_by(desc(models.Match.id))
+				#print(stmt.compile(dialect=postgresql.dialect()))
+				result = await session.execute(stmt)
+				matches = result.scalars().all()
+				print(matches)
+				return jsonable_encoder(matches)
+			except Exception as ex:
+				return JSONResponse({'ok': False, 'error': str(ex)}, status_code=500)
+			finally:
+				await engine.dispose()
+	
 @router.get('/{id}')
 async def get_match(id: int, session: AsyncSession = Depends(get_session)) -> JSONResponse:
 	try:
