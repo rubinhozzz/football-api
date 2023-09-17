@@ -39,47 +39,44 @@ async def get_player(id: int, session = Depends(get_session)) -> JSONResponse:
 @router.post('/')
 async def create_player(player: Player, session = Depends(get_session)) -> JSONResponse:
 	async with session() as session:
-		async with session.begin():
-			try:
-				p = models.Player(firstname=player.firstname, lastname=player.lastname, country_code=player.country_code)
-				session.add(p)
-				await session.commit()
-				return jsonable_encoder(p)
-			except Exception as ex:
-				print(ex)
-				return JSONResponse({'ok': False, 'error': str(ex)}, status_code=500)   
+		try:
+			p = models.Player(firstname=player.firstname, lastname=player.lastname, country_code=player.country_code)
+			session.add(p)
+			await session.commit()
+			return jsonable_encoder(p)
+		except Exception as ex:
+			print(ex)
+			return JSONResponse({'ok': False, 'error': str(ex)}, status_code=500)   
 
 @router.put('/{id}')
 async def update_player(id: int, playerSchema: Player, session = Depends(get_session)) -> JSONResponse:
 	async with session() as session:
-		async with session.begin():
-			try:
-				stmt = select(models.Player).filter_by(id=id).order_by(models.Player.id)
-				result = await session.execute(stmt)
-				player = result.scalars().one()
-				player.firstname = playerSchema.firstname
-				player.lastname = playerSchema.lastname
-				player.country_code = playerSchema.country_code
-				await session.commit()
-				return jsonable_encoder(player)
-			except NoResultFound as ex:
-				return JSONResponse({'ok': False, 'error': str(ex)}, status_code=404)
-			except Exception as ex:
-				print(ex)
-				return JSONResponse({'ok': False, 'error': str(ex)}, status_code=500)   
+		try:
+			stmt = select(models.Player).filter_by(id=id).order_by(models.Player.id)
+			result = await session.execute(stmt)
+			player = result.scalars().one()
+			player.firstname = playerSchema.firstname
+			player.lastname = playerSchema.lastname
+			player.country_code = playerSchema.country_code
+			await session.commit()
+			return jsonable_encoder(player)
+		except NoResultFound as ex:
+			return JSONResponse({'ok': False, 'error': str(ex)}, status_code=404)
+		except Exception as ex:
+			print(ex)
+			return JSONResponse({'ok': False, 'error': str(ex)}, status_code=500)   
 
 @router.delete('/{id}')
 async def delete_player(id: int, session = Depends(get_session)) -> JSONResponse:
 	async with session() as session:
-		async with session.begin():
-			try:
-				stmt = select(models.Player).filter_by(id=id)
-				result = await session.execute(stmt)
-				player = result.scalars().one()
-				await session.delete(player)
-				await session.commit()
-				return JSONResponse({'ok': True})
-			except NoResultFound as ex:
-				return JSONResponse({'ok': False, 'error': str(ex)}, status_code=404)    
-			except Exception as ex:
-				return JSONResponse({'ok': False, 'error': str(ex)}, status_code=500)    
+		try:
+			stmt = select(models.Player).filter_by(id=id)
+			result = await session.execute(stmt)
+			player = result.scalars().one()
+			await session.delete(player)
+			await session.commit()
+			return JSONResponse({'ok': True})
+		except NoResultFound as ex:
+			return JSONResponse({'ok': False, 'error': str(ex)}, status_code=404)    
+		except Exception as ex:
+			return JSONResponse({'ok': False, 'error': str(ex)}, status_code=500)    
