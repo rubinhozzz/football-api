@@ -1,9 +1,13 @@
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.exc import SQLAlchemyError
-from typing import AsyncIterator
+from fastapi import Depends
+from typing import Annotated, AsyncIterator
+from dotenv import load_dotenv
 import os
 import logging
+
+load_dotenv()
 
 logger = logging.getLogger(__name__)
 
