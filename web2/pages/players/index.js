@@ -10,7 +10,7 @@ export default function Players(props) {
 	useEffect(() => {
 		async function getPlayers(){
 			try {
-				const response = await fetch('http://192.168.178.44:8000/players/');
+				const response = await fetch(`${process.env.NEXT_PUBLIC_API_ROOT_URI}/players/`);
 				const players = await response.json();
 				setPlayers(players);
 			} catch (error) {
@@ -29,7 +29,7 @@ export default function Players(props) {
 			const playerId = el.getAttribute('data-id');
 			if (!playerId)
 				return
-			const response = await fetch(`http://192.168.178.44:8000/players/${playerId}`, {method: 'DELETE'});	
+			const response = await fetch(`${process.env.NEXT_PUBLIC_API_ROOT_URI}/players/${playerId}`, {method: 'DELETE'});	
 			setPlayers(players.filter((v, i) => i !== index));
 		} catch (error) {
 			console.error(error);

@@ -15,7 +15,7 @@ export default function Create(props) {
 			body: JSON.stringify(data)
 		}
 		try{
-			const response = await fetch('http://localhost:8000/players/', options);
+			const response = await fetch(`${process.env.NEXT_PUBLIC_API_ROOT_URI}/players/`, options);
 			const result = await response.json()
 			router.push('/players');
 		} catch (error) {

@@ -26,7 +26,7 @@ export default function CreateMatch(props) {
 			body: JSON.stringify(data)
 		}
 		try{
-			const response = await fetch('http://192.168.178.44:8000/matches/', options);
+			const response = await fetch(`${process.env.NEXT_PUBLIC_API_ROOT_URI}/matches/`, options);
 			const result = await response.json();
 			router.push('/matches');
 		} catch (error) {

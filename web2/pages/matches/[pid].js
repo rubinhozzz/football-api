@@ -9,7 +9,7 @@ export default function UpdateMatch(props) {
 	const router = useRouter();
 	const { data: session, status } = useSession();
 	const { pid } = router.query
-	const { data, error, isLoading } = useSWR(pid ? `http://192.168.178.44:8000/matches/${pid}` : null, fetcher);
+	const { data, error, isLoading } = useSWR(pid ? `${process.env.NEXT_PUBLIC_API_ROOT_URI}/matches/${pid}` : null, fetcher);
 
 	async function handleSubmit(data) {
 		if (data.location)
@@ -30,7 +30,7 @@ export default function UpdateMatch(props) {
 			body: JSON.stringify(data)
 		}
 		try{
-			const response = await fetch(`http://192.168.178.44:8000/matches/${pid}`, options);
+			const response = await fetch(`${process.env.NEXT_PUBLIC_API_ROOT_URI}/matches/${pid}`, options);
 			const result = await response.json()
 			router.push('/matches');
 		} catch (error) {

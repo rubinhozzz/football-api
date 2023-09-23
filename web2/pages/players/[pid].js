@@ -9,7 +9,7 @@ export default function UpdatePlayer(props) {
 	const router = useRouter();
 	const { data: session, status } = useSession();
 	const { pid } = router.query
-	const { data, error, isLoading } = useSWR(pid ? `http://192.168.178.44:8000/players/${pid}` : null, fetcher);
+	const { data, error, isLoading } = useSWR(pid ? `${process.env.NEXT_PUBLIC_API_ROOT_URI}/players/${pid}` : null, fetcher);
 
 	async function handleSubmit(data) {
 		const options = {
@@ -20,7 +20,7 @@ export default function UpdatePlayer(props) {
 			body: JSON.stringify(data)
 		}
 		try{
-			const response = await fetch(`http://192.168.178.44:8000/players/${pid}`, options);
+			const response = await fetch(`${process.env.NEXT_PUBLIC_API_ROOT_URI}/players/${pid}`, options);
 			const result = await response.json()
 			router.push('/players');
 		} catch (error) {

@@ -10,8 +10,9 @@ export function AppWrapper({ children }) {
 	useEffect(() => {
 		async function getPlayers(){
 			try {
-				const response = await fetch('http://localhost:8000/players/');
+				const response = await fetch(`${process.env.NEXT_PUBLIC_API_ROOT_URI}/players/`);
 				const players = await response.json();
+				console.log(players);
 				setPlayers(players);
 			} catch (error) {
 				alert(error)
@@ -20,7 +21,7 @@ export function AppWrapper({ children }) {
 		getPlayers();
 		async function getLocations(){
 			try {
-				const response = await fetch('http://192.168.178.44:8000/locations/');
+				const response = await fetch(`${process.env.NEXT_PUBLIC_API_ROOT_URI}/locations/`);
 				const locations = await response.json();
 				setLocations(locations);
 			} catch (error) {

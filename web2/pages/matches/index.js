@@ -21,7 +21,8 @@ export default function Matches(props) {
 	useEffect(() => {
 		async function getMatches(){
 			try {
-				const response = await fetch('http://localhost:8000/matches/');
+				console.log(`${process.env.NEXT_PUBLIC_API_ROOT_URI}/matches/`);
+				const response = await fetch(`${process.env.NEXT_PUBLIC_API_ROOT_URI}/matches/`);
 				const matches = await response.json();
 				setMatches(matches);
 			} catch (error) {
@@ -33,7 +34,7 @@ export default function Matches(props) {
 
 	async function handleSearch(event){
 		try {
-			const response = await fetch('http://localhost:8000/matches/?' + new URLSearchParams({ location: location, pichichi: pichichi, mvp: mvp}));
+			const response = await fetch(`${process.env.NEXT_PUBLIC_API_ROOT_URI}/matches/` + new URLSearchParams({ location: location, pichichi: pichichi, mvp: mvp}));
 			const matches = await response.json();
 			setMatches(matches);	
 		} catch (error) {
