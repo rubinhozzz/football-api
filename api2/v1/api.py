@@ -12,6 +12,8 @@ app.include_router(location_router)
 origins = [
     "http://localhost",
     "http://localhost:3000",
+    "http://4.245.64.27",
+    "http://4.245.64.27:3000",
 ]
 
 app.add_middleware(
