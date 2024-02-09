@@ -2,8 +2,8 @@ from fastapi import Depends
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi import APIRouter
-from database.models import Location
-from database.database import get_session
+from app.database.models import Location
+from app.database.database import get_session
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import NoResultFound

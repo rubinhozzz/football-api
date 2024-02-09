@@ -2,9 +2,9 @@ from fastapi import Depends
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi import APIRouter
-from database.schemas import Player
-import database.models as models
-from database.database import get_session
+from app.database.schemas import Player
+import app.database.models as models
+from app.database.database import get_session
 from sqlalchemy import select
 from sqlalchemy.exc import NoResultFound 
 
