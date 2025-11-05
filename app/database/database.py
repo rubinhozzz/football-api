@@ -29,9 +29,9 @@ AsyncSessionLocal = async_sessionmaker(
     expire_on_commit=False
 )
 
-# Dependency
+
 async def get_session() -> AsyncIterator[async_sessionmaker]:
-	try:
-		yield AsyncSessionLocal
-	except SQLAlchemyError as e:
-		logger.exception(e)
+    try:
+        yield AsyncSessionLocal
+    except SQLAlchemyError as e:
+        logger.exception(e)

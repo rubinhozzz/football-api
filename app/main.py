@@ -1,13 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware 
-from app.routers.players import router as player_router
 from app.routers.matches import router as match_router
-from app.routers.locations import router as location_router
 
 app = FastAPI()
-app.include_router(player_router)
 app.include_router(match_router)
-app.include_router(location_router)
 
 origins = [
     "http://localhost",
