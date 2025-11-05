@@ -1,22 +1,18 @@
 from fastapi import Depends, APIRouter
-from fastapi.responses import JSONResponse
-from app.schemas import PlayerIn, PlayerOut
-import app.database.models as models
+from app.schemas.players import PlayerSlimSchema
 from app.database.database import get_session
-from sqlalchemy import select
+from app.services.players import PlayerService
 
 router = APIRouter(prefix='/players', tags=['players'])
 
 
-@router.get('/', response_model=list[PlayerOut])
-async def get_players(session=Depends(get_session)) -> JSONResponse:
-    async with session() as session:
-        stmt = select(models.Player).order_by(models.Player.id)
-        result = await session.execute(stmt)
-        players = result.scalars().all()
-        return players
+@router.get('/', response_model=list[PlayerSlimSchema])
+async def get_players(session=Depends(get_session)) -> PlayerSlimSchema:
+    service = PlayerService(session)
+    players = await service.get_all_players()
+    return players
 
-
+"""
 @router.get('/{id}', response_model=PlayerOut)
 async def get_player(id: int, session=Depends(get_session)) -> JSONResponse:
     async with session() as session:
@@ -58,3 +54,4 @@ async def delete_player(id: int, session=Depends(get_session)) -> JSONResponse:
         await session.delete(player)
         await session.commit()
         return JSONResponse({'ok': True})
+"""
