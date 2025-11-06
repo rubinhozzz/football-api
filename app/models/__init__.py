@@ -1,7 +1,7 @@
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy.orm import Mapped, relationship, mapped_column
-from sqlalchemy import Boolean, ForeignKey, String, LargeBinary, DateTime, func
+from sqlalchemy import Boolean, ForeignKey, String, LargeBinary, DateTime
 from app.database.database import Base
 from enum import Enum
 from sqlalchemy import Enum as SQLEnum
@@ -13,9 +13,9 @@ class Team(Enum):
 
 
 class AuditMixin:
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=datetime.now)
-    created_by: Mapped[int] = mapped_column(ForeignKey("users.id"))
-    last_update_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), default=datetime.now, onupdate=datetime.now)
+    created_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=True)
+    created_by: Mapped[Optional[int]] = mapped_column(ForeignKey("users.id"), nullable=True)
+    last_update_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=True)
     updated_by: Mapped[Optional[int]] = mapped_column(ForeignKey("users.id"), nullable=True)
 
 

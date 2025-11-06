@@ -1,11 +1,18 @@
 from pydantic import BaseModel
 from app.schemas import PlayerBaseSchema
-import datetime
+from app.schemas.matches import MatchSlimSchema
 from typing import Optional
 
 
+class PlayerSchema(PlayerBaseSchema):
+    id: int
+    is_active: bool
+    matches: Optional[list[MatchSlimSchema]]
+
+
 class PlayerSlimSchema(PlayerBaseSchema):
-    pass
+    id: int
+    is_active: bool
 
 
 class PlayerCreateSchema(PlayerBaseSchema):
@@ -13,4 +20,7 @@ class PlayerCreateSchema(PlayerBaseSchema):
 
 
 class PlayerUpdateSchema(BaseModel):
-    pass
+    firstname: Optional[str] = None
+    lastname: Optional[str] = None
+    country_code: Optional[str] = None
+    is_active: Optional[bool] = None

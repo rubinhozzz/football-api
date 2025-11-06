@@ -1,5 +1,5 @@
-from fastapi import Depends, APIRouter
-from app.schemas.players import PlayerSlimSchema
+from fastapi import Depends, APIRouter, HTTPException, status
+from app.schemas.players import PlayerSlimSchema, PlayerSchema, PlayerCreateSchema, PlayerUpdateSchema
 from app.database.database import get_session
 from app.services.players import PlayerService
 
@@ -12,46 +12,50 @@ async def get_players(session=Depends(get_session)) -> PlayerSlimSchema:
     players = await service.get_all_players()
     return players
 
-"""
-@router.get('/{id}', response_model=PlayerOut)
-async def get_player(id: int, session=Depends(get_session)) -> JSONResponse:
-    async with session() as session:
-        stmt = select(models.Player).filter_by(id=id).order_by(models.Player.id)
-        result = await session.execute(stmt)
-        player = result.scalars().one()
-        return player
+
+@router.get('/{id}', response_model=PlayerSchema)
+async def get_player(id: int, session=Depends(get_session)):
+    service = PlayerService(session)
+    player = await service.get_player(id)
+    if player is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Player with id {id} not found."
+        )
+    return player
 
 
-@router.post('/', response_model=PlayerOut)
-async def create_player(schema: PlayerIn, session=Depends(get_session)) -> JSONResponse:
-    async with session() as session:
-        player = models.Player(firstname=schema.firstname, lastname=schema.lastname, country_code=schema.country_code)
-        session.add(player)
-        await session.commit()
-        return player
+@router.post('/', response_model=PlayerSchema)
+async def create_player(player_create: PlayerCreateSchema, session=Depends(get_session)):
+    service = PlayerService(session)
+    player = await service.create_player(player_create)
+    if player is None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Player could not be created."
+        )
+    return player
 
 
-@router.put('/{id}', response_model=PlayerOut)
-async def update_player(id: int, schema: PlayerIn, session=Depends(get_session)) -> JSONResponse:
-    async with session() as session:
-        stmt = select(models.Player).filter_by(id=id).order_by(models.Player.id)
-        result = await session.execute(stmt)
-        player = result.scalars().one()
-        player.firstname = schema.firstname
-        player.lastname = schema.lastname
-        player.country_code = schema.country_code
-        await session.commit()
-        await session.update(player)
-        return player
+@router.put('/{id}', response_model=PlayerSchema)
+async def update_player(id: int, player_update: PlayerUpdateSchema, session=Depends(get_session)):
+    service = PlayerService(session)
+    player = await service.update_player(id, player_update)
+    if player is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Player with id {id} not found."
+        )
+    return player
 
 
-@router.delete('/{id}')
-async def delete_player(id: int, session=Depends(get_session)) -> JSONResponse:
-    async with session() as session:
-        stmt = select(models.Player).filter_by(id=id)
-        result = await session.execute(stmt)
-        player = result.scalars().one()
-        await session.delete(player)
-        await session.commit()
-        return JSONResponse({'ok': True})
-"""
+@router.delete('/{id}', status_code=204)
+async def delete_player(id: int, session=Depends(get_session)):
+    service = PlayerService(session)
+    deleted = await service.delete_player(id)
+    if not deleted:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Player with id {id} not found."
+        )
+    return None
